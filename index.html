@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.27</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.28</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -381,7 +381,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.27 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.28 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -1440,7 +1440,17 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  // 保單未解約時，尚未發生的解約金、最終損益與報酬率顯示「—」。
  const oldInsurance=window.renderInsurance;if(typeof oldInsurance==='function')window.renderInsurance=function(){oldInsurance();document.querySelectorAll('.insurance-project-card').forEach(card=>{const id=card.id.replace('book-insurance-',''),p=state.insuranceProjects.find(x=>x.id===id);if(!p||p.status==='closed')return;card.querySelectorAll('.insurance-metrics>div').forEach(box=>{const label=box.querySelector('small')?.textContent||'';if(['累計解約金（原幣）','原幣最終損益','台幣實際解約金','台幣實際獲利','台幣實際報酬率'].includes(label)){const b=box.querySelector('b');if(b)b.textContent='—';}});});};
  // 保單修改時可一併修正繳費頻率與繳費年期。
- window.applyInsuranceProjectEdit=function(pid,read,note){const p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;let n=read('保單名稱',p.name);if(n===null)return;let c=read('保險公司',p.company);if(c===null)return;let f=read('繳費頻率（年繳／半年繳／季繳／月繳／躉繳／其他）',p.frequency||'年繳');if(f===null)return;let y=read('繳費年期（年）',p.years??'');if(y===null)return;let years=String(y).trim()===''?0:Number(y);if(!Number.isFinite(years)||years<0)return alert('繳費年期請輸入 0 或正確的正整數');if(!Number.isInteger(years))return alert('繳費年期請輸入整數');p.name=n.trim()||p.name;p.company=c.trim();p.frequency=f.trim()||p.frequency;p.years=years;p.note=note;return save();};
+ window.applyInsuranceProjectEdit=function(pid,read,note){const p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;let n=read('保單名稱',p.name);if(n===null)return;let c=read('保險公司',p.company);if(c===null)return;let f=read('繳費頻率（年繳／半年繳／季繳／月繳／躉繳／其他）',p.frequency||'年繳');if(f===null)return;let y=read('繳費年期（年）',p.years??'');if(y===null)return;let years=String(y).trim()===''?0:Number(y);if(!Number.isFinite(years)||years<0)return alert('繳費年期請輸入 0 或正確的正整數');if(!Number.isInteger(years))return alert('繳費年期請輸入整數');const rawPremium=read('每期保費',p.premium??'');if(rawPremium===null)return;
+ const premium=String(rawPremium).trim()===''?0:Number(rawPremium);
+ if(!Number.isFinite(premium)||premium<0)return alert('每期保費須為大於或等於零的金額');
+ const previousPremium=num(p.premium);
+ p.name=n.trim()||p.name;p.company=c.trim();p.frequency=f.trim()||p.frequency;p.years=years;p.premium=premium;p.note=note;
+ return save().then(ok=>{
+  if(ok&&itProject.value===pid&&itType.value==='premium'&&(!itAmount.value||num(itAmount.value)===previousPremium)){
+   insuranceAmountContext=null;refreshInsuranceAmountDefault();refreshInsuranceFxPreview();
+  }
+  return ok;
+ });};
  // 旅遊統計分成「折合台幣總花費」及「各幣別花費」兩格；台幣不重複顯示折合金額。
  const oldTravel=window.renderTravel;if(typeof oldTravel==='function')window.renderTravel=function(){oldTravel();document.querySelectorAll('#travelProjectCards .travel-card-total').forEach(box=>{const small=box.querySelector('small'),big=box.querySelector(':scope > b'),currencyLines=Array.from(box.querySelectorAll('.travel-currency-total'));if(!small||!big)return;const grand=document.createElement('div');grand.className='travel-grand-total';grand.append(small,big);const currency=document.createElement('div');currency.className='travel-currency-box';currency.innerHTML='<small>各幣別花費</small>';currencyLines.forEach(line=>{const c=line.querySelector('span')?.textContent||'';if(/^TWD\s/.test(c)){line.querySelector('b')?.remove();}currency.appendChild(line)});box.replaceChildren(grand,currency);});document.querySelectorAll('#travelTradeCards .detail-flow-side').forEach(side=>{const txt=side.textContent.trim();if(txt==='現金（台幣）'||txt==='現金（外幣）'){const kind=txt.includes('台幣')?'台幣':'外幣';side.innerHTML='<span class="travel-payment-label"><span class="payment-main">現金</span><span class="payment-bracket">（'+kind+'）</span></span>';}});document.querySelectorAll('#travelExpenseRows tr').forEach(tr=>{const t=Array.from(state.travelExpenses).find(e=>tr.innerHTML.includes(`editTravelExpense('${e.id}')`));if(t&&(t.currency||'TWD')==='TWD'&&tr.children[5])tr.children[5].innerHTML=esc(t.cardName||'')+(t.linkedFxProjectId?'<br>連結：'+esc(fxName(t.linkedFxProjectId)):'')+(t.note?'<br>'+esc(t.note):'');});};
  // 初始載入時同步調整，並在後續每次 render 後套用基金摘要備註。
@@ -2952,7 +2962,7 @@ window.editInsurance=pid=>{
  const p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;
  const options=editSelectOptions('ipFrequency'), frequency=p.frequency||'年繳';
  if(!options.some(([value])=>value===frequency))options.push([frequency,frequency]);
- showRecordEditor('修改保險帳本',[editLabel('幣別',p.currency),editField('保單名稱','保單名稱',p.name),editField('保險公司','保險公司',p.company),editField('繳費頻率','繳費頻率',frequency,'text',options),editNumber('繳費年期','繳費年期（年）',p.years),editNote(p.note)],async(read,find)=>window.applyInsuranceProjectEdit(pid,read,find('備註').value),{collection:'insuranceProjects',record:p});
+ showRecordEditor('修改保險帳本',[editLabel('幣別',p.currency),editField('保單名稱','保單名稱',p.name),editField('保險公司','保險公司',p.company),editField('繳費頻率','繳費頻率',frequency,'text',options),editNumber('繳費年期','繳費年期（年）',p.years),editNumber('每期保費','每期保費（選填，原幣）',p.premium||''),editNote(p.note)],async(read,find)=>window.applyInsuranceProjectEdit(pid,read,find('備註').value),{collection:'insuranceProjects',record:p});
 };
 window.editInsuranceTrade=tid=>{
  const t=state.insuranceTrades.find(x=>x.id===tid);if(!t)return;
