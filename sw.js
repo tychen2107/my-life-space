@@ -1,7 +1,7 @@
 'use strict';
 
 const shellPrefix = 'my-life-space-shell-';
-const shell = shellPrefix + 'v1.23.17';
+const shell = shellPrefix + 'v1.23.18';
 const sdkCache = 'my-life-space-firebase-v11.10.0';
 const entry = new URL('index.html', self.registration.scope).href;
 const localFiles = [
