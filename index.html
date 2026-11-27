@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.19</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.22</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -378,7 +378,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 .detail-flow-side-label{min-width:0;max-width:100%;display:grid;gap:.2rem;justify-items:center}
 .detail-flow-side-label small{max-width:100%;font-size:.72rem;font-weight:400;letter-spacing:normal;line-height:1.3;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.19 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.22 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -420,7 +420,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 <div class="section"><h2>新增基金交易／配息</h2><div id="fundNoProjectHint" class="backup-tip hidden">目前尚無基金帳本，請先到「基金帳本」建立帳本，再新增交易。</div><div class="formgrid">
 <div><label>基金帳本</label><select id="ftProject"></select></div><div><label>交易類型</label><select id="ftType"><option value="buy_lump">單筆申購</option><option value="buy_regular">定期定額</option><option value="sell">贖回／賣出</option><option value="dividend">配息</option></select></div><div><label for="ftDate">日期</label><input id="ftDate" type="text" class="roc-date" inputmode="numeric" placeholder="民國年／月／日，例如 115/11/08"></div><div><label>交易幣別（依基金帳本）</label><input id="ftCurrency" placeholder="請先選擇基金帳本" maxlength="8" readonly></div>
 <div class="fundTradeField"><label id="ftAmountLabel">申購金額</label><input id="ftUnits" type="number" min="0" step="any" placeholder="輸入申購金額"></div><div class="fundTradeField hidden" id="navWrap"><label>贖回成本金額（沖回本金）</label><input id="ftNav" type="number" min="0" step="any" placeholder="不可超過尚未沖回成本"></div><div id="ftCashWrap" class="hidden"><label>實際入帳金額（已扣除費用）</label><input id="ftCash" type="number" min="0" step="any" placeholder="實際收到的淨額"></div><div id="ftFeeWrap"><label>申購手續費</label><input id="ftFee" type="number" min="0" step="any" value="0"></div>
-<div><label>連動外幣帳本（選填）</label><select id="ftFxLink"><option value="">不連動</option></select><div id="ftFxRatePreview" class="mini-note"></div></div><div style="grid-column:span 3"><label>備註</label><input id="ftNote" placeholder="例如：每月扣款、配息月份、交易說明"></div>
+<div><label>連動外幣帳本（選填）</label><select id="ftFxLink"><option value="">不連動</option></select><div id="ftFxRatePreview" class="mini-note"></div></div><div id="ftFxPoolWrap" hidden><label for="ftFxPool">申購扣款來源</label><select id="ftFxPool"><option value="included">納入成本的餘額</option><option value="excluded">不納入成本的餘額</option><option value="mixed">混合扣款</option></select></div><div id="ftMixedWrap" hidden><label for="ftExcludedPrincipal">不納入成本的申購本金（原幣）</label><input id="ftExcludedPrincipal" type="number" min="0" step="any" inputmode="decimal"><div class="mini-note">手續費全數從納入成本的餘額扣除。</div></div><div style="grid-column:span 3"><label>備註</label><input id="ftNote" placeholder="例如：每月扣款、配息月份、交易說明"></div>
 </div><div class="actions"><button class="primary" id="addFundTrade">儲存基金紀錄</button></div>
 <div class="note">申購金額決定基金庫存，申購手續費另外計入投資成本；贖回輸入沖回的基金本金及實際銀行入帳淨額，不需記錄內扣經理費；配息只記錄實際銀行入帳淨額。系統依剩餘本金比例分攤含手續費的投資成本，計算已實現損益與含息損益。連動外幣帳本時，申購扣除申購金額＋手續費，贖回／配息增加實際入帳金額。</div></div>
 </section>
@@ -538,7 +538,7 @@ function migrateLinkedFxSnapshots(){let changed=false,cached={};try{cached=JSON.
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const set=(id,v)=>document.getElementById(id).textContent=v;
 function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
- let qty=0,excluded=0,cost=0,realized=0,bought=0,buyCost=0;
+ let qty=0,excluded=0,cost=0,realized=0,bought=0,buyCost=0,invalidExcludedDebit=false;
  const details={};
  const trades=state.fxTrades.filter(t=>t.projectId===pid&&t.id!==excludeId&&(t.date<date||(t.date===date&&num(t.created)<=created))).sort(sortTrade);
  for(const t of trades){
@@ -555,6 +555,15 @@ function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
   }
   if(amount>qty+1e-8||qty<=0)continue;
   // Reduce included and excluded inventory in their current proportions.
+  const excludedDebit=t.debitExcluded?amount:Math.min(amount,Math.max(0,num(t.excludedDebitAmount)));
+  if(excludedDebit>0){
+   const includedDebit=amount-excludedDebit, includedQty=Math.max(0,qty-excluded);
+   if(excludedDebit>excluded+1e-8||includedDebit>includedQty+1e-8)invalidExcludedDebit=true;
+   if(includedQty>1e-8)cost-=cost*Math.min(1,includedDebit/includedQty);
+   excluded=Math.max(0,excluded-excludedDebit);
+   qty-=amount;
+   continue;
+  }
   const fraction=Math.min(1,amount/qty), includedBefore=Math.max(0,qty-excluded);
   const useIncluded=isLinkedCostDebit(t)&&excluded>1e-8&&amount<=includedBefore+1e-8;
   const outgoingCost=useIncluded?cost*Math.min(1,amount/includedBefore):cost*fraction;
@@ -566,7 +575,7 @@ function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
   cost-=outgoingCost;if(!useIncluded)excluded*=1-fraction;qty-=amount;
  }
  const includedQty=Math.max(0,qty-excluded);
- return {qty,excludedQty:excluded,includedQty,cost,avg:includedQty>1e-8?cost/includedQty:0,originalBuyAverage:bought?buyCost/bought:0,realized,details};
+ return {qty,invalidExcludedDebit,excludedQty:excluded,includedQty,cost,avg:includedQty>1e-8?cost/includedQty:0,originalBuyAverage:bought?buyCost/bought:0,realized,details};
 }
 function fundCalc(pid){let principal=0,totalCost=0,redeemedPrincipal=0,redeemedCost=0,redeemedNet=0,dividends=0,realized=0,invested=0,details={};state.fundTrades.filter(t=>t.projectId===pid).sort(sortTrade).forEach(t=>{let amount=num(t.amount??t.cashAmount),fee=num(t.fee);if(t.type==='buy_lump'||t.type==='buy_regular'){principal+=amount;invested+=amount+fee;totalCost+=amount+fee;details[t.id]=null}else if(t.type==='sell'){let base=num(t.redemptionCost??t.amount),net=num(t.actualNet??t.cashAmount??t.amount),remainPrincipal=principal-redeemedPrincipal,remainCost=totalCost-redeemedCost;if(base>remainPrincipal+0.000001){details[t.id]=null;return}let alloc=base>=remainPrincipal-0.000001?remainCost:remainPrincipal>0?remainCost*(base/remainPrincipal):0;redeemedPrincipal+=base;redeemedCost+=alloc;redeemedNet+=net;let pnl=net-alloc;realized+=pnl;details[t.id]=pnl}else{let net=num(t.actualNet??t.dividendAmount??t.amount);dividends+=net;details[t.id]=net}});let remainingPrincipal=Math.max(0,principal-redeemedPrincipal),remainingCost=remainingPrincipal<0.000001&&principal>0?0:Math.max(0,totalCost-redeemedCost),totalRealized=realized+dividends,realizedRate=redeemedCost>0?realized/redeemedCost*100:0,totalRate=redeemedCost>0?totalRealized/redeemedCost*100:0;return{principal,invested,redeemedPrincipal,redeemedCost,redeemedNet,remainingPrincipal,remainingCost,realized,dividends,totalRealized,realizedRate,totalRate,closed:remainingPrincipal<0.000001&&principal>0,details}}
 function sortTrade(a,b){return a.date.localeCompare(b.date)||a.created-b.created}
@@ -697,7 +706,7 @@ function renderFundProjectGroups(){let query=(document.getElementById('fundProje
 
 function openFundProject(pid){document.getElementById('fundFilter').value=pid;renderFundTrades();go('fundrecords')}
 function renderRecent(){let rows=[...state.fxTrades.map(t=>({date:t.date,kind:'外幣',name:fxName(t.projectId),desc:(t.type==='interest'?'利息':t.transferIn?'轉入':t.transferOut?'轉出':t.type==='buy'?'買進':t.type==='sell'?'賣出':'支出')+' '+moneyCur(state.fxProjects.find(p=>p.id===t.projectId)?.currency||'TWD',t.amount),tab:'fxrecords'})),...state.fundTrades.map(t=>({date:t.date,kind:'基金',name:fundName(t.projectId),desc:({buy_lump:'單筆申購',buy_regular:'定期定額',sell:'贖回',dividend:'配息'}[t.type]||t.type),tab:'fundrecords'})),...state.insuranceTrades.map(t=>({date:t.date,kind:'保險',name:insuranceName(t.projectId),desc:({premium:'保費',survival:'生存金',surrender:'解約金'}[t.type]||t.type)+' '+moneyCur(t.currency,t.amount),tab:'insurancerecords'})),...state.travelExpenses.map(t=>({date:t.date,kind:'旅遊',name:travelName(t.projectId),desc:esc(t.category)+' '+moneyCur(t.currency,t.amount),tab:'travelrecords'}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);document.getElementById('recentActivity').innerHTML=rows.length?rows.map(r=>`<div class="recent-row"><span class="muted">${esc(dateDisplay(r.date))}</span><div><b>${r.kind}｜${esc(r.name)}</b><div class="muted">${r.desc}</div></div><button class="secondary smallbtn" onclick="go('${r.tab}')">查看</button></div>`).join(''):'<div class="empty">目前尚無紀錄，新增第一筆交易後會顯示在這裡。</div>'}
-function renderFxTrades(){let pid=document.getElementById('fxFilter').value,arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??t.rate),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*r:null)):null;const conversion=t.excludeFromCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||t.excludeFromCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(isExternalFxRecord(t)&&(!t.transferIn||!r))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}const note=t.transferIn||t.transferOut?fxTransferCaption(t):t.note;
+function renderFxTrades(){let pid=document.getElementById('fxFilter').value,arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??(t.excludedDebitAmount?t.includedDebitRate:null)??t.rate),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*num(t.rate):null)):null;const excludedCost=t.excludeFromCost||t.debitExcluded||(t.amount>0&&num(t.excludedTransferAmount)>=t.amount-1e-8);const conversion=excludedCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion,excludedCost}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||excludedCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(t.debitExcluded||(isExternalFxRecord(t)&&(!t.transferIn||!r)))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}const note=t.transferIn||t.transferOut?fxTransferCaption(t):t.note;
  const actions=`<span class="detail-flow-actions"><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></span>`;
  const detail=`<div class="record-line1 fx-record-header"><span class="record-date">${esc(dateDisplay(t.date))}</span>${actions}</div>
  <div class="record-line2"><b class="${income?'positive':'negative'}">${income?'+':'−'} ${moneyCur(c,t.amount)}</b>${suffix}</div>
@@ -851,19 +860,51 @@ document.getElementById('addFundProject').onclick=()=>{let name=fpName.value.tri
 window.applyFundProjectEdit=function(pid,read){let p=state.fundProjects.find(x=>x.id===pid),name=read('基金名稱',p.name);if(name===null)return;let code=read('基金代號',p.code);if(code===null)return;let note=read('帳本備註（例如：每月 5 日扣款、每月 15 日配息）',p.note||'');if(note===null)return;Object.assign(p,{name:name.trim()||p.name,code:code.trim()||p.code,note});return save()};
 window.closeFundProject=pid=>{let p=state.fundProjects.find(x=>x.id===pid);if(p.status!=='closed'&&fundCalc(pid).remainingCost>0.005)return alert('仍有尚未沖回的投資成本，請先完成贖回再結案');p.status=p.status==='closed'?'open':'closed';save()};
 function refreshFundFxOptions(){let p=state.fundProjects.find(x=>x.id===ftProject.value),el=document.getElementById('ftFxLink'),old=el.value;el.innerHTML='<option value="">不連動</option>'+state.fxProjects.filter(x=>x.status!=='closed'&&p&&x.currency===p.currency).map(x=>`<option value="${x.id}">${esc(x.name)}（${esc(x.currency)}）</option>`).join('');if(state.fxProjects.some(x=>x.id===old&&x.currency===p?.currency))el.value=old;refreshFundFxRatePreview()}
+function fundDebitParts(mode,principal,fee,entered){
+ const excludedPrincipal=mode==='excluded'?principal:mode==='mixed'?Number(entered):0;
+ if(mode==='mixed'&&(!Number.isFinite(excludedPrincipal)||excludedPrincipal<=0||excludedPrincipal>=principal))return null;
+ const excludedAmount=excludedPrincipal;
+ return {excludedPrincipal,excludedAmount,includedAmount:principal+fee-excludedAmount};
+}
 function refreshFundFxRatePreview(){
+ const selected=Boolean(ftFxLink.value), buy=['buy_lump','buy_regular'].includes(ftType.value);
+ document.getElementById('ftFxPoolWrap').hidden=!selected||!buy;
+ const mixed=selected&&buy&&document.getElementById('ftFxPool').value==='mixed';
+ document.getElementById('ftMixedWrap').hidden=!mixed;
+ if(mixed){
+  const currency=fxCurrency(ftFxLink.value), parts=fundDebitParts('mixed',num(ftUnits.value),num(ftFee.value),document.getElementById('ftExcludedPrincipal').value);
+  const knownRate=fxLinkedRate(ftFxLink.value,dateValue(ftDate),Date.now());
+  document.getElementById('ftFxRatePreview').textContent=parts
+   ?'納入成本扣款 '+moneyCur(currency,parts.includedAmount)+'｜不納入成本扣款 '+moneyCur(currency,parts.excludedAmount)+(knownRate>0?'｜納入部分匯率 '+rate(knownRate,currency):'')
+   :'請輸入大於零且小於申購本金的不納入成本本金。';
+  return;
+ }
+ if(selected&&buy&&document.getElementById('ftFxPool').value==='excluded'){
+  const position=fxCalc(ftFxLink.value,dateValue(ftDate)||undefined);
+  document.getElementById('ftFxRatePreview').textContent='可扣不納入成本的餘額：'+moneyCur(fxCurrency(ftFxLink.value),position.excludedQty)+'。申購仍記錄原幣本金，手續費從納入成本的餘額扣除。';
+  return;
+ }
+
  const preview=document.getElementById('ftFxRatePreview');
  if(preview&&ftType.value==='sell'){preview.textContent='贖回本金承接基金原始台幣成本，收益只增加外幣餘額。';return}
  if(preview&&ftType.value==='dividend'){preview.textContent='配息只增加外幣餘額，不增加台幣購入成本。';return}
  let p=state.fxProjects.find(x=>x.id===ftFxLink.value),el=document.getElementById('ftFxRatePreview'),r=p?fxLinkedRate(p.id,dateValue(ftDate),Date.now()):0;if(el)el.textContent=p?(r>0?'本筆交易日期平均成本匯率：'+rate(r,p.currency):'此交易日期之前尚無可用平均成本'):'選擇外幣帳本後顯示該筆交易日期的平均成本匯率。'}
 document.getElementById('ftProject').onchange=()=>{let p=state.fundProjects.find(x=>x.id===ftProject.value);ftCurrency.value=p?p.currency:'';ftFee.value=0;refreshFundFxOptions()};
-document.getElementById('ftFxLink').onchange=refreshFundFxRatePreview;document.getElementById('ftDate').addEventListener('change',refreshFundFxRatePreview);
+['ftExcludedPrincipal','ftUnits','ftFee'].forEach(id=>document.getElementById(id).addEventListener('input',refreshFundFxRatePreview));
+document.getElementById('ftFxPool').onchange=refreshFundFxRatePreview;document.getElementById('ftType').addEventListener('change',refreshFundFxRatePreview);document.getElementById('ftFxLink').onchange=refreshFundFxRatePreview;document.getElementById('ftDate').addEventListener('change',refreshFundFxRatePreview);
 document.getElementById('ftType').onchange=()=>{let type=ftType.value,div=type==='dividend',sell=type==='sell',buy=type==='buy_lump'||type==='buy_regular';document.querySelector('#fundentry .fundTradeField').classList.toggle('hidden',sell);document.getElementById('navWrap').classList.toggle('hidden',!sell);document.getElementById('ftCashWrap').classList.toggle('hidden',!sell);document.getElementById('ftFeeWrap').classList.toggle('hidden',!buy);document.getElementById('ftAmountLabel').textContent=div?'實際配息入帳金額':buy?'申購金額':'贖回成本金額';ftUnits.placeholder=div?'輸入實際銀行入帳淨額':'輸入金額';document.getElementById('ftCash').value=''};
 document.getElementById('addFundTrade').onclick=()=>{let projectId=ftProject.value,p=state.fundProjects.find(x=>x.id===projectId),type=ftType.value,date=dateValue(ftDate),currency=(ftCurrency.value||p?.currency||'TWD').trim().toUpperCase(),amount=num(ftUnits.value),redemptionCost=num(ftNav.value),actualNet=num(document.getElementById('ftCash').value),fee=num(ftFee.value),linkId=ftFxLink.value,buy=type==='buy_lump'||type==='buy_regular',div=type==='dividend';if(!p||!date||!currency)return alert('請確認基金帳本、日期及幣別');if((buy||div)&&amount<=0)return alert('請輸入金額');if(buy&&fee<0)return alert('手續費不可小於 0');let calc=fundCalc(projectId);if(type==='sell'&&(redemptionCost<=0||actualNet<=0))return alert('請輸入贖回成本金額及實際銀行入帳金額');if(type==='sell'&&redemptionCost>calc.remainingPrincipal+0.000001)return alert('贖回成本金額不可超過剩餘基金本金庫存');let link=null;if(linkId){link=state.fxProjects.find(x=>x.id===linkId);if(!link||link.currency!==currency)return alert('連動外幣帳本的幣別必須與基金交易幣別相同');}
 let trade={id:id(),projectId,type,date,currency,amount:buy?amount:0,redemptionCost:type==='sell'?redemptionCost:0,actualNet:type==='sell'?actualNet:div?amount:0,cashAmount:type==='sell'?actualNet:0,dividendAmount:div?amount:0,fee:buy?fee:0,note:ftNote.value,created:Date.now(),linkedFxTradeId:null};
-if(link){let fxType=buy?'spend':'buy',fxAmount=buy?amount+fee:type==='sell'?actualNet:amount,priorRate=fxLinkedRate(linkId,date,trade.created),linkRate=buy?(priorRate||(link.currency==='TWD'?1:0)):0,fxTrade={id:id(),projectId:linkId,type:fxType==='spend'?'spend':'buy',date,amount:fxAmount,rate:linkRate,rateSnapshot:linkRate||null,fee:0,note:'基金連動：'+p.name+(buy?'申購及手續費':type==='sell'?'贖回實際入帳':'配息實際入帳'),created:trade.created,sourceFundTradeId:trade.id};if(buy&&!(linkRate>0))return alert('這筆申購缺少外幣平均成本');trade.splitLinkedPayout=!buy;trade.linkedFxTradeId=fxTrade.id;trade.linkedFxRate=linkRate;state.fxTrades.push(fxTrade);if(!validFxLedger(linkId)){state.fxTrades=state.fxTrades.filter(x=>x.id!==fxTrade.id);return alert('依交易日期排序後，外幣餘額不足，基金紀錄尚未儲存。')}}
+if(link){const mode=document.getElementById('ftFxPool').value;
+ const parts=buy?fundDebitParts(mode,amount,fee,document.getElementById('ftExcludedPrincipal').value):null;
+ if(buy&&!parts)return alert('不納入成本的本金須大於零且小於申購本金');
+ const debitExcluded=buy&&parts.includedAmount<=1e-8;let fxType=buy?'spend':'buy',fxAmount=buy?amount+fee:type==='sell'?actualNet:amount,priorRate=fxLinkedRate(linkId,date,trade.created),includedRate=buy&&!debitExcluded?(priorRate||(link.currency==='TWD'?1:0)):0,linkRate=buy&&fxAmount>0?includedRate*parts.includedAmount/fxAmount:0,fxTrade={id:id(),projectId:linkId,type:fxType==='spend'?'spend':'buy',date,amount:fxAmount,rate:linkRate,rateSnapshot:linkRate||null,fee:0,note:'基金連動：'+p.name+(buy?'申購及手續費':type==='sell'?'贖回實際入帳':'配息實際入帳'),created:trade.created,sourceFundTradeId:trade.id,debitExcluded,excludedDebitAmount:buy?parts.excludedAmount:0,includedDebitRate:buy?includedRate:0};if(buy&&!debitExcluded&&!(linkRate>0))return alert('這筆申購缺少外幣平均成本');trade.splitLinkedPayout=!buy;trade.fundedFromExcluded=buy&&mode==='excluded';trade.excludedFundPrincipal=buy?parts.excludedPrincipal:0;trade.linkedFxTradeId=fxTrade.id;trade.linkedFxRate=linkRate;state.fxTrades.push(fxTrade);if(!validFxLedger(linkId)){state.fxTrades=state.fxTrades.filter(x=>x.id!==fxTrade.id);return alert('依交易日期排序後，外幣餘額不足，基金紀錄尚未儲存。')}}
 state.fundTrades.push(trade);['ftUnits','ftNav','ftCash','ftNote'].forEach(x=>document.getElementById(x).value='');ftFee.value='0';save().then(ok=>{if(ok)alert('基金紀錄已儲存'+(trade.linkedFxTradeId?'，並已同步調整外幣餘額':''))})};
-window.applyFundTradeEdit=function(tid,read){let t=state.fundTrades.find(x=>x.id===tid);if(!t)return alert('找不到基金紀錄');let date=read('交易日期（民國年／月／日）',dateDisplay(t.date));if(date===null)return;date=toISODate(date);if(!date)return alert('日期格式不正確，請輸入民國日期，例如 115/11/08');let amount,redemptionCost,actualNet,fee;if(t.type==='buy_lump'||t.type==='buy_regular'){amount=Number(read('申購本金',t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('申購本金不正確');fee=Number(read('申購手續費',t.fee||0));if(!Number.isFinite(fee)||fee<0)return alert('手續費不正確')}else if(t.type==='sell'){redemptionCost=Number(read('贖回沖回本金金額',t.redemptionCost));if(!Number.isFinite(redemptionCost)||redemptionCost<=0)return alert('贖回本金不正確');actualNet=Number(read('實際銀行入帳淨額',t.actualNet));if(!Number.isFinite(actualNet)||actualNet<=0)return alert('實際入帳金額不正確')}else{amount=Number(read('實際配息入帳淨額',t.actualNet??t.dividendAmount??t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('配息金額不正確')}let note=read('備註',t.note||'');if(note===null)return;let old={...t},oldFx=t.linkedFxTradeId?{...state.fxTrades.find(x=>x.id===t.linkedFxTradeId)}:null;Object.assign(t,{date,note});if(t.type==='buy_lump'||t.type==='buy_regular')Object.assign(t,{amount,fee});else if(t.type==='sell')Object.assign(t,{redemptionCost,actualNet,cashAmount:actualNet});else Object.assign(t,{amount,actualNet:amount,dividendAmount:amount});if(!validFundLedger(t.projectId)){Object.assign(t,old);return alert('修改後的交易順序會造成贖回超過當時本金庫存，修改已取消')}if(t.linkedFxTradeId){let f=state.fxTrades.find(x=>x.id===t.linkedFxTradeId);if(f){f.date=date;f.amount=(t.type==='buy_lump'||t.type==='buy_regular')?amount+fee:t.type==='sell'?actualNet:amount;if(f.type==='spend'){let snap=fxLinkedRate(f.projectId,date,t.created,f.id);if(snap>0){f.rate=snap;f.rateSnapshot=snap;t.linkedFxRate=snap}else{Object.assign(t,old);if(oldFx)Object.assign(f,oldFx);return alert('修改日期之前沒有可用的外幣平均成本，已取消修改')}}}}if(t.linkedFxTradeId){let fx=state.fxTrades.find(x=>x.id===t.linkedFxTradeId);if(t.type==='sell'||t.type==='dividend')t.splitLinkedPayout=true;if(fx&&!t.splitLinkedPayout&&!validFxLedger(fx.projectId)){Object.assign(t,old);if(oldFx)Object.assign(fx,oldFx);return alert('修改後外幣餘額不足，已取消修改')}}return save()};
+window.applyFundTradeEdit=function(tid,read){let t=state.fundTrades.find(x=>x.id===tid);if(!t)return alert('找不到基金紀錄');let date=read('交易日期（民國年／月／日）',dateDisplay(t.date));if(date===null)return;date=toISODate(date);if(!date)return alert('日期格式不正確，請輸入民國日期，例如 115/11/08');let amount,redemptionCost,actualNet,fee;if(t.type==='buy_lump'||t.type==='buy_regular'){amount=Number(read('申購本金',t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('申購本金不正確');fee=Number(read('申購手續費',t.fee||0));if(!Number.isFinite(fee)||fee<0)return alert('手續費不正確')}else if(t.type==='sell'){redemptionCost=Number(read('贖回沖回本金金額',t.redemptionCost));if(!Number.isFinite(redemptionCost)||redemptionCost<=0)return alert('贖回本金不正確');actualNet=Number(read('實際銀行入帳淨額',t.actualNet));if(!Number.isFinite(actualNet)||actualNet<=0)return alert('實際入帳金額不正確')}else{amount=Number(read('實際配息入帳淨額',t.actualNet??t.dividendAmount??t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('配息金額不正確')}const linkedDebit=state.fxTrades.find(row=>row.id===t.linkedFxTradeId&&row.type==='spend');
+ const mode=linkedDebit?read('申購扣款來源',t.fundedFromExcluded||linkedDebit.debitExcluded?'excluded':num(linkedDebit.excludedDebitAmount)>0?'mixed':'included'):'included';
+ const parts=linkedDebit?fundDebitParts(mode,amount,fee,mode==='mixed'?read('不納入成本的申購本金'):''):null;
+ if(linkedDebit&&!parts)return alert('不納入成本的本金須大於零且小於申購本金');
+ let note=read('備註',t.note||'');if(note===null)return;let old={...t},oldFx=t.linkedFxTradeId?{...state.fxTrades.find(x=>x.id===t.linkedFxTradeId)}:null;Object.assign(t,{date,note});if(t.type==='buy_lump'||t.type==='buy_regular')Object.assign(t,{amount,fee});else if(t.type==='sell')Object.assign(t,{redemptionCost,actualNet,cashAmount:actualNet});else Object.assign(t,{amount,actualNet:amount,dividendAmount:amount});if(!validFundLedger(t.projectId)){Object.assign(t,old);return alert('修改後的交易順序會造成贖回超過當時本金庫存，修改已取消')}if(t.linkedFxTradeId){let f=state.fxTrades.find(x=>x.id===t.linkedFxTradeId);if(f){f.date=date;f.amount=(t.type==='buy_lump'||t.type==='buy_regular')?amount+fee:t.type==='sell'?actualNet:amount;if(f.type==='spend'){const debitExcluded=parts.includedAmount<=1e-8;f.debitExcluded=debitExcluded;f.excludedDebitAmount=parts.excludedAmount;t.fundedFromExcluded=mode==='excluded';t.excludedFundPrincipal=parts.excludedPrincipal;const includedRate=debitExcluded?0:fxLinkedRate(f.projectId,date,t.created,f.id);let snap=f.amount>0?includedRate*parts.includedAmount/f.amount:0;if(debitExcluded||snap>0){f.includedDebitRate=includedRate;f.rate=snap;f.rateSnapshot=snap;t.linkedFxRate=snap}else{Object.assign(t,old);if(oldFx)Object.assign(f,oldFx);return alert('修改日期之前沒有可用的外幣平均成本，已取消修改')}}}}if(t.linkedFxTradeId){let fx=state.fxTrades.find(x=>x.id===t.linkedFxTradeId);if(t.type==='sell'||t.type==='dividend')t.splitLinkedPayout=true;if(fx&&!t.splitLinkedPayout&&!validFxLedger(fx.projectId)){Object.assign(t,old);if(oldFx)Object.assign(fx,oldFx);return alert('修改後外幣餘額不足，已取消修改')}}return save()};
 window.deleteFundProject=pid=>{let p=state.fundProjects.find(x=>x.id===pid);if(!p)return;let trades=state.fundTrades.filter(t=>t.projectId===pid),linked=trades.map(t=>t.linkedFxTradeId).filter(Boolean);let msg=trades.length?`此帳本有 ${trades.length} 筆基金交易，並可能有 ${linked.length} 筆連動外幣紀錄。刪除後相關紀錄都會一併刪除，無法復原。確定刪除？`:'確定刪除此基金帳本？';if(!confirm(msg))return;state.fundTrades=state.fundTrades.filter(t=>t.projectId!==pid);state.fxTrades=state.fxTrades.filter(t=>!linked.includes(t.id));state.fundProjects=state.fundProjects.filter(x=>x.id!==pid);save()};
 window.deleteFundTrade=tid=>{let t=state.fundTrades.find(x=>x.id===tid);if(!confirm('確定刪除此筆基金紀錄？'+(t.linkedFxTradeId?'其連動外幣交易也會一併刪除。':'')))return;state.fundTrades=state.fundTrades.filter(x=>x.id!==tid);if(t.linkedFxTradeId)state.fxTrades=state.fxTrades.filter(x=>x.id!==t.linkedFxTradeId);save()};
 const botProxyInput=document.getElementById('botProxyUrl');botProxyInput.value=localStorage.getItem(TBB_PROXY_KEY)||TBB_PROXY_DEFAULT;
@@ -2232,7 +2273,7 @@ function queueStorage(task){
 let importingLedger=false;
 // Settlement income uses historical investment basis, not the receiving account's average.
 function fundTwdBasis(projectId,settlement){
- let units=0,cost=0,unknown=0;
+ let units=0,cost=0,unknown=0,excluded=0;
  for(const row of state.fundTrades.filter(t=>t.projectId===projectId).slice().sort(sortTrade)){
   if(row.id===settlement.id)break;
   if(row.type==='buy_lump'||row.type==='buy_regular'){
@@ -2240,14 +2281,18 @@ function fundTwdBasis(projectId,settlement){
    const saved=num(row.linkedFxRate)||num(state.fxTrades.find(t=>t.id===row.linkedFxTradeId)?.rate);
    const basis=row.currency==='TWD'?1:saved;
    units+=principal;
-   if(basis>0)cost+=paid*basis;
-   else unknown+=principal;
+   const excludedPrincipal=row.fundedFromExcluded?principal:Math.min(principal,Math.max(0,num(row.excludedFundPrincipal)));
+   excluded+=excludedPrincipal;
+   if(!row.fundedFromExcluded){
+    if(basis>0)cost+=paid*basis;
+    else unknown+=principal-excludedPrincipal;
+   }
   }else if(row.type==='sell'&&units>0){
    const part=Math.min(units,num(row.redemptionCost??row.amount))/units;
-   units*=1-part;cost*=1-part;unknown*=1-part;
+   units*=1-part;cost*=1-part;unknown*=1-part;excluded*=1-part;
   }
  }
- return units>1e-8&&unknown<1e-8?cost/units:null;
+ return {rate:units>1e-8&&unknown<1e-8?cost/units:null,excludedFraction:units>1e-8?Math.min(1,excluded/units):0};
 }
 function insuranceTwdBasis(settlement){
  let principal=0,cost=0,unknown=false;
@@ -2270,7 +2315,8 @@ function reconcileLinkedPayouts(){
    const amount=isFund?num(row.actualNet??row.cashAmount??row.dividendAmount??row.amount):num(row.amount);
    const insurance=isFund||!isPrincipal?null:insuranceTwdBasis(row);
    const redeemed=isPrincipal?(isFund?num(row.redemptionCost??row.amount):insurance.principal):0;
-   const basis=isPrincipal?(isFund?fundTwdBasis(row.projectId,row):insurance.basis):0;
+   const fundBasis=isPrincipal&&isFund?fundTwdBasis(row.projectId,row):null;
+   const basis=isPrincipal?(isFund?fundBasis.rate:insurance.basis):0;
    // With no known premium history, flag the proceeds for review instead of treating all as a gain.
    const principal=isPrincipal?Math.min(amount,redeemed>0?redeemed:amount):0;
    const gain=Math.max(0,amount-principal);
@@ -2282,6 +2328,7 @@ function reconcileLinkedPayouts(){
       note:kind+label+'・'+part+'：'+name});
    };
    assign(linked,principal||gain,principal?'收回本金':'收益',principal?basis:0,principal>0&&basis===null);
+   linked.excludedTransferAmount=principal*(fundBasis?.excludedFraction||0);
    if(isFund){row.linkedFxRate=principal?basis:0;row.linkedFxCostPending=principal>0&&basis===null;}
    if(principal>0&&gain>1e-8){
     const extraId=linked.id+'-yield';
@@ -2307,9 +2354,10 @@ function persistLedger(){
   if(!importingLedger)reconcileLinkedPayouts();
   snapshot=normalizeSnapshot(state,homeSettings);
   for(const project of snapshot.data.fxProjects){
+   if(!importingLedger&&fxCalc(project.id).invalidExcludedDebit)throw Error('申購本金或手續費超過各自扣款來源的可用餘額，請確認扣款來源。');
    if(!validFxLedger(project.id)) throw Error('這項變更會使外幣帳本在歷史日期餘額不足');
   }
-  const tradeShape=trade=>[trade.projectId,trade.type==='buy'?'buy':trade.type==='interest'?'interest':'debit',trade.date,trade.amount,trade.type==='buy'?trade.rate:0,trade.type==='buy'?trade.fee:0,trade.transferPairId,Boolean(trade.excludeFromCost),num(trade.excludedTransferAmount)];
+  const tradeShape=trade=>[trade.projectId,trade.type==='buy'?'buy':trade.type==='interest'?'interest':'debit',trade.date,trade.amount,trade.type==='buy'?trade.rate:0,trade.type==='buy'?trade.fee:0,trade.transferPairId,Boolean(trade.debitExcluded),num(trade.excludedDebitAmount),Boolean(trade.excludeFromCost),num(trade.excludedTransferAmount)];
   const oldRows=new Map(record.snapshot.data.fxTrades.map(row=>[row.id,row]));
   const newRows=new Map(snapshot.data.fxTrades.map(row=>[row.id,row]));
   const changed=[];
@@ -2318,11 +2366,11 @@ function persistLedger(){
    if(!before||!after||!equal(tradeShape(before),tradeShape(after)))changed.push(row);
   }
   if(!importingLedger){
-   for(const row of snapshot.data.fxTrades.filter(isLinkedCostDebit)){
+   for(const row of snapshot.data.fxTrades.filter(row=>isLinkedCostDebit(row)&&!row.debitExcluded)){
     const before=oldRows.get(row.id);
     if(before&&equal(before,row))continue;
     const position=fxCalc(row.projectId,row.date,num(row.created),row.id);
-    if(position.excludedQty>1e-8&&num(row.amount)>position.includedQty+1e-8){
+    if(position.excludedQty>1e-8&&num(row.amount)-num(row.excludedDebitAmount)>position.includedQty+1e-8){
      throw Error('這筆連動扣款超過當時可納入成本的外幣餘額，請調整連動帳本或先確認相關入帳成本。');
     }
    }
@@ -2832,7 +2880,7 @@ window.editFundTrade=tid=>{
   t.type==='sell'?[editNumber('贖回沖回','贖回沖回本金金額',t.redemptionCost),editNumber('實際銀行入帳','實際銀行入帳淨額',t.actualNet)]:
   [editNumber('實際配息','實際配息入帳淨額',t.actualNet??t.dividendAmount??t.amount)];
  const fx=state.fxTrades.find(x=>x.id===t.linkedFxTradeId);
- showRecordEditor('修改基金紀錄',[editLabel('基金帳本',fundName(t.projectId)),editLabel('交易類型',editSelectOptions('ftType').concat([['buy_regular','定期定額']]).find(([value])=>value===t.type)?.[1]||t.type),editDate('交易日期','交易日期（民國）',t.date),...amounts,editLabel('連動外幣帳本',fx?fxName(fx.projectId):'無'),editNote(t.note)],read=>window.applyFundTradeEdit(tid,read),{collection:'fundTrades',record:t});
+ showRecordEditor('修改基金紀錄',[editLabel('基金帳本',fundName(t.projectId)),editLabel('交易類型',editSelectOptions('ftType').concat([['buy_regular','定期定額']]).find(([value])=>value===t.type)?.[1]||t.type),editDate('交易日期','交易日期（民國）',t.date),...amounts,...(buy&&fx?[editField('申購扣款來源','申購扣款來源',t.fundedFromExcluded||fx.debitExcluded?'excluded':num(fx.excludedDebitAmount)>0?'mixed':'included','text',[['included','納入成本的餘額'],['excluded','不納入成本的餘額'],['mixed','混合扣款']]),editNumber('不納入成本的申購本金','不納入成本的申購本金（混合扣款時填）',t.excludedFundPrincipal||'')]:[]),editLabel('連動外幣帳本',fx?fxName(fx.projectId):'無'),editNote(t.note)],read=>window.applyFundTradeEdit(tid,read),{collection:'fundTrades',record:t});
 };
 window.editInsurance=pid=>{
  const p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;
