@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.22</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.23</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -378,7 +378,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 .detail-flow-side-label{min-width:0;max-width:100%;display:grid;gap:.2rem;justify-items:center}
 .detail-flow-side-label small{max-width:100%;font-size:.72rem;font-weight:400;letter-spacing:normal;line-height:1.3;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.22 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.23 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -1105,11 +1105,20 @@ function refreshInsuranceFxPreview(){
  else if(itFx.value&&p.currency!=='TWD'){el.textContent=itType.value==='survival'?'生存金只增加外幣餘額，不增加台幣購入成本。':'解約本金承接保單原始成本，超過本金的部分只增加外幣餘額。';}
  else{let avg=insuranceCalc(p.id).avgRate,converted=p.currency==='TWD'?num(itAmount.value):num(itAmount.value)*avg,fxp=state.fxProjects.find(x=>x.id===itFx.value);el.textContent=(p.currency==='TWD'?'台幣入帳：'+money(converted):avg>0?'依保單平均匯率 '+rate(avg,p.currency)+'｜折合台幣 '+money(converted):'尚無保單平均匯率，暫無法換算台幣')+(fxp?'｜存入外幣帳本：'+fxp.name:'');}
 }
-document.getElementById('itType').onchange=()=>{let premium=itType.value==='premium',p=state.insuranceProjects.find(x=>x.id===itProject.value),isTwd=p?.currency==='TWD';itRate.readOnly=premium&&itSource.value==='fx';itAmountLabel.textContent=premium?'保費金額（原幣）':itType.value==='survival'?'生存金實際入帳（原幣）':'解約金實際入帳（原幣）';itSourceWrap.classList.toggle('hidden',!premium);itFeeWrap.classList.toggle('hidden',!premium);itFxWrap.classList.toggle('hidden',premium&&itSource.value!=='fx');itFxLabel.textContent=premium?'扣除保費的外幣帳本':'入帳至外幣帳本（選填）';document.getElementById('itRateWrap').classList.toggle('hidden',!premium||isTwd);itActualWrap.classList.toggle('hidden',!premium&&(true)||isTwd||(premium&&itSource.value==='fx'));if(!premium)itActualLabel.textContent='依保單平均投入匯率換算（自動帶入）';else itActualLabel.textContent='實際保費台幣成本（選填，直接繳費時可填）';refreshInsuranceFxPreview()};
+let insuranceAmountContext=null;
+function refreshInsuranceAmountDefault(){
+ const context=itProject.value+'|'+itType.value;
+ if(context===insuranceAmountContext)return;
+ insuranceAmountContext=context;
+ const policy=state.insuranceProjects.find(row=>row.id===itProject.value);
+ const premium=num(policy?.premium);
+ itAmount.value=itType.value==='premium'&&premium>0?String(premium):'';
+}
+document.getElementById('itType').onchange=()=>{refreshInsuranceAmountDefault();let premium=itType.value==='premium',p=state.insuranceProjects.find(x=>x.id===itProject.value),isTwd=p?.currency==='TWD';itRate.readOnly=premium&&itSource.value==='fx';itAmountLabel.textContent=premium?'保費金額（原幣）':itType.value==='survival'?'生存金實際入帳（原幣）':'解約金實際入帳（原幣）';itSourceWrap.classList.toggle('hidden',!premium);itFeeWrap.classList.toggle('hidden',!premium);itFxWrap.classList.toggle('hidden',premium&&itSource.value!=='fx');itFxLabel.textContent=premium?'扣除保費的外幣帳本':'入帳至外幣帳本（選填）';document.getElementById('itRateWrap').classList.toggle('hidden',!premium||isTwd);itActualWrap.classList.toggle('hidden',!premium&&(true)||isTwd||(premium&&itSource.value==='fx'));if(!premium)itActualLabel.textContent='依保單平均投入匯率換算（自動帶入）';else itActualLabel.textContent='實際保費台幣成本（選填，直接繳費時可填）';refreshInsuranceFxPreview()};
 document.getElementById('itSource').onchange=()=>{let p=state.insuranceProjects.find(x=>x.id===itProject.value),premium=itType.value==='premium';itFxWrap.classList.toggle('hidden',premium&&itSource.value!=='fx');itActualWrap.classList.toggle('hidden',!premium||p?.currency==='TWD'||itSource.value==='fx');itRate.readOnly=itSource.value==='fx'&&premium;if(itSource.value==='fx'&&premium){let fxp=state.fxProjects.find(x=>x.id===itFx.value);itRate.value=fxp?fxLinkedRate(fxp.id,dateValue(itDate),Date.now())||'':'';}refreshInsuranceFxPreview()};
 document.getElementById('itFx').onchange=()=>{let fxp=state.fxProjects.find(x=>x.id===itFx.value);if(fxp&&itType.value==='premium'&&itSource.value==='fx')itRate.value=fxLinkedRate(fxp.id,dateValue(itDate),Date.now())||'';refreshInsuranceFxPreview()};
 document.getElementById('itDate').addEventListener('change',()=>{if(itSource.value==='fx'){let fxp=state.fxProjects.find(x=>x.id===itFx.value);if(fxp)itRate.value=fxLinkedRate(fxp.id,dateValue(itDate),Date.now())||'';}refreshInsuranceFxPreview()});
-document.getElementById('itProject').onchange=()=>{let p=state.insuranceProjects.find(x=>x.id===itProject.value),premium=itType.value==='premium';itCurrency.value=p?.currency||'';itRate.value=p?.currency==='TWD'?'1':'';document.getElementById('itRateWrap').classList.toggle('hidden',!premium||p?.currency==='TWD');document.getElementById('itActualWrap').classList.toggle('hidden',p?.currency==='TWD'||(premium&&itSource.value==='fx'));let feeOpt=document.getElementById('itFeeCurrency');if(feeOpt){feeOpt.options[1].text=p?.currency||'保單幣別';feeOpt.options[1].hidden=p?.currency==='TWD';if(p?.currency==='TWD')feeOpt.value='TWD'}let fx=document.getElementById('itFx');if(fx){fx.innerHTML='<option value="">請選擇外幣帳本</option>'+state.fxProjects.filter(x=>x.status!=='closed'&&p&&x.currency===p.currency).map(x=>`<option value="${x.id}">${esc(x.name)}（${esc(x.currency)}）</option>`).join('')}document.getElementById('itSource').dispatchEvent(new Event('change'));document.getElementById('itType').dispatchEvent(new Event('change'));refreshInsuranceFxPreview()};
+document.getElementById('itProject').onchange=()=>{refreshInsuranceAmountDefault();let p=state.insuranceProjects.find(x=>x.id===itProject.value),premium=itType.value==='premium';itCurrency.value=p?.currency||'';itRate.value=p?.currency==='TWD'?'1':'';document.getElementById('itRateWrap').classList.toggle('hidden',!premium||p?.currency==='TWD');document.getElementById('itActualWrap').classList.toggle('hidden',p?.currency==='TWD'||(premium&&itSource.value==='fx'));let feeOpt=document.getElementById('itFeeCurrency');if(feeOpt){feeOpt.options[1].text=p?.currency||'保單幣別';feeOpt.options[1].hidden=p?.currency==='TWD';if(p?.currency==='TWD')feeOpt.value='TWD'}let fx=document.getElementById('itFx');if(fx){fx.innerHTML='<option value="">請選擇外幣帳本</option>'+state.fxProjects.filter(x=>x.status!=='closed'&&p&&x.currency===p.currency).map(x=>`<option value="${x.id}">${esc(x.name)}（${esc(x.currency)}）</option>`).join('')}document.getElementById('itSource').dispatchEvent(new Event('change'));document.getElementById('itType').dispatchEvent(new Event('change'));refreshInsuranceFxPreview()};
 ['itAmount','itRate','itFee','itActual'].forEach(k=>document.getElementById(k).addEventListener('input',refreshInsuranceFxPreview));document.getElementById('itFeeCurrency').addEventListener('change',refreshInsuranceFxPreview);
 document.getElementById('addInsuranceTrade').onclick=()=>{
  let p=state.insuranceProjects.find(x=>x.id===itProject.value),type=itType.value,date=dateValue(itDate),amount=num(itAmount.value),r=num(itRate.value),fee=num(itFee.value),feeCurrency=itFeeCurrency.value==='POLICY'?(p?.currency||'TWD'):'TWD',linkId=null;
@@ -1139,7 +1148,10 @@ document.getElementById('addInsuranceTrade').onclick=()=>{
  }
  let trade={id:id(),projectId:p.id,type,date,currency:p.currency,amount,rate:r,costTwd,actualTwd,fee:type==='premium'?fee:0,feeCurrency:type==='premium'?feeCurrency:null,linkedFxTradeId:linkId,splitLinkedPayout:type!=='premium'&&Boolean(linkId),fxDebit:type==='premium'&&itSource.value==='fx'?fxDebit:null,note:itNote.value,created:Date.now()};
  state.insuranceTrades.push(trade);if(type==='surrender'){p.statusBeforeSurrender=p.status==='closed'?(p.statusBeforeSurrender||'paid'):p.status;p.status='closed'}else if(type==='premium'&&p.status==='paid')p.status='paying';
- ['itAmount','itActual','itNote'].forEach(k=>document.getElementById(k).value='');itFee.value='0';save().then(ok=>{if(ok)alert('保險紀錄已儲存'+(type==='surrender'?'，保單已移至已解約帳本':''))});
+ ['itAmount','itActual','itNote'].forEach(k=>document.getElementById(k).value='');itFee.value='0';save().then(ok=>{if(ok){
+  if(!itAmount.value){insuranceAmountContext=null;refreshInsuranceAmountDefault();refreshInsuranceFxPreview();}
+  alert('保險紀錄已儲存'+(type==='surrender'?'，保單已移至已解約帳本':''));
+ }});
 };
 
 /* v1.19.14: cap all four mobile transaction lists to the height of six actual records. */
@@ -2247,6 +2259,7 @@ function refreshLedger(snapshot){
  render();
 }
 function resetLedgerViews(){
+ insuranceAmountContext=null;
  openBookOrderGroups.clear();
  document.querySelectorAll('[data-book-order-group]').forEach(controls=>controls.hidden=true);
  document.querySelectorAll('dialog[open]').forEach(dialog=>dialog.close());
