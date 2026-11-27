@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.15</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.16</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -375,7 +375,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 .fx-valuation-disclosure>summary{cursor:pointer;font-size:1.125rem;font-weight:700;line-height:1.5}
 .fx-valuation-disclosure[open]>summary{margin-bottom:.6rem}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.15 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.16 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -1944,6 +1944,10 @@ td,th{white-space:normal;overflow-wrap:anywhere}
    <p id="cloudIdentity"></p>
    <div class="actions"><button id="cloudRetry">重新同步</button><button id="cloudAdopt">從本機帳本匯入</button><button id="cloudResolve" hidden>備份本機並採用雲端</button><button id="cloudLogout">登出</button></div>
   </div>
+  <div class="actions">
+   <button type="button" id="cloudClearData">清空資料</button>
+   <button type="button" id="cloudDeleteAccount" hidden>刪除帳號</button>
+  </div>
  </details>
  <div id="pwaInstallControls" hidden>
   <button type="button" class="secondary smallbtn" id="pwaInstall" aria-controls="pwaInstallHelp" aria-expanded="false">安裝到主畫面</button>
@@ -2134,6 +2138,7 @@ async function localWrite(key,record,expected){
 }
 const guestKey='guest';
 let scope=null, record=null, firebase=null, user=null, syncTimer=null;
+let destructiveOperation=false;
 let storageTail=Promise.resolve(), switching=false, syncing=false, resync=false, failure='', conflict=false, loadingAccount=false;
 const stamp=()=>crypto.randomUUID();
 function status(){
@@ -2141,6 +2146,11 @@ function status(){
  cloudUI('Resolve').hidden=!conflict;
  cloudUI('Adopt').disabled=!record||scope===guestKey||syncing||switching;
  cloudUI('Retry').disabled=switching||syncing;
+ const busy=destructiveOperation||switching||syncing;
+ cloudUI('ClearData').disabled=busy||(!user&&!record);
+ cloudUI('DeleteAccount').hidden=!user;
+ cloudUI('DeleteAccount').disabled=busy;
+ cloudUI('Logout').disabled=destructiveOperation;
 }
 function refreshLedger(snapshot){
  state=clone(snapshot.data);
@@ -2244,7 +2254,7 @@ function reconcileLinkedPayouts(){
 }
 
 function persistLedger(){
- if(!record||switching){if(record)refreshLedger(record.snapshot);return Promise.resolve(false);}
+ if(!record||switching||destructiveOperation){if(record)refreshLedger(record.snapshot);return Promise.resolve(false);}
  let snapshot;
  try{
   if(!importingLedger)reconcileLinkedPayouts();
@@ -2304,10 +2314,10 @@ document.getElementById('exportJson').onclick=()=>exportSnapshot({data:state,hom
 document.getElementById('importJson').onchange=async event=>{
  const key=scope, file=event.target.files[0];
  event.target.value='';
- if(!file||!record||switching)return;
+ if(!file||!record||switching||destructiveOperation)return;
  try{
   const input=JSON.parse(await file.text());
-  if(key!==scope||switching)return;
+  if(key!==scope||switching||destructiveOperation)return;
   const wrapped=input?.backupFormat==='personal-finance-manager';
   if(input?.backupFormat&&(!wrapped||![1,2,3,4,5].includes(input.backupVersion))) throw Error('不支援此備份版本');
   const snapshot=normalizeSnapshot(wrapped?input.data:input,wrapped?input.settings?.home:null);
@@ -2331,7 +2341,9 @@ const revisionOf=snapshot=>snapshot.data()?.ledgerRevision??0;
 async function readRemote(uid){
  const {fs,db}=firebase, {root,entry}=remoteReferences(uid);
  for(let attempt=0;attempt<3;attempt++){
-  const revision=revisionOf(await fs.getDocFromServer(root));
+  const rootState=await fs.getDocFromServer(root);
+  if(rootState.data()?.ledgerReset)throw Error('帳本清除尚未完成，請用原帳號重試清除');
+  const revision=revisionOf(rootState);
   const collections=await Promise.all(ledgerKeys.map(key=>fs.getDocsFromServer(fs.collection(root,key))));
   const home=await fs.getDocFromServer(entry('settings','home'));
   if(revision!==revisionOf(await fs.getDocFromServer(root))) continue;
@@ -2363,7 +2375,9 @@ async function pushRemote(uid,local){
  return fs.runTransaction(db,async transaction=>{
   const previous=await transaction.get(receipt);
   if(previous.exists())return previous.data().revision;
-  const current=revisionOf(await transaction.get(root));
+  const rootState=await transaction.get(root);
+  if(rootState.data()?.ledgerReset)throw Error('帳本正在清除，請稍後同步');
+  const current=revisionOf(rootState);
   if(current!==local.pending.baseRevision)throw Error('ledger-conflict');
   if(!changes.length)return current;
   const revision=current+1;
@@ -2383,7 +2397,7 @@ function requestSync(){
 }
 async function syncLedger(){
  if(syncing){resync=true;return}
- if(!user||!firebase||switching||!navigator.onLine||conflict)return status();
+ if(!user||!firebase||switching||destructiveOperation||!navigator.onLine||conflict)return status();
  const uid=user.uid, key=scope;
  if(key!=='user:'+uid)return;
  syncing=true;failure='';status();
@@ -2475,7 +2489,7 @@ async function openAccount(nextUser){
 cloudUI('Adopt').onclick=async()=>{
  const key=scope;
  try{
-  if(!record||record.pending||syncing||switching)return alert('請先同步目前的帳本');
+  if(!record||record.pending||syncing||switching||destructiveOperation)return alert('請先同步目前的帳本');
   const guest=await loadGuest();
   if(scope!==key||switching)return;
   if(!accountHasData(guest.snapshot))return alert('尚無本機資料可匯入');
@@ -2486,7 +2500,7 @@ cloudUI('Adopt').onclick=async()=>{
  }catch(error){report(error,'匯入本機帳本失敗')}
 };
 cloudUI('Resolve').onclick=async()=>{
- if(!record||!user||syncing||switching||!conflict)return;
+ if(!record||!user||syncing||switching||destructiveOperation||!conflict)return;
  if(!confirm('先匯出這部裝置的完整備份，再採用雲端帳本？'))return;
  const key=scope,uid=user.uid;
  ledgerMain.inert=true;
@@ -2535,6 +2549,142 @@ cloudUI('Logout').onclick=()=>loginAction(async(api,auth)=>{
  if(record?.pending&&!confirm('有尚未同步的資料，會保留在這個瀏覽器。確定登出？'))return;
  await api.signOut(auth);
 });
+function deletionPassword(){
+ const dialog=document.createElement('dialog');
+ dialog.className='record-editor';
+ dialog.setAttribute('aria-label','重新驗證身分');
+ dialog.innerHTML='<form method="dialog"><h3>重新驗證身分</h3><label for="deleteAccountPassword">目前密碼</label><input id="deleteAccountPassword" type="password" autocomplete="current-password" required><div class="actions"><button type="button">取消</button><button type="submit" value="verify">驗證</button></div></form>';
+ const input=dialog.querySelector('input');
+ dialog.querySelector('button').onclick=()=>dialog.close();
+ document.body.append(dialog);
+ return new Promise(resolve=>{
+  dialog.addEventListener('close',()=>{
+   const password=dialog.returnValue==='verify'?input.value:null;
+   input.value='';
+   dialog.remove();
+   resolve(password);
+  },{once:true});
+  dialog.showModal();
+ });
+}
+async function reauthenticateForDeletion(account){
+ const api=firebase.authApi;
+ if(account.providerData.some(provider=>provider.providerId==='google.com')){
+  await api.reauthenticateWithPopup(account,new api.GoogleAuthProvider());
+  return true;
+ }
+ const password=await deletionPassword();
+ if(!password)return false;
+ await api.reauthenticateWithCredential(account,api.EmailAuthProvider.credential(account.email,password));
+ return true;
+}
+async function purgeRemoteLedger(account,deleteAccount,assertAccount){
+ const {fs,db}=firebase,{root}=remoteReferences(account.uid);
+ const collections=[...ledgerKeys.filter(key=>!key.endsWith('Projects')),
+  ...ledgerKeys.filter(key=>key.endsWith('Projects')),'settings','syncReceipts'];
+ // Check collection access before making the first destructive write.
+ await Promise.all(collections.map(collection=>fs.getDocsFromServer(
+  fs.query(fs.collection(root,collection),fs.limit(1))
+ )));
+ assertAccount();
+ const token=stamp();
+ const revision=await fs.runTransaction(db,async transaction=>{
+  assertAccount();
+  const current=await transaction.get(root);
+  const revision=revisionOf(current)+1;
+  transaction.set(root,{ledgerRevision:revision,ledgerReset:token,updatedAt:fs.serverTimestamp()},{merge:true});
+  return revision;
+ });
+ for(const collection of collections){
+  const query=fs.query(fs.collection(root,collection),fs.limit(400));
+  while(true){
+   assertAccount();
+   const page=await fs.getDocsFromServer(query);
+   if(page.empty)break;
+   await fs.runTransaction(db,async transaction=>{
+    assertAccount();
+    const current=await transaction.get(root);
+    if(current.data()?.ledgerReset!==token||revisionOf(current)!==revision)throw Error('其他裝置有變更，請關閉其他分頁後重試');
+    for(const row of page.docs)transaction.delete(row.ref);
+   });
+  }
+ }
+ await fs.runTransaction(db,async transaction=>{
+  assertAccount();
+  const current=await transaction.get(root);
+  if(current.data()?.ledgerReset!==token||revisionOf(current)!==revision)throw Error('其他裝置有變更，請重新操作');
+  if(deleteAccount)transaction.delete(root);
+  else transaction.update(root,{ledgerReset:fs.deleteField(),updatedAt:fs.serverTimestamp()});
+ });
+ return deleteAccount?0:revision;
+}
+async function removeLocalAccount(key){
+ const db=await databaseReady;
+ return new Promise((resolve,reject)=>{
+  const transaction=db.transaction('accounts','readwrite');
+  transaction.objectStore('accounts').delete(key);
+  transaction.oncomplete=resolve;
+  transaction.onabort=()=>reject(transaction.error||Error('無法移除本機帳號資料'));
+ });
+}
+async function confirmLedgerRemoval(deleteAccount){
+ if(destructiveOperation||switching||syncing)return;
+ const account=user,key=scope;
+ if(deleteAccount&&!account)return;
+ if(account&&!navigator.onLine)return alert('請連上網路後再操作雲端帳本');
+ const title=deleteAccount?'刪除帳號':'清空資料';
+ const identity=account?.email||'目前帳號';
+ const details=deleteAccount
+  ? '將永久刪除 '+identity+' 在亭有錢途的登入身分、雲端帳本和此裝置上的該帳號資料。'
+  : account?'將清空 '+identity+' 的雲端帳本與此裝置的帳號資料，保留登入帳號。'
+  :'將清空這個瀏覽器的訪客帳本。';
+ if(!confirm(title+'？\n'+details+' 包含交易與首頁設定。\n如需保留，請先取消並下載 JSON 備份。'))return;
+ destructiveOperation=true;
+ clearTimeout(syncTimer);
+ ledgerMain.inert=true;
+ failure='';
+ status();
+ let cleared=false;
+ const assertAccount=()=>{
+  if(scope!==key||switching||(account&&firebase.auth.currentUser?.uid!==account.uid))throw Error('登入帳號已切換');
+ };
+ try{
+  await storageTail;
+  assertAccount();
+  if(deleteAccount&&!await reauthenticateForDeletion(account))return;
+  assertAccount();
+  const revision=account?await purgeRemoteLedger(account,deleteAccount,assertAccount):0;
+  cleared=true;
+  assertAccount();
+  const snapshot=blankSnapshot();
+  const empty={snapshot,base:snapshot,revision,stamp:stamp(),pending:null};
+  record=await queueStorage(()=>localWrite(key,empty,record));
+  conflict=false;
+  refreshLedger(snapshot);
+  resetLedgerViews();
+  if(key===guestKey){
+   localStorage.removeItem(KEY);
+   localStorage.removeItem(HOME_KEY);
+  }
+  if(deleteAccount){
+   await firebase.authApi.deleteUser(account);
+   try{await queueStorage(()=>removeLocalAccount(key))}
+   catch(error){alert('帳號已刪除。本機帳本已清空，但無法移除空白快取。')}
+  }
+  alert(title+'完成');
+ }catch(error){
+  const prefix=deleteAccount&&cleared?'雲端帳本已清空，帳號刪除流程未完成':title+'未完成';
+  report(error,prefix);
+  alert(prefix+'。'+(account&&!cleared?'若清除已開始，可用原帳號重試。 ':' ')+error.message);
+ }finally{
+  destructiveOperation=false;
+  if(!switching)ledgerMain.inert=!record;
+  status();
+ }
+}
+cloudUI('ClearData').onclick=()=>confirmLedgerRemoval(false);
+cloudUI('DeleteAccount').onclick=()=>confirmLedgerRemoval(true);
+
 openAccount(null);
 (async()=>{
  try{
