@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "亭有錢途 MY LIFE SPACE",
+  "short_name": "亭有錢途",
+  "lang": "zh-Hant",
+  "description": "個人財務與旅程管理",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fcf7ef",
+  "theme_color": "#f1ebe0",
+  "icons": [
+    {"src":"icon-192-dual-currency.png","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icon-512-dual-currency.png","sizes":"512x512","type":"image/png","purpose":"any"},
+    {"src":"icon-maskable-512-dual-currency.png","sizes":"512x512","type":"image/png","purpose":"maskable"}
+  ]
+}
