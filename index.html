@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.28</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.29</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -381,7 +381,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.28 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.29 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -3044,5 +3044,45 @@ function fxTransferCaption(trade){
  return [fxCounterparty(trade)||label,fxFreeNote(trade)].filter(Boolean).join('｜');
 }
 
+</script>
+<script>
+(function setupInAppBack(){
+ const browserHistory=window.history;
+ if(!browserHistory)return;
+ const recordParents={
+  fxrecords:['fx','fxFilter'], fundrecords:['fund','fundFilter'],
+  insurancerecords:['insurance','insuranceFilter'], travelrecords:['travel','teFilter']
+ };
+ const entryParents={fxentry:'fxprojects',fundentry:'fundprojects',insuranceentry:'insuranceprojects',travelentry:'travelprojects'};
+ const renderPage=window.go;
+ let currentPage=document.querySelector('.panel.active')?.id||'overview';
+ const hasBackEntry=()=>browserHistory.state?.myLifeSpaceBack===true;
+ function ensureBackEntry(){
+  if(!hasBackEntry())browserHistory.pushState({...browserHistory.state,myLifeSpaceBack:true},'');
+ }
+ window.go=function(page){
+  const result=renderPage(page);
+  if(document.getElementById(page)?.classList.contains('panel')){
+   currentPage=page;
+   if(page!=='overview')ensureBackEntry();
+  }
+  return result;
+ };
+ window.addEventListener('popstate',()=>{
+  if(hasBackEntry())return;
+  const modal=Array.from(document.querySelectorAll('dialog[open]')).at(-1);
+  if(modal){
+   ensureBackEntry();
+   modal.close();
+   return;
+  }
+  const parent=recordParents[currentPage];
+  if(parent){
+   window.returnToSelectedBook(...parent);
+  }else if(currentPage!=='overview'){
+   window.go(entryParents[currentPage]||'overview');
+  }
+ });
+})();
 </script>
 </body></html>
