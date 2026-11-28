@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.32</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.36</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -307,6 +307,9 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 .fund-history-details{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:rgba(243,233,221,.25)}
 .fund-history-details>summary{cursor:pointer;color:var(--ink);font-weight:700}
 #fundHistoryTradeCards{display:none}
+#fundrecords #fundTradeCards[hidden],#fxrecords #fxTradeCards[hidden],
+#insurancerecords #insuranceTradeCards[hidden],#travelrecords #travelTradeCards[hidden]{display:none!important}
+.record-history-cards{display:grid;gap:9px;margin-top:6px;min-width:0}
 @media(max-width:650px){#fundHistoryTradeCards{display:grid;grid-template-columns:1fr;gap:8px}.six-pager-control{justify-content:flex-start;margin:7px 0}}
 #six-page-fx-project-cards,#six-page-travel-project-cards,#six-page-fx-trade-cards,#six-page-fund-trade-cards,#six-page-fund-history-cards,#six-page-insurance-trade-cards,#six-page-travel-trade-cards{display:none}
 @media(max-width:650px){#six-page-fx-project-table,#six-page-travel-project-table,#six-page-fx-trade-table,#six-page-fund-trade-table,#six-page-fund-history-table,#six-page-insurance-trade-table,#six-page-travel-trade-table{display:none}#six-page-fx-project-cards,#six-page-travel-project-cards,#six-page-fx-trade-cards,#six-page-fund-trade-cards,#six-page-fund-history-cards,#six-page-insurance-trade-cards,#six-page-travel-trade-cards{display:flex}}
@@ -381,7 +384,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.32 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.36 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -440,7 +443,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 <div><label>幣別</label><input id="itCurrency" readonly></div><div><label id="itAmountLabel">保費金額（原幣）</label><input id="itAmount" type="number" min="0" step="any"></div><div id="itRateWrap"><label>實際匯率（TWD／外幣）</label><input id="itRate" type="number" min="0" step="any" value="1"></div>
 <div id="itSourceWrap"><label>保費來源</label><select id="itSource"><option value="direct">直接以台幣換匯繳費</option><option value="fx">連動既有外幣帳本</option></select></div><div id="itFxWrap"><label id="itFxLabel">外幣帳本</label><select id="itFx"><option value="">請選擇外幣帳本</option></select></div><div id="itFeeWrap"><label>手續費／匯費（選填）</label><div style="display:grid;grid-template-columns:minmax(0,1fr) 100px;gap:6px"><input id="itFee" class="fee-entry" type="number" min="0" step="any" value="0" placeholder="費用金額"><select id="itFeeCurrency"><option value="TWD">TWD</option><option value="POLICY">保單幣別</option></select></div></div>
 <div id="itActualWrap" class="hidden"><label id="itActualLabel">實際入帳台幣金額（選填）</label><input id="itActual" type="number" min="0" step="any"></div><div id="itFxRatePreview" class="mini-note" style="grid-column:1/-1"></div><div style="grid-column:span 3"><label>備註</label><input id="itNote"></div></div><div class="note">保費可直接輸入實際換匯匯率，或連動外幣帳本承接平均成本；手續費／匯費另列並計入成本。生存金及解約金只記錄實際入帳金額，不設費用欄位。</div><div class="actions"><button class="primary" id="addInsuranceTrade">儲存保險紀錄</button></div></div></section>
-<section id="insurancerecords" class="panel"><div class="section"><h2>保險交易明細（僅顯示未解約保單）</h2><div class="formgrid"><div><label>帳本篩選</label><select id="insuranceFilter"><option value="">全部未解約保單</option></select></div><div class="actions" style="align-items:end"><button class="primary" onclick="returnToSelectedBook('insurance','insuranceFilter')">返回帳本</button></div></div><div id="insuranceSelectedDetail"></div><div id="insuranceEstimatePanel" class="insurance-estimate-panel"></div><div class="tablewrap"><table><thead><tr><th>日期</th><th>保單</th><th>類型</th><th>實際收支（原幣）</th><th>保費費用</th><th>當筆匯率</th><th>台幣成本／實際入帳</th><th>備註</th><th>操作</th></tr></thead><tbody id="insuranceRows"></tbody></table></div><div id="insuranceTradeCards" class="insurance-trade-cards"></div></div></section>
+<section id="insurancerecords" class="panel"><div class="section"><h2>保險交易明細（可修改／刪除）</h2><div class="formgrid"><div><label>帳本篩選</label><select id="insuranceFilter"><option value="">全部保單</option></select></div><div class="actions" style="align-items:end"><button class="primary" onclick="returnToSelectedBook('insurance','insuranceFilter')">返回帳本</button></div></div><div id="insuranceSelectedDetail"></div><div id="insuranceEstimatePanel" class="insurance-estimate-panel"></div><div class="tablewrap"><table><thead><tr><th>日期</th><th>保單</th><th>類型</th><th>實際收支（原幣）</th><th>保費費用</th><th>當筆匯率</th><th>台幣成本／實際入帳</th><th>備註</th><th>操作</th></tr></thead><tbody id="insuranceRows"></tbody></table></div><div id="insuranceTradeCards" class="insurance-trade-cards"></div></div></section>
 <section id="travelprojects" class="panel">
 <div class="section"><h2>建立旅遊帳本</h2><div class="formgrid">
 <div><label>旅遊行程名稱</label><input id="tpName" placeholder="例如：東京春季自由行"></div>
@@ -540,6 +543,12 @@ function isLinkedCostDebit(trade){
 function migrateLinkedFxSnapshots(){let changed=false,cached={};try{cached=JSON.parse(localStorage.getItem(TBB_CACHE_KEY)||'{}')}catch(e){}state.fxTrades.filter(t=>(t.type==='spend'&&(!num(t.rateSnapshot)||num(t.rate)===1)&&(t.sourceTravelExpenseId||t.insuranceProjectId||t.sourceFundTradeId))||(t.type==='buy'&&t.sourceFundTradeId&&num(t.rate)===1)).forEach(t=>{let snap=fxAverageAt(t.projectId,t.date,t.created,t.id);if(!(snap>0)&&t.type==='buy'){let cur=fxCurrency(t.projectId);snap=num(cached.rates?.[cur]?.buy)}if(snap>0){t.rate=snap;t.rateSnapshot=snap;t.costBasisPending=false;changed=true}else if(t.type==='spend'&&(t.sourceTravelExpenseId||t.insuranceProjectId||t.sourceFundTradeId)){t.rate=0;t.rateSnapshot=null;t.costBasisPending=true;changed=true}else if(t.type==='buy'&&t.sourceFundTradeId){t.rate=0;t.rateSnapshot=null;t.costBasisPending=true;changed=true}if(t.sourceTravelExpenseId){let e=state.travelExpenses.find(x=>x.id===t.sourceTravelExpenseId);if(e){e.rateSnapshot=snap||null;e.twdAmount=snap>0?num(e.amount)*snap:null;e.twdMode=snap>0?'average':'none'}}if(t.insuranceProjectId){let it=state.insuranceTrades.find(x=>x.linkedFxTradeId===t.id);if(it){if(snap>0){it.rate=snap;it.costTwd=num(it.amount)*snap+(it.feeCurrency==='TWD'?num(it.fee):it.feeCurrency===it.currency?num(it.fee)*snap:0);it.costBasisPending=false}else{it.rate=0;it.costTwd=null;it.costBasisPending=true}}}if(t.sourceFundTradeId){let ft=state.fundTrades.find(x=>x.id===t.sourceFundTradeId);if(ft){if(snap>0){ft.linkedFxRate=snap;ft.linkedFxCostPending=false}else ft.linkedFxCostPending=true;}}});return changed;}
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const set=(id,v)=>document.getElementById(id).textContent=v;
+function fxExcludedCredit(trade){
+ const amount=num(trade.amount);
+ const fundIncome=trade.sourceFundTradeId&&trade.transferIn&&num(trade.rate)===0
+  && (trade.payoutParentId||state.fundTrades.some(row=>row.id===trade.sourceFundTradeId&&row.splitLinkedPayout&&row.type==='dividend'));
+ return trade.excludeFromCost||fundIncome?amount:Math.min(amount,Math.max(0,num(trade.excludedTransferAmount)));
+}
 function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
  let qty=0,excluded=0,cost=0,realized=0,bought=0,buyCost=0,invalidExcludedDebit=false;
  const details={};
@@ -550,7 +559,7 @@ function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
   if(t.type==='interest'){qty+=amount;continue}
   if(t.type==='buy'){
    qty+=amount;
-   const omitted=t.excludeFromCost?amount:Math.min(amount,Math.max(0,num(t.excludedTransferAmount)));
+   const omitted=fxExcludedCredit(t);
    excluded+=omitted;
    if(!t.excludeFromCost&&amount-omitted>1e-8)cost+=value+fee;
    if(!t.transferIn&&!t.sourceFundTradeId&&!t.insuranceProjectId){bought+=amount;buyCost+=value+fee}
@@ -588,6 +597,14 @@ function fxName(pid){return state.fxProjects.find(p=>p.id===pid)?.name||'（外�
 function travelName(pid){let p=state.travelProjects.find(p=>p.id===pid);return p?p.name+'（'+p.location+'）':'（旅遊帳本不存在）'}
 function fundName(pid){let p=state.fundProjects.find(p=>p.id===pid);return p?p.name+'／'+p.code:'（基金帳本不存在）'}
 function fillSelect(el,items,label,includeClosed=true){let old=el.value;el.innerHTML=items.filter(p=>includeClosed||p.status!=='closed').map(p=>`<option value="${p.id}">${esc(label(p))}</option>`).join('')||'<option value="">尚無可選帳本</option>';if(items.some(p=>p.id===old))el.value=old}
+function fillRecordFilter(select,projects,label,allLabel,closedLabel='已結案'){
+ const selected=select.value;
+ const ordered=projects.slice().sort((a,b)=>(a.status==='closed')-(b.status==='closed'));
+ fillSelect(select,ordered,p=>label(p)+(p.status==='closed'?' · '+closedLabel:''));
+ if(projects.length)select.add(new Option(allLabel,''),0);
+ select.value=projects.some(p=>p.id===selected)?selected:'';
+}
+
 
 const botRates={};let botRateUpdatedAt='',botRateIsStale=false;
 const TBB_PROXY_DEFAULT='https://calm-lab-12a4.tychen2107.workers.dev/';
@@ -695,14 +712,8 @@ window.moveBookOrder=function(key,id,group,step){
 function render(){
  const fx=state.fxProjects.map(p=>({p,s:fxCalc(p.id)})).sort((a,b)=>(a.p.status==='closed')-(b.p.status==='closed')),fund=state.fundProjects.map(p=>({p,s:fundCalc(p.id)}));
  set('mProjects',(state.fxProjects.filter(p=>p.status!=='closed').length+state.fundProjects.filter(p=>p.status!=='closed').length+state.insuranceProjects.filter(p=>p.status!=='closed').length+state.travelProjects.filter(p=>p.status!=='closed').length)+' 個');
- fillSelect(document.getElementById('xtProject'),state.fxProjects,p=>p.name+'（'+p.currency+'）',false);const fxFilter=document.getElementById('fxFilter'), selectedFx=fxFilter.value;
- fillSelect(fxFilter,state.fxProjects,p=>p.name+'（'+p.currency+'）',true);
- if(state.fxProjects.length)fxFilter.add(new Option('全部帳本',''),0);
- if(!state.fxProjects.some(p=>p.id===selectedFx))fxFilter.value='';
- fillSelect(document.getElementById('ftProject'),state.fundProjects,p=>p.name+'（'+p.code+'）',false);document.getElementById('fundNoProjectHint').classList.toggle('hidden',state.fundProjects.length>0);document.getElementById('addFundTrade').disabled=state.fundProjects.length===0;const fundFilter=document.getElementById('fundFilter'), selectedFund=fundFilter.value;
- fillSelect(fundFilter,state.fundProjects,p=>p.name+'（'+p.code+'）',true);
- if(state.fundProjects.length)fundFilter.add(new Option('全部基金帳本',''),0);
- if(!selectedFund||!state.fundProjects.some(p=>p.id===selectedFund))fundFilter.value='';
+ fillSelect(document.getElementById('xtProject'),state.fxProjects,p=>p.name+'（'+p.currency+'）',false);fillRecordFilter(document.getElementById('fxFilter'),state.fxProjects,p=>p.name+'（'+p.currency+'）','全部帳本');
+ fillSelect(document.getElementById('ftProject'),state.fundProjects,p=>p.name+'（'+p.code+'）',false);document.getElementById('fundNoProjectHint').classList.toggle('hidden',state.fundProjects.length>0);document.getElementById('addFundTrade').disabled=state.fundProjects.length===0;fillRecordFilter(document.getElementById('fundFilter'),state.fundProjects,p=>p.name+'（'+p.code+'）','全部基金帳本');
  let fp=state.fundProjects.find(p=>p.id===document.getElementById('ftProject').value);document.getElementById('ftCurrency').value=fp?fp.currency:'';
  refreshFundFxOptions();
  const fxActive=fx.filter(x=>x.p.status!=='closed'),fxClosed=fx.filter(x=>x.p.status==='closed');const fxRow=({p,s})=>`<tr><td><b>${esc(p.name)}</b><br><span class="muted">${esc(p.note||'')}</span></td><td>${esc(p.currency)}</td><td>${moneyCur(p.currency,s.qty)}</td><td>${s.includedQty>1e-8?rate(s.avg,p.currency):'—'}</td><td class="${s.realized>=0?'positive':'negative'}"><b>${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</b></td><td>${p.status==='closed'?'已結案':'進行中'}</td><td><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button> <button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button> <button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button> <button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button> <button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></td></tr>`;document.getElementById('fxProjectRows').innerHTML=fx.length?(fxActive.length?`<tr class="ledger-group-row"><td colspan="7"><b>進行中的帳本（${fxActive.length}）</b></td></tr>${fxActive.map(fxRow).join('')}`:'')+(fxClosed.length?`<tr class="ledger-group-row"><td colspan="7"><b>已結案帳本（${fxClosed.length}）</b></td></tr>${fxClosed.map(fxRow).join('')}`:''):'<tr><td colspan="7" class="empty">尚無外幣帳本，請先建立帳本。</td></tr>';let fxCards=document.getElementById('fxProjectCards');if(fxCards)fxCards.innerHTML=fx.length?(fxActive.length?`${bookOrderHeading('fxProjects',false,'進行中的帳本',fxActive.length,'ledger-group-heading')}`+fxActive.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}${p.status==='closed'?'已結案':'進行中'}</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div><div><small>平均成本匯率</small><b>${s.includedQty>1e-8?rate(s.avg,p.currency):'—'}</b></div></div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):'')+(fxClosed.length?`${bookOrderHeading('fxProjects',true,'已結案帳本',fxClosed.length,'ledger-group-heading')}`+fxClosed.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}已結案</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div><div><small>平均成本匯率</small><b>${s.includedQty>1e-8?rate(s.avg,p.currency):'—'}</b></div></div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">重開</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):''):'<div class="empty">尚無外幣帳本，請先建立帳本。</div>';
@@ -710,7 +721,7 @@ function render(){
 }
 function renderFundProjectGroups(){let query=(document.getElementById('fundProjectSearch')?.value||'').trim().toLowerCase(),status=document.getElementById('fundStatusFilter')?.value||'all';let all=state.fundProjects.filter(p=>(!query||(p.name+' '+p.code).toLowerCase().includes(query))&&(status==='all'||(p.status==='closed'?'closed':'open')===status));let host=document.getElementById('fundProjectGroups');if(!all.length){host.innerHTML='<div class="empty">'+(state.fundProjects.length?'沒有符合搜尋條件的基金帳本。':'目前尚無基金帳本，請先建立第一個基金帳本。')+'</div>';return}let active=all.filter(p=>p.status!=='closed'),closed=all.filter(p=>p.status==='closed');let card=(p,kind)=>{let c=fundCalc(p.id),ts=state.fundTrades.filter(t=>t.projectId===p.id),buys=ts.filter(t=>t.type===kind),principal=buys.reduce((a,t)=>a+num(t.amount),0),fees=buys.reduce((a,t)=>a+num(t.fee),0),title=kind==='buy_lump'?'單筆申購':'定期定額';return `<article id="book-fund-${p.id}-${kind}" class="fund-project-card"><div class="fund-project-head"><div><h4>${esc(p.name)}／${esc(p.code)}</h4><div class="muted">${esc(p.currency)}</div><div class="mini-note">${esc(p.note||'')}</div><div class="subtype">${title}｜${buys.length} 筆</div></div><span>${p.status==='closed'?'已結案':'進行中'}</span></div><div class="fund-project-metrics"><div><small>${title}累計本金</small><b>${moneyCur(p.currency,principal)}</b></div><div><small>該類申購手續費</small><b>${moneyCur(p.currency,fees)}</b></div><div><small>該類投入成本</small><b>${moneyCur(p.currency,principal+fees)}</b></div><div><small>基金帳本剩餘本金／成本</small><b class="remaining-value"><span>剩餘本金：${moneyCur(p.currency,c.remainingPrincipal)}</span><span>剩餘成本：${moneyCur(p.currency,c.remainingCost)}</span></b></div><div><small>帳本不含息已實現損益</small><b class="${c.realized>=0?'positive':'negative'}">${c.realized>=0?'+':'−'}${moneyCur(p.currency,Math.abs(c.realized))}（${c.realizedRate.toFixed(2)}%）</b></div><div><small>帳本含息損益／累計配息</small><b class="${c.totalRealized>=0?'positive':'negative'}">${c.totalRealized>=0?'+':'−'}${moneyCur(p.currency,Math.abs(c.totalRealized))} ／ ${moneyCur(p.currency,c.dividends)}</b></div></div>${bookOrderButtons('fundProjects',p,ts.some(t=>['buy_lump','buy_regular'].includes(t.type))?kind:'none')}<div class="fund-project-actions">${p.status!=='closed'?`<button class="primary smallbtn" onclick="openBookEntry('fund','${p.id}')">新增記帳</button>`:''}<button class="secondary smallbtn" onclick="openFundProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFundProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFundProject('${p.id}')">${p.status==='closed'?'重新開啟':'結案'}</button><button class="danger smallbtn" onclick="deleteFundProject('${p.id}')">刪除帳本</button></div></article>`};let section=(title,items)=>{if(!items.length)return '';let lump=items.filter(p=>state.fundTrades.some(t=>t.projectId===p.id&&t.type==='buy_lump')),regular=items.filter(p=>state.fundTrades.some(t=>t.projectId===p.id&&t.type==='buy_regular')),none=items.filter(p=>!state.fundTrades.some(t=>t.projectId===p.id&&(t.type==='buy_lump'||t.type==='buy_regular')));return `<div class="fund-group">${bookOrderHeading('fundProjects',items[0].status==='closed',title,items.length)}${lump.length?'<h4>單筆申購</h4>'+lump.map(p=>card(p,'buy_lump')).join(''):''}${regular.length?'<h4>定期定額</h4>'+regular.map(p=>card(p,'buy_regular')).join(''):''}${none.length?'<h4>尚無申購紀錄</h4>'+none.map(p=>card(p,'buy_lump')).join(''):''}</div>`};host.innerHTML=(status==='closed'?`<details class="fund-closed-group"><summary>已結案帳本（${closed.length}）</summary>${section('已結案帳本',closed)}</details>`:status==='open'?section('進行中帳本',active):section('進行中帳本',active)+(closed.length?`<details class="fund-closed-group"><summary>已結案帳本（${closed.length}）</summary>${section('已結案帳本',closed)}</details>`:''))}
 
-function openFundProject(pid){document.getElementById('fundFilter').value=pid;renderFundTrades();go('fundrecords')}
+function openFundProject(pid){document.getElementById('fundFilter').value=pid;go('fundrecords')}
 function renderRecent(){let rows=[...state.fxTrades.map(t=>({date:t.date,kind:'外幣',name:fxName(t.projectId),desc:(t.type==='interest'?'利息':t.transferIn?'轉入':t.transferOut?'轉出':t.type==='buy'?'買進':t.type==='sell'?'賣出':'支出')+' '+moneyCur(state.fxProjects.find(p=>p.id===t.projectId)?.currency||'TWD',t.amount),tab:'fxrecords'})),...state.fundTrades.map(t=>({date:t.date,kind:'基金',name:fundName(t.projectId),desc:({buy_lump:'單筆申購',buy_regular:'定期定額',sell:'贖回',dividend:'配息'}[t.type]||t.type),tab:'fundrecords'})),...state.insuranceTrades.map(t=>({date:t.date,kind:'保險',name:insuranceName(t.projectId),desc:({premium:'保費',survival:'生存金',surrender:'解約金'}[t.type]||t.type)+' '+moneyCur(t.currency,t.amount),tab:'insurancerecords'})),...state.travelExpenses.map(t=>({date:t.date,kind:'旅遊',name:travelName(t.projectId),desc:esc(t.category)+' '+moneyCur(t.currency,t.amount),tab:'travelrecords'}))].sort((a,b)=>b.date.localeCompare(a.date)).slice(0,5);document.getElementById('recentActivity').innerHTML=rows.length?rows.map(r=>`<div class="recent-row"><span class="muted">${esc(dateDisplay(r.date))}</span><div><b>${r.kind}｜${esc(r.name)}</b><div class="muted">${r.desc}</div></div><button class="secondary smallbtn" onclick="go('${r.tab}')">查看</button></div>`).join(''):'<div class="empty">目前尚無紀錄，新增第一筆交易後會顯示在這裡。</div>'}
 function renderFxTrades(){
  const pid=document.getElementById('fxFilter').value;
@@ -718,7 +729,7 @@ function renderFxTrades(){
  const balance=document.getElementById('fxRecordsBalance');
  balance.hidden=!project;
  balance.textContent=project?'目前餘額 '+moneyCur(project.currency,fxCalc(pid).qty):'';
- let arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??(t.excludedDebitAmount?t.includedDebitRate:null)??t.rate),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*num(t.rate):null)):null;const excludedCost=t.excludeFromCost||t.debitExcluded||(t.amount>0&&num(t.excludedTransferAmount)>=t.amount-1e-8);const conversion=excludedCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion,excludedCost}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||excludedCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(num(t.fee)===0)meta.pop();if(t.debitExcluded||(isExternalFxRecord(t)&&(!t.transferIn||!r)))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}const note=fxRecordNote(t,label);
+ let arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??(t.excludedDebitAmount?t.includedDebitRate:null)??(t.type==='buy'&&t.sourceFundTradeId&&fxExcludedCredit(t)>0&&num(t.amount)>fxExcludedCredit(t)?num(t.rate)*num(t.amount)/(num(t.amount)-fxExcludedCredit(t)):t.rate)),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*num(t.rate):null)):null;const excludedCost=t.debitExcluded||(t.type==='buy'&&t.amount>0&&fxExcludedCredit(t)>=t.amount-1e-8);const conversion=excludedCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion,excludedCost}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||excludedCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(num(t.fee)===0)meta.pop();if(t.debitExcluded||(isExternalFxRecord(t)&&(!t.transferIn||!r)))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}const note=fxRecordNote(t,label);
  const actions=`<span class="detail-flow-actions"><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></span>`;
  const detail=`<div class="record-line1 fx-record-header"><span class="record-date">${esc(dateDisplay(t.date))}</span>${actions}</div>
  <div class="record-line2"><b class="${income?'positive':'negative'}">${income?'+':'−'} ${moneyCur(c,t.amount)}</b>${suffix}</div>
@@ -779,7 +790,7 @@ function renderTravel(){
  const twdStats=list=>{let total=list.reduce((a,e)=>a+travelSign(e)*((e.currency||'TWD').toUpperCase()==='TWD'?num(e.amount):num(e.twdAmount)>0?num(e.twdAmount):num(e.rateSnapshot)>0?num(e.amount)*num(e.rateSnapshot):0),0),missing=list.filter(e=>(e.currency||'TWD').toUpperCase()!=='TWD'&&!((num(e.twdAmount)>0||num(e.rateSnapshot)>0))).length;return {total,missing}};
  const activeTrips=projects.filter(p=>p.status!=='closed'),endedTrips=projects.filter(p=>p.status==='closed');const travelRow=p=>{let a=expenses.filter(e=>e.projectId===p.id),tw=twdStats(a);return `<tr><td><b>${esc(p.name)}</b><br><span class="muted">${esc(p.location||'')}</span></td><td>${esc(dateDisplay(p.startDate||''))}～${esc(dateDisplay(p.endDate||''))}</td><td>${a.length}</td><td>${esc(p.companions||'')}</td><td><div class="travel-total-stack"><div class="travel-twd-total">折合台幣總花費 <b>${money(tw.total)}</b>${tw.missing?'<small>另有 '+tw.missing+' 筆待換算</small>':''}</div>${showTotals(totalsByCur(a),a)}</div></td><td>${esc(p.note||'')}</td><td><button class="primary smallbtn" onclick="openBookEntry('travel','${p.id}')">新增記帳</button> <button class="secondary smallbtn" onclick="openTravelProject('${p.id}')">查看明細</button> <button class="secondary smallbtn" onclick="editTravelProject('${p.id}')">修改</button> <button class="secondary smallbtn" onclick="toggleTravelStatus('${p.id}')">${p.status==='closed'?'重新開啟':'旅程已結束'}</button> <button class="danger smallbtn" onclick="deleteTravelProject('${p.id}')">刪除帳本</button></td></tr>`};document.getElementById('travelProjectRows').innerHTML=projects.length?(activeTrips.length?`<tr class="ledger-group-row"><td colspan="7"><b>進行中的旅程（${activeTrips.length}）</b></td></tr>${activeTrips.map(travelRow).join('')}`:'')+(endedTrips.length?`<tr class="ledger-group-row"><td colspan="7"><b>已結束的旅程（${endedTrips.length}）</b></td></tr>${endedTrips.map(travelRow).join('')}`:''):'<tr><td colspan="7" class="empty">尚無旅遊帳本</td></tr>';
  let projectCards=document.getElementById('travelProjectCards');const travelCard=p=>{let a=expenses.filter(e=>e.projectId===p.id),tw=twdStats(a);return `<article id="book-travel-${p.id}" class="project-summary-card"><h4>${esc(p.name)}</h4><div class="project-summary-meta">${esc(p.location||'')}${p.location?'｜':''}${esc(dateDisplay(p.startDate||''))}～${esc(dateDisplay(p.endDate||''))}</div><div class="project-summary-metrics"><div><small>筆數</small><b>${a.length} 筆</b></div><div><small>旅伴</small><b>${esc(p.companions||'—')}</b></div><div class="travel-card-total"><small>折合台幣總花費</small><b>${money(tw.total)}${tw.missing?`（另有 ${tw.missing} 筆待換算）`:''}</b>${showTotals(totalsByCur(a),a)}</div></div>${p.note?`<div class="project-summary-meta" style="margin-top:8px">${esc(p.note)}</div>`:''}${bookOrderButtons('travelProjects',p)}<div class="project-summary-actions"><button class="primary smallbtn" onclick="openBookEntry('travel','${p.id}')">新增記帳</button><button class="secondary smallbtn" onclick="openTravelProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editTravelProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="toggleTravelStatus('${p.id}')">${p.status==='closed'?'重新開啟':'標記旅程已結束'}</button><button class="danger smallbtn" onclick="deleteTravelProject('${p.id}')">刪除帳本</button></div></article>`};if(projectCards)projectCards.innerHTML=projects.length?(activeTrips.length?`${bookOrderHeading('travelProjects',false,'進行中的旅程',activeTrips.length,'ledger-group-heading')}`+activeTrips.map(travelCard).join(''):'')+(endedTrips.length?`${bookOrderHeading('travelProjects',true,'已結束的旅程',endedTrips.length,'ledger-group-heading')}`+endedTrips.map(travelCard).join(''):''):'<div class="empty">尚無旅遊帳本</div>';
- fillSelect(document.getElementById('teProject'),projects,p=>p.name+'（'+(p.location||'')+'）',true);fillSelect(document.getElementById('teFilter'),projects,p=>p.name+'（'+(p.location||'')+'）',true);refreshTravelFxOptions();
+ fillSelect(document.getElementById('teProject'),projects,p=>p.name+'（'+(p.location||'')+'）',true);fillRecordFilter(document.getElementById('teFilter'),projects,p=>p.name+(p.location?'（'+p.location+'）':''),'全部旅遊帳本','已結束');refreshTravelFxOptions();
  let pid=document.getElementById('teFilter').value,arr=expenses.filter(e=>!pid||e.projectId===pid).sort((a,b)=>sortTrade(b,a));
  let pay={card:'信用卡',card_rebate:'信用卡回饋',rebate:'信用卡回饋',cash_twd:'現金（台幣）',cash_fx:'現金（外幣）',transfer:'轉帳'};
 
@@ -822,7 +833,7 @@ function installPanelNavigation(){
  }));
  ['annual','backup'].forEach(id=>{const panel=document.getElementById(id);if(!panel||panel.querySelector('.panel-navhead'))return;const head=document.createElement('div');head.className='panel-navhead';head.innerHTML='<span class="nav-context">其他功能</span><button type="button" class="home-icon-btn" aria-label="返回首頁" title="返回首頁">'+homeSvg+'<span>首頁</span></button>';head.querySelector('button').addEventListener('click',()=>go('overview'));panel.insertBefore(head,panel.firstChild)});
 }
-function go(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));let p=document.getElementById(id);if(p)p.classList.add('active');document.querySelectorAll('.module-subnav button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:'smooth'});if(['fxrecords','fundrecords','insurancerecords','travelrecords'].includes(id))scheduleDetailListFit();}
+function go(id){document.querySelectorAll('.panel').forEach(x=>x.classList.remove('active'));let p=document.getElementById(id);if(p)p.classList.add('active');document.querySelectorAll('.module-subnav button').forEach(b=>b.classList.toggle('active',b.dataset.go===id));window.scrollTo({top:0,behavior:id==='fundrecords'?'instant':'smooth'});if(['fxrecords','fundrecords','insurancerecords','travelrecords'].includes(id))scheduleDetailListFit();}
 installPanelNavigation();
 document.getElementById('addFxProject').onclick=()=>{let name=xpName.value.trim(),currency=xpCurrency.value.trim().toUpperCase();if(!name||!currency)return alert('請填寫帳本名稱及幣別');state.fxProjects.push({id:id(),name,currency,note:xpNote.value,status:'open'});['xpName','xpCurrency','xpNote'].forEach(x=>document.getElementById(x).value='');save()};
 function fxRateFromAmounts(amount,twd){
@@ -881,28 +892,35 @@ function fundDebitParts(mode,principal,fee,entered){
 function refreshFundFxRatePreview(){
  const selected=Boolean(ftFxLink.value), buy=['buy_lump','buy_regular'].includes(ftType.value);
  document.getElementById('ftFxPoolWrap').hidden=!selected||!buy;
- const mixed=selected&&buy&&document.getElementById('ftFxPool').value==='mixed';
- document.getElementById('ftMixedWrap').hidden=!mixed;
- if(mixed){
-  const currency=fxCurrency(ftFxLink.value), parts=fundDebitParts('mixed',num(ftUnits.value),num(ftFee.value),document.getElementById('ftExcludedPrincipal').value);
-  const knownRate=fxLinkedRate(ftFxLink.value,dateValue(ftDate),Date.now());
-  document.getElementById('ftFxRatePreview').textContent=parts
-   ?'納入成本扣款 '+moneyCur(currency,parts.includedAmount)+'｜不納入成本扣款 '+moneyCur(currency,parts.excludedAmount)+(knownRate>0?'｜納入部分匯率 '+rate(knownRate,currency):'')
-   :'請輸入大於零且小於申購本金的不納入成本本金。';
-  return;
- }
- if(selected&&buy&&document.getElementById('ftFxPool').value==='excluded'){
-  const position=fxCalc(ftFxLink.value,dateValue(ftDate)||undefined);
-  document.getElementById('ftFxRatePreview').textContent='可扣不納入成本的餘額：'+moneyCur(fxCurrency(ftFxLink.value),position.excludedQty)+'。申購仍記錄原幣本金，手續費從納入成本的餘額扣除。';
-  return;
- }
-
+ const mode=document.getElementById('ftFxPool').value;
+ document.getElementById('ftMixedWrap').hidden=!(selected&&buy&&mode==='mixed');
  const preview=document.getElementById('ftFxRatePreview');
- if(preview&&ftType.value==='sell'){preview.textContent='贖回本金承接基金原始台幣成本，收益只增加外幣餘額。';return}
- if(preview&&ftType.value==='dividend'){preview.textContent='配息只增加外幣餘額，不增加台幣購入成本。';return}
- let p=state.fxProjects.find(x=>x.id===ftFxLink.value),el=document.getElementById('ftFxRatePreview'),r=p?fxLinkedRate(p.id,dateValue(ftDate),Date.now()):0;if(el)el.textContent=p?(r>0?'本筆交易日期平均成本匯率：'+rate(r,p.currency):'此交易日期之前尚無可用平均成本'):'選擇外幣帳本後顯示該筆交易日期的平均成本匯率。'}
+ if(!selected){preview.textContent='';return}
+ if(!buy){
+  preview.textContent=ftType.value==='sell'
+   ?'贖回本金按原扣款比例回到兩種餘額，收益列入不納入成本的餘額。'
+   :'配息列入不納入成本的餘額。';
+  return;
+ }
+ const date=dateValue(ftDate);
+ if(!date){preview.textContent='請先輸入交易日期，再查看可扣款餘額。';return}
+ const currency=fxCurrency(ftFxLink.value), position=fxCalc(ftFxLink.value,date,Date.now());
+ const format=amount=>currency+' '+Number(Math.max(0,amount).toFixed(currency==='TWD'?0:currency==='JPY'||currency==='THB'?4:3)).toLocaleString('en-US',{maximumFractionDigits:4});
+ const lines=['納入成本可用 '+format(position.includedQty),'不納入成本可用 '+format(position.excludedQty)];
+ if(position.avg>0)lines.push('納入部分匯率 '+rate(position.avg,currency));
+ const principal=num(ftUnits.value), fee=num(ftFee.value);
+ const parts=principal>0&&fundDebitParts(mode,principal,fee,document.getElementById('ftExcludedPrincipal').value);
+ if(parts){
+  if(parts.includedAmount>position.includedQty+1e-8||parts.excludedAmount>position.excludedQty+1e-8){
+   lines.push('扣款金額超過所選來源的可用餘額。');
+  }else{
+   lines.push('扣款後不納入成本剩餘 '+format(position.excludedQty-parts.excludedAmount));
+  }
+ }
+ preview.textContent=lines.join('｜');
+}
 document.getElementById('ftProject').onchange=()=>{let p=state.fundProjects.find(x=>x.id===ftProject.value);ftCurrency.value=p?p.currency:'';ftFee.value=0;refreshFundFxOptions()};
-['ftExcludedPrincipal','ftUnits','ftFee'].forEach(id=>document.getElementById(id).addEventListener('input',refreshFundFxRatePreview));
+['ftExcludedPrincipal','ftUnits','ftFee','ftDate'].forEach(id=>document.getElementById(id).addEventListener('input',refreshFundFxRatePreview));
 document.getElementById('ftFxPool').onchange=refreshFundFxRatePreview;document.getElementById('ftType').addEventListener('change',refreshFundFxRatePreview);document.getElementById('ftFxLink').onchange=refreshFundFxRatePreview;document.getElementById('ftDate').addEventListener('change',refreshFundFxRatePreview);
 document.getElementById('ftType').onchange=()=>{let type=ftType.value,div=type==='dividend',sell=type==='sell',buy=type==='buy_lump'||type==='buy_regular';document.querySelector('#fundentry .fundTradeField').classList.toggle('hidden',sell);document.getElementById('navWrap').classList.toggle('hidden',!sell);document.getElementById('ftCashWrap').classList.toggle('hidden',!sell);document.getElementById('ftFeeWrap').classList.toggle('hidden',!buy);document.getElementById('ftAmountLabel').textContent=div?'實際配息入帳金額':buy?'申購金額':'贖回成本金額';ftUnits.placeholder=div?'輸入實際銀行入帳淨額':'輸入金額';document.getElementById('ftCash').value=''};
 document.getElementById('addFundTrade').onclick=()=>{let projectId=ftProject.value,p=state.fundProjects.find(x=>x.id===projectId),type=ftType.value,date=dateValue(ftDate),currency=(ftCurrency.value||p?.currency||'TWD').trim().toUpperCase(),amount=num(ftUnits.value),redemptionCost=num(ftNav.value),actualNet=num(document.getElementById('ftCash').value),fee=num(ftFee.value),linkId=ftFxLink.value,buy=type==='buy_lump'||type==='buy_regular',div=type==='dividend';if(!p||!date||!currency)return alert('請確認基金帳本、日期及幣別');if((buy||div)&&amount<=0)return alert('請輸入金額');if(buy&&fee<0)return alert('手續費不可小於 0');let calc=fundCalc(projectId);if(type==='sell'&&(redemptionCost<=0||actualNet<=0))return alert('請輸入贖回成本金額及實際銀行入帳金額');if(type==='sell'&&redemptionCost>calc.remainingPrincipal+0.000001)return alert('贖回成本金額不可超過剩餘基金本金庫存');let link=null;if(linkId){link=state.fxProjects.find(x=>x.id===linkId);if(!link||link.currency!==currency)return alert('連動外幣帳本的幣別必須與基金交易幣別相同');}
@@ -910,6 +928,12 @@ let trade={id:id(),projectId,type,date,currency,amount:buy?amount:0,redemptionCo
 if(link){const mode=document.getElementById('ftFxPool').value;
  const parts=buy?fundDebitParts(mode,amount,fee,document.getElementById('ftExcludedPrincipal').value):null;
  if(buy&&!parts)return alert('不納入成本的本金須大於零且小於申購本金');
+ if(buy){
+  const position=fxCalc(linkId,date,trade.created);
+  if(parts.excludedAmount>position.excludedQty+1e-8||parts.includedAmount>position.includedQty+1e-8){
+   return alert('申購本金或手續費超過所選來源在交易日的可用餘額。');
+  }
+ }
  const debitExcluded=buy&&parts.includedAmount<=1e-8;let fxType=buy?'spend':'buy',fxAmount=buy?amount+fee:type==='sell'?actualNet:amount,priorRate=fxLinkedRate(linkId,date,trade.created),includedRate=buy&&!debitExcluded?(priorRate||(link.currency==='TWD'?1:0)):0,linkRate=buy&&fxAmount>0?includedRate*parts.includedAmount/fxAmount:0,fxTrade={id:id(),projectId:linkId,type:fxType==='spend'?'spend':'buy',date,amount:fxAmount,rate:linkRate,rateSnapshot:linkRate||null,fee:0,note:'基金連動：'+p.name+(buy?'申購及手續費':type==='sell'?'贖回實際入帳':'配息實際入帳'),created:trade.created,sourceFundTradeId:trade.id,debitExcluded,excludedDebitAmount:buy?parts.excludedAmount:0,includedDebitRate:buy?includedRate:0};if(buy&&!debitExcluded&&!(linkRate>0))return alert('這筆申購缺少外幣平均成本');trade.splitLinkedPayout=!buy;trade.fundedFromExcluded=buy&&mode==='excluded';trade.excludedFundPrincipal=buy?parts.excludedPrincipal:0;trade.linkedFxTradeId=fxTrade.id;trade.linkedFxRate=linkRate;state.fxTrades.push(fxTrade);if(!validFxLedger(linkId)){state.fxTrades=state.fxTrades.filter(x=>x.id!==fxTrade.id);return alert('依交易日期排序後，外幣餘額不足，基金紀錄尚未儲存。')}}
 state.fundTrades.push(trade);['ftUnits','ftNav','ftCash','ftNote'].forEach(x=>document.getElementById(x).value='');ftFee.value='0';save().then(ok=>{if(ok)alert('基金紀錄已儲存'+(trade.linkedFxTradeId?'，並已同步調整外幣餘額':''))})};
 window.applyFundTradeEdit=function(tid,read){let t=state.fundTrades.find(x=>x.id===tid);if(!t)return alert('找不到基金紀錄');let date=read('交易日期（民國年／月／日）',dateDisplay(t.date));if(date===null)return;date=toISODate(date);if(!date)return alert('日期格式不正確，請輸入民國日期，例如 115/11/08');let amount,redemptionCost,actualNet,fee;if(t.type==='buy_lump'||t.type==='buy_regular'){amount=Number(read('申購本金',t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('申購本金不正確');fee=Number(read('申購手續費',t.fee||0));if(!Number.isFinite(fee)||fee<0)return alert('手續費不正確')}else if(t.type==='sell'){redemptionCost=Number(read('贖回沖回本金金額',t.redemptionCost));if(!Number.isFinite(redemptionCost)||redemptionCost<=0)return alert('贖回本金不正確');actualNet=Number(read('實際銀行入帳淨額',t.actualNet));if(!Number.isFinite(actualNet)||actualNet<=0)return alert('實際入帳金額不正確')}else{amount=Number(read('實際配息入帳淨額',t.actualNet??t.dividendAmount??t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('配息金額不正確')}const linkedDebit=state.fxTrades.find(row=>row.id===t.linkedFxTradeId&&row.type==='spend');
@@ -924,7 +948,10 @@ function saveBotProxy(showMessage=true){let value=botProxyInput.value.trim();if(
 document.getElementById('saveBotProxy').onclick=()=>{if(saveBotProxy())refreshBotRates()};
 document.getElementById('resetBotProxy').onclick=()=>{localStorage.removeItem(TBB_PROXY_KEY);botProxyInput.value=TBB_PROXY_DEFAULT;refreshBotRates()};
 document.getElementById('testBotProxy').onclick=async()=>{if(!saveBotProxy(false))return;const status=document.getElementById('botRateStatus');status.textContent='正在測試代理服務…';try{const response=await fetch(botProxyInput.value.trim(),{cache:'no-store',headers:{'Accept':'application/json'}});if(!response.ok)throw new Error('HTTP '+response.status);const data=await response.json();if(data.success!==true||!data.rates||!Object.keys(data.rates).length)throw new Error('未取得有效匯率資料');status.textContent='連線測試成功｜'+Object.keys(data.rates).length+' 種幣別｜'+(data.bank||'臺企銀')+' '+(data.rateType||'即期')+'／'+(data.valuationBasis||'本行買入');}catch(e){status.textContent='連線測試失敗｜'+e.message}};
-document.getElementById('refreshBotRates').onclick=refreshBotRates;document.getElementById('fxFilter').onchange=renderFxTrades;document.getElementById('fundFilter').onchange=renderFundTrades;document.getElementById('annualYear').onchange=renderAnnual;document.getElementById('fundProjectSearch').oninput=renderFundProjectGroups;document.getElementById('fundStatusFilter').onchange=renderFundProjectGroups;
+document.getElementById('refreshBotRates').onclick=refreshBotRates;document.getElementById('fxFilter').onchange=renderFxTrades;document.getElementById('fundFilter').onchange=()=>{
+ if(!document.getElementById('fundFilter').value)document.getElementById('fundHistoryDetails').open=false;
+ renderFundTrades();
+};document.getElementById('annualYear').onchange=renderAnnual;document.getElementById('fundProjectSearch').oninput=renderFundProjectGroups;document.getElementById('fundStatusFilter').onchange=renderFundProjectGroups;
 // 旅遊帳本與支出
 function readTravelCurrency(selectId,customId){let el=document.getElementById(selectId);return (el.value==='OTHER'?document.getElementById(customId).value:el.value).trim().toUpperCase()||'TWD'}
 function setTravelCurrency(selectId,customId,currency){let el=document.getElementById(selectId),v=(currency||'TWD').toUpperCase(),known=['TWD','USD','JPY','EUR'];el.value=known.includes(v)?v:'OTHER';let c=document.getElementById(customId);c.classList.toggle('hidden',el.value!=='OTHER');if(el.value==='OTHER')c.value=v}
@@ -952,21 +979,46 @@ document.getElementById('exportJson').onclick=()=>{const safeName=(homeSettings.
 document.getElementById('exportCsv').onclick=()=>{let rows=[['類別','日期','帳本','幣別','交易類型','金額','贖回成本金額','台幣成本／實際入帳','匯率','手續費／匯費','備註'],...state.fxTrades.map(t=>['外幣',t.date,fxName(t.projectId),state.fxProjects.find(p=>p.id===t.projectId)?.currency||'',t.type,t.amount,'',t.rate,t.fee,t.note||'']),...state.fundTrades.map(t=>['基金',t.date,fundName(t.projectId),t.currency,t.type,t.type==='dividend'?t.dividendAmount:(t.amount??t.cashAmount??t.units),t.redemptionCost||'',t.actualNet||'',t.fxRate,t.fee,t.note||'']),...state.insuranceTrades.map(t=>['保險',t.date,insuranceName(t.projectId),t.currency,t.type,t.amount,'',t.actualTwd||t.costTwd,t.rate,t.fee||0,t.note||'']),...state.travelExpenses.map(t=>['旅遊支出',t.date,travelName(t.projectId),t.currency,t.payment,t.amount,'',(num(t.amount)?num(t.twdAmount)/num(t.amount):0),0,t.note||'']),...(state.travelCashSettlements||[]).map(t=>['旅遊現鈔結算',t.settlementDate,travelName(t.projectId),t.currency,'現鈔結算',t.spentAmount,'','',t.rateSnapshot,0,'帶出 '+t.broughtAmount+'；剩餘 '+t.remainingAmount+'；逐筆已扣 '+t.alreadyLinkedAmount+'；本次補扣 '+t.deductAmount])];download('mylifespace_transactions.csv','\\ufeff'+rows.map(r=>r.map(v=>'"'+String(v??'').replace(/"/g,'""')+'"').join(',')).join('\\r\\n'),'text/csv;charset=utf-8')};
 
 
+function fundFxRateText(t,linked,currency){
+ if(!linked)return '';
+ if(t.linkedFxCostPending||linked.costBasisPending)return '台幣成本待確認';
+ const saved=num(t.linkedFxRate||linked.rate);
+ const excluded=linked.type==='spend'
+  ?(linked.debitExcluded?num(linked.amount):num(linked.excludedDebitAmount))
+  :fxExcludedCredit(linked);
+ if(excluded<=1e-8)return saved>0?'匯率 '+rate(saved,currency):'';
+ const included=num(linked.amount)-excluded;
+ if(included<=1e-8)return '不納入成本';
+ const includedRate=num(linked.includedDebitRate)||saved*num(linked.amount)/included;
+ return includedRate>0?'納入部分匯率 '+rate(includedRate,currency):'';
+}
 function renderFundTrades(){
  let pid=document.getElementById('fundFilter').value,labels={buy_lump:'單筆申購',buy_regular:'定期定額',sell:'贖回',dividend:'配息'};
  const project=t=>state.fundProjects.find(x=>x.id===t.projectId);
  const activeTrades=state.fundTrades.filter(t=>{let p=project(t);return (!pid||t.projectId===pid)&&p?.status!=='closed'}).sort((a,b)=>sortTrade(b,a));
  const historyTrades=state.fundTrades.filter(t=>{let p=project(t);return (!pid||t.projectId===pid)&&p?.status==='closed'}).sort((a,b)=>sortTrade(b,a));
- const views=list=>list.map(t=>{let p=project(t),c=t.currency||p?.currency||'TWD',buy=t.type==='buy_lump'||t.type==='buy_regular',div=t.type==='dividend',main=buy?num(t.amount??t.cashAmount):div?num(t.actualNet??t.dividendAmount??t.amount):num(t.actualNet??t.cashAmount??t.amount),fee=buy?num(t.fee):0,linked=t.linkedFxTradeId?state.fxTrades.find(f=>f.id===t.linkedFxTradeId):null,lr=num(t.linkedFxRate||linked?.rate),linkedTwd=linked&&lr>0?(buy?(num(t.amount)+fee)*lr:(t.splitLinkedPayout?num(linked.amount):main)*lr):null;return{t,p,c,buy,main,fee,label:labels[t.type]||t.type,linked,lr,linkedTwd}});
- const tableRows=list=>list.map(({t,p,c,buy,main,fee,label,linked,lr})=>{let sign=buy?'−':'+',flow=buy?main+fee:main,note=[buy&&fee>0?'申購手續費 '+moneyCur(c,fee):'',linked?'外幣帳本：'+fxName(linked.projectId)+(t.linkedFxCostPending?'（成本待確認）':lr>0?'（匯率 '+rate(lr,c)+'）':''): '',t.note||''].filter(Boolean).join('｜');return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fundName(t.projectId))}</td><td>${label}</td><td class="${buy?'negative':'positive'}"><b>${sign} ${moneyCur(c,flow)}</b><div class="mini-note">${buy?'申購實際支出（含手續費）':t.type==='sell'?'贖回實際入帳':'配息實際入帳'}</div></td><td>${esc(note||'—')}</td><td><button class="secondary smallbtn" onclick="editFundTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFundTrade('${t.id}')">刪除</button></td></tr>`}).join('');
- const cardRows=list=>list.map(({t,p,c,buy,main,fee,label,linked,lr,linkedTwd})=>{let income=!buy,amount=buy?main+fee:main,meta=[];if(buy&&fee>0)meta.push('手續費 '+moneyCur(c,fee));if(linked)meta.push('外幣帳本：'+esc(fxName(linked.projectId))+(t.linkedFxCostPending?'（成本待確認）':lr>0?' · 匯率 '+rate(lr,c):''));if(t.note)meta.push('備註：'+esc(t.note));let fundSuffix=linkedTwd!==null?`<small class="record-amount-sub">${t.splitLinkedPayout?'承接台幣成本':income?'台幣入帳':'台幣成本'} ${money(linkedTwd)}</small>`:'',actions=`<span class="record-inline-actions"><button class="secondary smallbtn" onclick="editFundTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFundTrade('${t.id}')">刪除</button></span>`,detail=recordDetailLines(t.date,label,`${income?'+':'−'} ${moneyCur(c,amount)}`,income,meta,'｜',fundSuffix+actions);if(!meta.length)detail+='<div class="record-line3"></div>';return detailFlowCard(income?'收入':'支出',label,detail,'',p?.code)}).join('');
+ const views=list=>list.map(t=>{let p=project(t),c=t.currency||p?.currency||'TWD',buy=t.type==='buy_lump'||t.type==='buy_regular',div=t.type==='dividend',main=buy?num(t.amount??t.cashAmount):div?num(t.actualNet??t.dividendAmount??t.amount):num(t.actualNet??t.cashAmount??t.amount),fee=buy?num(t.fee):0,linked=t.linkedFxTradeId?state.fxTrades.find(f=>f.id===t.linkedFxTradeId):null,lr=num(t.linkedFxRate||linked?.rate),linkedTwd=linked&&lr>0?(buy?(num(t.amount)+fee)*lr:(t.splitLinkedPayout?num(linked.amount):main)*lr):null;return{t,p,c,buy,main,fee,label:labels[t.type]||t.type,linked,linkedTwd}});
+ const tableRows=list=>list.map(({t,c,buy,main,fee,label,linked})=>{let sign=buy?'−':'+',flow=buy?main+fee:main,note=[buy&&fee>0?'申購手續費 '+moneyCur(c,fee):'',linked?['外幣帳本：'+fxName(linked.projectId),fundFxRateText(t,linked,c)].filter(Boolean).join(' · '):'',t.note||''].filter(Boolean).join('｜');return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fundName(t.projectId))}</td><td>${label}</td><td class="${buy?'negative':'positive'}"><b>${sign} ${moneyCur(c,flow)}</b><div class="mini-note">${buy?'申購實際支出（含手續費）':t.type==='sell'?'贖回實際入帳':'配息實際入帳'}</div></td><td>${esc(note||'—')}</td><td><button class="secondary smallbtn" onclick="editFundTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFundTrade('${t.id}')">刪除</button></td></tr>`}).join('');
+ const cardRows=list=>list.map(({t,p,c,buy,main,fee,label,linked,linkedTwd})=>{
+  const income=!buy,amount=buy?main+fee:main;
+  const suffix=linkedTwd!==null?`<small class="record-amount-sub">${t.splitLinkedPayout?'承接台幣成本':income?'台幣入帳':'台幣成本'} ${money(linkedTwd)}</small>`:'';
+  const notes=[buy&&fee>0?'申購手續費 '+moneyCur(c,fee):'',t.note].filter(Boolean).join('｜');
+  const rateText=fundFxRateText(t,linked,c);
+  const first=`<div class="record-line1"><span class="record-date">${esc(dateDisplay(t.date))}</span>${rateText?`<span class="fund-record-rate">${esc(rateText)}</span>`:''}</div>`;
+  const actions=`<div class="record-line3">${notes?`<span class="fund-record-note">${esc(notes)}</span>`:''}<span class="fund-record-actions"><button class="secondary smallbtn" onclick="editFundTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFundTrade('${t.id}')">刪除</button></span></div>`;
+  const detail=first+`<div class="record-line2"><b class="${income?'positive':'negative'}">${income?'+':'−'} ${moneyCur(c,amount)}</b>${suffix}</div>`;
+  return detailFlowCard(income?'收入':'支出',label,detail+actions,'',p?.code);
+ }).join('');
  const activeViews=views(activeTrades),historyViews=views(historyTrades);
+ const selectedClosed=state.fundProjects.some(p=>p.id===pid&&p.status==='closed');
+ document.getElementById('fundTradeCards').hidden=selectedClosed;
+ document.getElementById('fundTradeRows').hidden=selectedClosed;
  document.getElementById('fundTradeRows').innerHTML=activeViews.length?tableRows(activeViews):'<tr><td colspan="6" class="empty">目前沒有進行中的基金交易；已結案基金請至下方歷史明細查看。</td></tr>';
  document.getElementById('fundTradeCards').innerHTML=activeViews.length?cardRows(activeViews):'<div class="empty">目前沒有進行中的基金交易</div>';
  const historyBody=document.getElementById('fundHistoryTradeRows'),historyCards=document.getElementById('fundHistoryTradeCards'),historyDetails=document.getElementById('fundHistoryDetails');
  if(historyBody)historyBody.innerHTML=historyViews.length?tableRows(historyViews):'<tr><td colspan="6" class="empty">目前沒有已結案基金交易</td></tr>';
  if(historyCards)historyCards.innerHTML=historyViews.length?cardRows(historyViews):'<div class="empty">目前沒有已結案基金交易</div>';
- if(historyDetails){const wasOpen=historyDetails.open;historyDetails.hidden=!historyViews.length;historyDetails.open=historyViews.length>0&&(wasOpen||Boolean(pid));}
+ if(historyDetails){const wasOpen=historyDetails.open;historyDetails.hidden=!historyViews.length&&!selectedClosed;historyDetails.open=!historyDetails.hidden&&(wasOpen||selectedClosed);}
 }
 // 民國日期輸入／顯示；資料仍以西元 ISO 日期儲存，維持排序與備份相容。
 function toISODate(v){let x=String(v||'').trim();if(/^\d{7}$/.test(x))x=x.slice(0,3)+'/'+x.slice(3,5)+'/'+x.slice(5,7);if(/^\d{4}-\d{2}-\d{2}$/.test(x))return new Date(x).toJSON()?.slice(0,10)===x?x:'';let m=x.match(/^(\d{2,3})[\/.-](\d{1,2})[\/.-](\d{1,2})$/);if(!m)return '';let y=Number(m[1])+1911,mo=Number(m[2]),d=Number(m[3]);let dt=new Date(Date.UTC(y,mo-1,d));return dt.getUTCFullYear()===y&&dt.getUTCMonth()===mo-1&&dt.getUTCDate()===d?`${y}-${String(mo).padStart(2,'0')}-${String(d).padStart(2,'0')}`:''}
@@ -1110,19 +1162,20 @@ function renderInsurance(){
  if(sel){sel.innerHTML=active.map(p=>`<option value="${p.id}">${esc(p.name)}（${esc(p.currency)}）</option>`).join('')||'<option value="">尚無未解約保單</option>';if(active.some(p=>p.id===old))sel.value=old;if(sel.value!==old&&sel.value)sel.dispatchEvent(new Event('change'))}
  let p=ps.find(x=>x.id===sel?.value);if(document.getElementById('itCurrency'))itCurrency.value=p?.currency||'';
  let fx=document.getElementById('itFx'),fxOld=fx?.value;if(fx){fx.innerHTML='<option value="">請選擇外幣帳本</option>'+state.fxProjects.filter(x=>x.status!=='closed'&&p&&x.currency===p.currency).map(x=>`<option value="${x.id}">${esc(x.name)}（${esc(x.currency)}）</option>`).join('');if(state.fxProjects.some(x=>x.id===fxOld&&x.currency===p?.currency))fx.value=fxOld}
- let filter=document.getElementById('insuranceFilter'),fo=filter?.value;if(filter){filter.innerHTML='<option value="">全部未解約保單</option>'+active.map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('');if(fo&&ps.some(x=>x.id===fo&&x.status==='closed'))filter.innerHTML+=`<option value="${fo}">${esc(insuranceName(fo))}（已解約歷史）</option>`;if(ps.some(x=>x.id===fo))filter.value=fo}
+ const filter=document.getElementById('insuranceFilter');
+ fillRecordFilter(filter,ps,p=>p.name,'全部保單','已解約');
  let pid=filter?.value||'',selected=pid?ps.find(x=>x.id===pid):null,detail=document.getElementById('insuranceSelectedDetail');
  if(detail){
   if(selected){detail.innerHTML=`<div class="insurance-selected-detail"><div class="insurance-selected-head"><div><h3>${esc(selected.name)}</h3><div class="muted">${esc(selected.company)}｜${esc(selected.currency)}｜${esc(selected.frequency)}｜${selected.status==='closed'?'已解約':selected.status==='paid'?'已繳清':'繳費中'}</div><div class="mini-note">投保日期：${esc(dateDisplay(selected.startDate||''))}${selected.years?'｜繳費年期：'+selected.years+' 年':''}${selected.note?'｜'+esc(selected.note):''}</div></div></div></div>`;}else detail.innerHTML='';
  }
- let rows=ts.filter(t=>ps.some(x=>x.id===t.projectId&&(x.status!=='closed'||(pid&&t.projectId===pid)))&&(!pid||t.projectId===pid)).sort((a,b)=>sortTrade(b,a));
+ let rows=ts.filter(t=>ps.some(x=>x.id===t.projectId)&&(!pid||t.projectId===pid)).sort((a,b)=>sortTrade(b,a));
  renderInsuranceEstimatePanel(selected);
  let body=document.getElementById('insuranceRows');
  if(body)body.innerHTML=rows.length?rows.map(t=>{let linked=t.linkedFxTradeId?state.fxTrades.find(f=>f.id===t.linkedFxTradeId):null,foreign=t.currency!=='TWD',rateText=t.type==='premium'&&foreign&&num(t.rate)>0?rate(t.rate,t.currency):'—',twdText=foreign?(t.type==='premium'&&t.costBasisPending?'成本待確認':t.type!=='premium'&&!(num(t.actualTwd)>0)?'—':money(t.type==='premium'?t.costTwd:t.actualTwd)):'—',out=t.type==='premium';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(insuranceName(t.projectId))}</td><td>${({premium:'繳保費',survival:'生存金',surrender:'解約金'})[t.type]}</td><td class="${out?'negative':'positive'}"><b>${out?'−':'+'} ${moneyCur(t.currency,t.amount)}</b></td><td>${out?moneyCur(t.feeCurrency==='TWD'?'TWD':t.currency,t.fee):'—'}</td><td>${rateText}</td><td>${twdText}</td><td>${linked?('連動：'+esc(fxName(linked.projectId))+'<br>'):''}${esc(t.note||'')}</td><td><button class="secondary smallbtn" onclick="editInsuranceTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteInsuranceTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="9" class="empty">目前沒有符合篩選條件的保險紀錄</td></tr>';
  let cards=document.getElementById('insuranceTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(t=>{let linked=t.linkedFxTradeId?state.fxTrades.find(f=>f.id===t.linkedFxTradeId):null,foreign=t.currency!=='TWD',income=t.type!=='premium',label=({premium:'繳保費',survival:'生存金',surrender:'解約金'})[t.type],twd=t.type==='premium'?t.costTwd:t.actualTwd,twdText=foreign?(t.type==='premium'&&t.costBasisPending?'台幣成本待確認':'台幣'+(income?'實際入帳 ':'成本 ')+money(twd)):'';let amount=`<b class="insurance-card-amount ${income?'positive':'negative'}">${income?'+':'−'} ${moneyCur(t.currency,t.amount)}</b>${twdText?`<small class="record-amount-sub">${twdText}</small>`:''}${t.type==='premium'&&foreign?`<small class="record-amount-sub">當筆匯率 ${num(t.rate)>0?rate(t.rate,t.currency):'待確認'}</small>`:''}`,meta=[];if(t.type==='premium'&&num(t.fee)>0)meta.push('費用 '+moneyCur(t.feeCurrency==='TWD'?'TWD':t.currency,t.fee));if(linked)meta.push('外幣帳本：'+esc(fxName(linked.projectId)));if(t.note)meta.push(esc(t.note));let actions=`<span class="insurance-card-actions"><button class="secondary smallbtn" onclick="editInsuranceTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteInsuranceTrade('${t.id}')">刪除</button></span>`,detail=`<div class="insurance-card-line1"><span>${esc(dateDisplay(t.date))}</span></div><div class="insurance-card-line2">${amount}</div><div class="insurance-card-line3"><span class="insurance-card-line3-text">${meta.join('｜')}</span>${actions}</div>`;return detailFlowCard(income?'收入':'支出',label,detail,'',insuranceName(t.projectId))}).join(''):'<div class="empty">目前沒有符合篩選條件的保險紀錄</div>'
 }
 document.getElementById('insuranceFilter').onchange=renderInsurance;document.getElementById('insuranceStatus').onchange=renderInsurance;document.getElementById('insuranceSearch').addEventListener('input',renderInsurance);
-window.openInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;insuranceFilter.innerHTML='<option value="">全部未解約保單</option>'+state.insuranceProjects.filter(x=>x.status!=='closed').map(x=>`<option value="${x.id}">${esc(x.name)}</option>`).join('')+(p.status==='closed'?`<option value="${p.id}">${esc(p.name)}（已解約歷史）</option>`:'');insuranceFilter.value=pid;renderInsurance();go('insurancerecords')};window.setInsurance=(pid,status)=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p){p.status=status;save()}};window.closeInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p&&confirm('確定標記為已解約？完整交易紀錄會保留在已解約帳本中。')){p.status='closed';save()}};window.reopenInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p){p.status='paid';save()}};window.editInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;let n=prompt('保單名稱',p.name);if(n===null)return;let c=prompt('保險公司',p.company);if(c===null)return;p.name=n.trim()||p.name;p.company=c.trim();save()};window.deleteInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid),items=state.insuranceTrades.filter(t=>t.projectId===pid);if(!p||!confirm(`確定刪除保單及 ${items.length} 筆紀錄？此操作無法復原。`))return;let links=items.map(t=>t.linkedFxTradeId).filter(Boolean);state.insuranceTrades=state.insuranceTrades.filter(t=>t.projectId!==pid);state.fxTrades=state.fxTrades.filter(t=>!links.includes(t.id));state.insuranceProjects=state.insuranceProjects.filter(x=>x.id!==pid);save()};
+window.openInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;insuranceFilter.value=pid;renderInsurance();go('insurancerecords')};window.setInsurance=(pid,status)=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p){p.status=status;save()}};window.closeInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p&&confirm('確定標記為已解約？完整交易紀錄會保留在已解約帳本中。')){p.status='closed';save()}};window.reopenInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(p){p.status='paid';save()}};window.editInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid);if(!p)return;let n=prompt('保單名稱',p.name);if(n===null)return;let c=prompt('保險公司',p.company);if(c===null)return;p.name=n.trim()||p.name;p.company=c.trim();save()};window.deleteInsurance=pid=>{let p=state.insuranceProjects.find(x=>x.id===pid),items=state.insuranceTrades.filter(t=>t.projectId===pid);if(!p||!confirm(`確定刪除保單及 ${items.length} 筆紀錄？此操作無法復原。`))return;let links=items.map(t=>t.linkedFxTradeId).filter(Boolean);state.insuranceTrades=state.insuranceTrades.filter(t=>t.projectId!==pid);state.fxTrades=state.fxTrades.filter(t=>!links.includes(t.id));state.insuranceProjects=state.insuranceProjects.filter(x=>x.id!==pid);save()};
 window.applyInsuranceTradeEdit=function(tid,read){
  let t=state.insuranceTrades.find(x=>x.id===tid);if(!t)return;
  let date=read('交易日期（民國年／月／日）',dateDisplay(t.date));if(date===null)return;date=toISODate(date);if(!date)return alert('日期格式不正確，請輸入民國日期，例如 115/11/08');
@@ -1404,7 +1457,9 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  #fxValuationCards:empty{display:none}
  /* 基金明細金額、備註與操作按鈕分行 */
  #fundTradeCards .record-line1{display:flex;align-items:center;flex-wrap:wrap;gap:5px}
- #fundTradeCards .record-line1 .fund-record-rate{font-size:0.75rem;color:var(--muted);margin-left:2px}
+ #fundrecords .record-line1 .fund-record-rate{font-size:0.75rem;color:var(--muted);margin-left:2px;white-space:normal;overflow-wrap:anywhere}
+ #fundrecords .fund-record-note{white-space:normal;overflow-wrap:anywhere}
+ #fundrecords .record-line1{flex-wrap:wrap}
  #fundTradeCards .record-line2{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
  #fundTradeCards .record-line2 .record-inline-actions{display:none!important}
  #fundTradeCards .record-line3{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
@@ -1430,11 +1485,6 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  const oldValuation=window.renderFxValuation; if(typeof oldValuation==='function')window.renderFxValuation=function(){oldValuation();const host=document.getElementById('fxValuationCards');if(host){const active=(state.fxProjects||[]).filter(p=>p.status!=='closed');host.innerHTML=active.length?active.map(p=>{const v=fxCalc(p.id),q=botRates[p.currency]?.buy||0,value=v.qty*q,pnl=value-v.qty*v.avg;return `<div class="stats-item"><b>${esc(p.name)}（${esc(p.currency)}）</b><div>持有餘額：${moneyCur(p.currency,v.qty)}</div><div>臺企銀即期買入：${q?rate(q,p.currency):'尚無報價'}</div><div>預估可換回：${q?money(value):'—'}</div><div class="${pnl>=0?'positive':'negative'}">預估未實現損益（TWD）：${q?money(pnl):'—'}</div></div>`}).join(''):'<div class="stats-item">目前沒有進行中的外幣帳本</div>';}moveFxAdvanced();};
  // 外幣交易方向：買入增加庫存（+），賣出／轉出減少庫存（−）；轉出沿用賣出綠色方向標示。
  const oldFxTrades=window.renderFxTrades;if(typeof oldFxTrades==='function')window.renderFxTrades=function(){oldFxTrades();const pid=document.getElementById('fxFilter')?.value||'';const list=(state.fxTrades||[]).filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));const rows=document.getElementById('fxTradeRows');if(rows){Array.from(rows.querySelectorAll('tr')).forEach((tr,i)=>{const t=list[i];if(!t)return;const cell=tr.children[3],b=cell?.querySelector('b');if(!b)return;const sign=['buy','interest'].includes(t.type)?'+':'−';b.textContent=sign+' '+moneyCur(fxCurrency(t.projectId),t.amount);cell.classList.add('positive');cell.classList.remove('negative');});}const cards=document.getElementById('fxTradeCards');if(cards){Array.from(cards.querySelectorAll('.detail-flow-card')).forEach((card,i)=>{const t=list[i];if(!t)return;const b=card.querySelector('.record-line2 b');if(b){b.textContent=(['buy','interest'].includes(t.type)?'+':'−')+' '+moneyCur(fxCurrency(t.projectId),t.amount);b.classList.add('positive');b.classList.remove('negative');}const side=card.querySelector('.detail-flow-side');if(side&&t.type==='spend'){side.classList.remove('expense');side.classList.add('income');}});}};
- // 基金交易：申購增加基金庫存（+），贖回減少庫存（−），配息為收入（+）。
- const oldFundTrades=window.renderFundTrades;if(typeof oldFundTrades==='function')window.renderFundTrades=function(){oldFundTrades();const pid=document.getElementById('fundFilter')?.value||'';const active=(state.fundTrades||[]).filter(t=>{const p=state.fundProjects.find(x=>x.id===t.projectId);return(!pid||t.projectId===pid)&&p?.status!=='closed'}).sort((a,b)=>sortTrade(b,a));const table=document.getElementById('fundTradeRows');if(table){Array.from(table.querySelectorAll('tr')).forEach((tr,i)=>{const t=active[i],b=tr.children[3]?.querySelector('b');if(!t||!b)return;const buy=t.type==='buy_lump'||t.type==='buy_regular',amount=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount);b.textContent=(buy?'+':t.type==='sell'?'−':'+')+' '+moneyCur(t.currency||state.fundProjects.find(p=>p.id===t.projectId)?.currency||'TWD',amount);});}const cards=document.getElementById('fundTradeCards');if(cards){Array.from(cards.querySelectorAll('.detail-flow-card')).forEach((card,i)=>{const t=active[i];if(!t)return;const b=card.querySelector('.record-line2 b');if(b){const buy=t.type==='buy_lump'||t.type==='buy_regular',amount=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount);b.textContent=(buy?'+':t.type==='sell'?'−':'+')+' '+moneyCur(t.currency||state.fundProjects.find(p=>p.id===t.projectId)?.currency||'TWD',amount);b.classList.remove('negative');b.classList.add('positive');}
- const line1=card.querySelector('.record-line1'),line3=card.querySelector('.record-line3');if(line1){let rateText='';const linked=t.linkedFxTradeId?state.fxTrades.find(x=>x.id===t.linkedFxTradeId):null;const lr=num(t.linkedFxRate||linked?.rate);if(linked&&lr>0){rateText='匯率 '+rate(lr,t.currency||'USD');if(t.note)rateText+='｜'+t.note;}const span=document.createElement('span');span.className='fund-record-rate';span.textContent=rateText;if(rateText)line1.appendChild(span);}
- if(line3){line3.querySelectorAll('.record-inline-actions').forEach(x=>{const wrap=document.createElement('span');wrap.className='fund-record-actions';wrap.innerHTML=x.innerHTML;x.replaceWith(wrap)});const action=line3.querySelector('.fund-record-actions');line3.replaceChildren();const noteParts=[];if((t.type==='buy_lump'||t.type==='buy_regular')&&num(t.fee)>0)noteParts.push('申購手續費 '+moneyCur(t.currency||'TWD',t.fee));if(t.note)noteParts.push(t.note);if(noteParts.length){const noteSpan=document.createElement('span');noteSpan.textContent=noteParts.join('｜');line3.appendChild(noteSpan);}if(action)line3.appendChild(action);}
- });}};
  // 基金總覽：將備註接在幣別後方，以「｜」區隔，不再占用獨立一排。
  function compactFundNotes(){document.querySelectorAll('.fund-project-card .fund-project-head').forEach(head=>{const muted=head.querySelector('.muted'),note=head.querySelector('.mini-note');if(muted&&note&&!muted.querySelector('.fund-project-note')){const val=note.textContent.trim();if(val){const span=document.createElement('span');span.className='fund-project-note';span.textContent='｜'+val;muted.appendChild(span);}}});}
  // 保單未解約時，尚未發生的解約金、最終損益與報酬率顯示「—」。
@@ -1529,22 +1579,9 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
    const cap=card.querySelector('.record-line1 .record-caption');if(cap){const text=t.transferIn||t.transferOut?fxTransferCaption(t):String(t.note||'');cap.textContent=text?'｜'+text:'';cap.hidden=!text;}
   })}
  }
- function refreshFund(){
-  const pid=document.getElementById('fundFilter')?.value||'';
-  const active=(state.fundTrades||[]).filter(t=>{const p=state.fundProjects.find(x=>x.id===t.projectId);return(!pid||t.projectId===pid)&&p?.status!=='closed'}).sort((a,b)=>window.sortTrade(b,a));
-  const history=(state.fundTrades||[]).filter(t=>{const p=state.fundProjects.find(x=>x.id===t.projectId);return(!pid||t.projectId===pid)&&p?.status==='closed'}).sort((a,b)=>window.sortTrade(b,a));
-  const table=document.getElementById('fundTradeRows');if(table)Array.from(table.querySelectorAll('tr')).forEach((tr,i)=>{const t=active[i],b=tr.children[3]?.querySelector('b');if(!t||!b)return;const buy=t.type==='buy_lump'||t.type==='buy_regular',positive=buy||t.type==='dividend',amount=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount);b.textContent=(positive?'+':'−')+' '+moneyCur(t.currency||'TWD',amount);b.classList.toggle('positive',positive);b.classList.toggle('negative',!positive)});
-  function cardsFor(id,list){const host=document.getElementById(id);if(!host)return;Array.from(host.querySelectorAll('.detail-flow-card')).forEach((card,i)=>{const t=list[i];if(!t)return;const buy=t.type==='buy_lump'||t.type==='buy_regular',positive=buy||t.type==='dividend',amount=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount);setFlow(card,positive);const b=card.querySelector('.record-line2 b');if(b)b.textContent=(positive?'+':'−')+' '+moneyCur(t.currency||state.fundProjects.find(p=>p.id===t.projectId)?.currency||'TWD',amount);
-   // 日期後只保留連動匯率資訊，不重複顯示申購／贖回／配息類型。
-   const line1=card.querySelector('.record-line1');line1?.querySelector('.record-caption')?.remove();
-   const linked=t.linkedFxTradeId?state.fxTrades.find(x=>x.id===t.linkedFxTradeId):null;const lr=num(t.linkedFxRate||linked?.rate);let rateSpan=line1?.querySelector('.fund-record-rate');if(line1){if(!rateSpan){rateSpan=document.createElement('span');rateSpan.className='fund-record-rate';line1.appendChild(rateSpan)}let txt='';if(linked&&lr>0){txt='匯率 '+rate(lr,t.currency||'USD');}rateSpan.textContent=txt;rateSpan.hidden=!txt;}
-   let line3=card.querySelector('.record-line3');if(!line3){line3=document.createElement('div');line3.className='record-line3';card.querySelector('.detail-flow-content')?.appendChild(line3)}line3.replaceChildren();const notes=[];if(buy&&num(t.fee)>0)notes.push('申購手續費 '+moneyCur(t.currency||'TWD',t.fee));if(t.note)notes.push(t.note);if(notes.length){const n=document.createElement('span');n.textContent=notes.join('｜');line3.appendChild(n)}const actions=document.createElement('span');actions.className='fund-record-actions';actions.innerHTML=`<button class="secondary smallbtn" onclick="editFundTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFundTrade('${t.id}')">刪除</button>`;line3.appendChild(actions);
-  })}
-  cardsFor('fundTradeCards',active);cardsFor('fundHistoryTradeCards',history);
- }
  function refreshInsurance(){
   const pid=document.getElementById('insuranceFilter')?.value||'';
-  const list=(state.insuranceTrades||[]).filter(t=>{const p=state.insuranceProjects.find(x=>x.id===t.projectId);return p&&(!pid||t.projectId===pid)&&(p.status!=='closed'||(pid&&t.projectId===pid))}).sort((a,b)=>window.sortTrade(b,a));
+  const list=(state.insuranceTrades||[]).filter(t=>{const p=state.insuranceProjects.find(x=>x.id===t.projectId);return p&&(!pid||t.projectId===pid)}).sort((a,b)=>window.sortTrade(b,a));
   const cards=document.getElementById('insuranceTradeCards');if(!cards)return;
   Array.from(cards.querySelectorAll('.detail-flow-card')).forEach((card,i)=>{const t=list[i];if(!t)return;const positive=t.type!=='premium';setFlow(card,positive);const line1=card.querySelector('.insurance-card-line1'),line2=card.querySelector('.insurance-card-line2'),line3=card.querySelector('.insurance-card-line3');
    if(line1){let note=line1.querySelector('.insurance-card-note');if(!note){note=document.createElement('span');note.className='insurance-card-note';line1.appendChild(note)}note.textContent=t.note?'｜'+t.note:'';note.hidden=!t.note;}
@@ -1558,17 +1595,17 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  }
  function decorateAll(){decorateActionButtons(document);}
  const oldFx=window.renderFxTrades;window.renderFxTrades=function(){oldFx?.();refreshFx();decorateAll()};
- const oldFund=window.renderFundTrades;window.renderFundTrades=function(){oldFund?.();refreshFund();decorateAll()};
+ const oldFund=window.renderFundTrades;window.renderFundTrades=function(){oldFund?.();decorateAll()};
  const oldIns=window.renderInsurance;window.renderInsurance=function(){oldIns?.();refreshInsurance();decorateAll()};
  const oldTravel=window.renderTravel;window.renderTravel=function(){oldTravel?.();refreshTravel();decorateAll()};
- const oldRender=window.render;window.render=function(){oldRender?.();refreshFx();refreshFund();refreshInsurance();refreshTravel();decorateAll()};
+ const oldRender=window.render;window.render=function(){oldRender?.();refreshFx();refreshInsurance();refreshTravel();decorateAll()};
 
  // 外幣交易可補備註；轉帳配對只開放修改備註，避免破壞成本快照。
  window.editFxTrade=function(tid){const t=state.fxTrades.find(x=>x.id===tid);if(!t)return;const note=prompt('備註（可新增或修改）',t.note||'');if(note===null)return;if(t.transferPairId){const pair=state.fxTrades.filter(x=>x.transferPairId===t.transferPairId);pair.forEach(x=>{const other=x.transferOut?'轉入：'+fxName(pair.find(y=>y.transferIn)?.projectId):'轉出：'+fxName(pair.find(y=>y.transferOut)?.projectId);x.note=(note.trim()||'帳本間轉帳')+'｜'+other});}else if(t.transferOut){t.note=note.trim();}else{let date=prompt('交易日期（民國年／月／日）',dateDisplay(t.date));if(date===null)return;date=toISODate(date);if(!date)return alert('日期格式不正確，請輸入民國日期，例如 115/11/08');let amount=Number(prompt('外幣金額',t.amount));if(!Number.isFinite(amount)||amount<=0)return alert('外幣金額不正確');let r=Number(prompt('實際成交匯率',t.rate));if(!Number.isFinite(r)||r<=0)return alert('匯率不正確');let fee=Number(prompt('手續費／匯費（TWD）',t.fee||0));if(!Number.isFinite(fee)||fee<0)return alert('費用不正確');const old={...t};Object.assign(t,{date,amount,rate:r,fee,note:note.trim()});if(!validFxLedger(t.projectId)){Object.assign(t,old);return alert('修改後會造成外幣庫存不足，已取消修改')}}save()};
 
  // 基金重新開啟時若目前正在「已結案」篩選，切回全部，避免卡片立即消失而無法查看明細。
  window.closeFundProject=function(pid){const p=state.fundProjects.find(x=>x.id===pid);if(!p)return;if(p.status!=='closed'&&fundCalc(pid).remainingCost>0.005)return alert('仍有尚未沖回的投資成本，請先完成贖回再結案');const reopening=p.status==='closed';p.status=reopening?'open':'closed';if(reopening){const f=document.getElementById('fundStatusFilter');if(f&&f.value==='closed')f.value='all';}save();renderFundProjectGroups()};
- window.openFundProject=function(pid){const p=state.fundProjects.find(x=>x.id===pid);if(!p)return;const status=document.getElementById('fundStatusFilter');if(status&&status.value==='closed'&&p.status!=='closed')status.value='all';const f=document.getElementById('fundFilter');if(f)f.value=pid;renderFundTrades();go('fundrecords')};
+ window.openFundProject=function(pid){const p=state.fundProjects.find(x=>x.id===pid);if(!p)return;const status=document.getElementById('fundStatusFilter');if(status&&status.value==='closed'&&p.status!=='closed')status.value='all';const f=document.getElementById('fundFilter');if(f)f.value=pid;go('fundrecords')};
 
  // 旅程狀態變更後立即重新繪製帳本與歷史明細，不需離開頁面再回來。
  window.toggleTravelStatus=function(pid){const p=state.travelProjects.find(x=>x.id===pid);if(!p)return;const reopening=p.status==='closed';p.status=reopening?'open':'closed';if(reopening){const f=document.getElementById('travelStatus');if(f&&f.value==='closed')f.value='all';}save();renderTravel();refreshTravel();decorateAll()};
@@ -1698,7 +1735,7 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
   if(id==='travelrecords'&&typeof window.renderTravel==='function')window.renderTravel();
   if(['fxentry','fundentry','insuranceentry','travelentry'].includes(id)&&typeof window.render==='function')window.render();
   const result=oldGo(id);
-  requestAnimationFrame(()=>{window.scrollTo({top:0,left:0,behavior:'instant'});const panel=document.getElementById(id);if(panel){panel.querySelectorAll('.tablewrap,#fxProjectCards,#travelProjectCards,#fundProjectGroups,#insuranceProjectsList,#fxTradeCards,#fundTradeCards,#insuranceTradeCards,#travelTradeCards,#fundHistoryTradeCards').forEach(el=>{el.scrollTop=0;el.scrollLeft=0});}});
+  requestAnimationFrame(()=>{window.scrollTo({top:0,left:0,behavior:'instant'});const panel=document.getElementById(id);if(panel){panel.querySelectorAll('.tablewrap,#fxProjectCards,#travelProjectCards,#fundProjectGroups,#insuranceProjectsList,#fxTradeCards,#fundTradeCards,#insuranceTradeCards,#travelTradeCards,#fundHistoryTradeCards,.record-history-cards').forEach(el=>{el.scrollTop=0;el.scrollLeft=0});}});
   requestAnimationFrame(applyAll);return result;
  };
  // 初始畫面也統一套用。
@@ -1736,9 +1773,10 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  const detailSets=[
   ['fxTradeCards','.detail-flow-card'],['fundTradeCards','.detail-flow-card'],
   ['insuranceTradeCards','.detail-flow-card'],['travelTradeCards','.detail-flow-card'],
-  ['fundHistoryTradeCards','.detail-flow-card']
+  ['fundHistoryTradeCards','.detail-flow-card'],['fxHistoryCards','.detail-flow-card'],
+  ['insuranceHistoryCards','.detail-flow-card'],['travelHistoryCards','.detail-flow-card']
  ];
- const tableSets=['fxTradeRows','fundTradeRows','insuranceRows','travelExpenseRows','fundHistoryTradeRows'];
+ const tableSets=['fxTradeRows','fundTradeRows','insuranceRows','travelExpenseRows','fundHistoryTradeRows','fxHistoryRows','insuranceHistoryRows','travelHistoryRows'];
  function sizeToSix(host,selector){
   if(!host)return;
   host.querySelectorAll(selector).forEach(el=>{el.hidden=false;el.removeAttribute('data-six-page')});
@@ -1781,21 +1819,14 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  const moneyText=(c,a)=>moneyCur(c,a);
  function direction(card,positive,amount){const side=card.querySelector('.detail-flow-side');if(side){side.classList.toggle('income',positive);side.classList.toggle('expense',!positive)}const b=card.querySelector('.record-line2 b,.insurance-card-amount');if(b){b.classList.toggle('positive',positive);b.classList.toggle('negative',!positive);if(amount!==undefined)b.textContent=(positive?'+ ':'− ')+amount}}
  function noDuplicate(){document.querySelectorAll('.detail-flow-card').forEach(card=>{const cap=card.querySelector('.record-line1 .record-caption');if(!cap)return;const side=(card.querySelector('.detail-flow-side')?.textContent||'').trim(),v=cap.textContent.replace(/^｜/,'').trim();if(v&&v===side)cap.remove()})}
- function fixFund(){const pid=document.getElementById('fundFilter')?.value||'',proj=t=>state.fundProjects.find(p=>p.id===t.projectId),active=(state.fundTrades||[]).filter(t=>(!pid||t.projectId===pid)&&proj(t)?.status!=='closed').sort((a,b)=>sortTrade(b,a)),history=(state.fundTrades||[]).filter(t=>(!pid||t.projectId===pid)&&proj(t)?.status==='closed').sort((a,b)=>sortTrade(b,a));
-  const cards=(hostId,list)=>{const host=document.getElementById(hostId);host?.querySelectorAll('.detail-flow-card').forEach(card=>{const t=list.find(x=>x.id===getId(card,'editFundTrade'));if(!t)return;const buy=t.type==='buy_lump'||t.type==='buy_regular',positive=!buy,c=t.currency||proj(t)?.currency||'TWD',a=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount);direction(card,positive,moneyText(c,a));card.querySelector('.record-line1 .record-caption')?.remove()})};
-  cards('fundTradeCards',active);cards('fundHistoryTradeCards',history);
-  const rows=(hostId,list)=>document.getElementById(hostId)?.querySelectorAll('tr').forEach(tr=>{const t=list.find(x=>x.id===getId(tr,'editFundTrade'));if(!t)return;const buy=t.type==='buy_lump'||t.type==='buy_regular',positive=!buy,c=t.currency||proj(t)?.currency||'TWD',a=buy?num(t.amount)+num(t.fee):t.type==='sell'?num(t.actualNet??t.cashAmount??t.amount):num(t.actualNet??t.dividendAmount??t.amount),cell=tr.children[3],b=cell?.querySelector('b');if(b){b.textContent=(positive?'+ ':'− ')+moneyText(c,a);b.classList.toggle('positive',positive);b.classList.toggle('negative',!positive)}if(cell){cell.classList.toggle('positive',positive);cell.classList.toggle('negative',!positive)}});
-  rows('fundTradeRows',active);rows('fundHistoryTradeRows',history);
- }
- function fixInsurance(){const pid=document.getElementById('insuranceFilter')?.value||'',list=(state.insuranceTrades||[]).filter(t=>{const p=state.insuranceProjects.find(x=>x.id===t.projectId);return p&&(!pid||t.projectId===pid)&&(p.status!=='closed'||(pid&&t.projectId===pid))}).sort((a,b)=>sortTrade(b,a)),host=document.getElementById('insuranceTradeCards');host?.querySelectorAll('.detail-flow-card').forEach(card=>{const t=list.find(x=>x.id===getId(card,'editInsuranceTrade'));if(!t)return;direction(card,t.type!=='premium');const line1=card.querySelector('.insurance-card-line1');if(line1){let n=line1.querySelector('.insurance-card-note');if(!n){n=document.createElement('span');n.className='insurance-card-note';line1.appendChild(n)}n.textContent=t.note?'｜'+t.note:'';n.hidden=!t.note}const line2=card.querySelector('.insurance-card-line2'),twd=line2?.nextElementSibling?.classList.contains('insurance-card-twd-line')?line2.nextElementSibling:null,sub=line2?.querySelector('.record-amount-sub');if(twd&&sub){sub.textContent=twd.textContent;twd.remove()}else if(twd)twd.remove();const line3=card.querySelector('.insurance-card-line3'),actions=line3?.querySelector('.insurance-card-actions');if(line3&&actions){line3.appendChild(actions);line3.style.display='flex';line3.style.justifyContent='space-between'}})}
- const oldFund=window.renderFundTrades;window.renderFundTrades=function(){oldFund?.();fixFund();noDuplicate()};
+ function fixInsurance(){const pid=document.getElementById('insuranceFilter')?.value||'',list=(state.insuranceTrades||[]).filter(t=>{const p=state.insuranceProjects.find(x=>x.id===t.projectId);return p&&(!pid||t.projectId===pid)}).sort((a,b)=>sortTrade(b,a)),host=document.getElementById('insuranceTradeCards');host?.querySelectorAll('.detail-flow-card').forEach(card=>{const t=list.find(x=>x.id===getId(card,'editInsuranceTrade'));if(!t)return;direction(card,t.type!=='premium');const line1=card.querySelector('.insurance-card-line1');if(line1){let n=line1.querySelector('.insurance-card-note');if(!n){n=document.createElement('span');n.className='insurance-card-note';line1.appendChild(n)}n.textContent=t.note?'｜'+t.note:'';n.hidden=!t.note}const line2=card.querySelector('.insurance-card-line2'),twd=line2?.nextElementSibling?.classList.contains('insurance-card-twd-line')?line2.nextElementSibling:null,sub=line2?.querySelector('.record-amount-sub');if(twd&&sub){sub.textContent=twd.textContent;twd.remove()}else if(twd)twd.remove();const line3=card.querySelector('.insurance-card-line3'),actions=line3?.querySelector('.insurance-card-actions');if(line3&&actions){line3.appendChild(actions);line3.style.display='flex';line3.style.justifyContent='space-between'}})}
  const oldIns=window.renderInsurance;window.renderInsurance=function(){oldIns?.();fixInsurance();noDuplicate()};
  const oldFx=window.renderFxTrades;window.renderFxTrades=function(){oldFx?.();noDuplicate()};
  const oldTravel=window.renderTravel;window.renderTravel=function(){oldTravel?.();noDuplicate()};
  window.applyTravelProjectEdit=function(pid,read,note){const p=state.travelProjects.find(x=>x.id===pid);if(!p)return;let name=read('旅遊行程名稱',p.name);if(name===null)return;let location=read('地點',p.location||'');if(location===null)return;let start=read('開始日期（民國年／月／日）',dateDisplay(p.startDate||''));if(start===null)return;let startISO=String(start).trim()?toISODate(start):'';if(String(start).trim()&&!startISO)return alert('開始日期格式不正確，請輸入民國日期，例如 115/11/08');let end=read('結束日期（民國年／月／日）',dateDisplay(p.endDate||''));if(end===null)return;let endISO=String(end).trim()?toISODate(end):'';if(String(end).trim()&&!endISO)return alert('結束日期格式不正確，請輸入民國日期，例如 115/11/08');if(startISO&&endISO&&endISO<startISO)return alert('結束日期不可早於開始日期');let companions=read('旅伴',p.companions||'');if(companions===null)return;let cur=read('旅遊預設幣別（TWD／USD／JPY／EUR）',p.defaultCurrency||'TWD');if(cur===null)return;cur=cur.toUpperCase();if(!/^[A-Z]{3,8}$/.test(cur))return alert('請輸入有效幣別代碼，例如 GBP、AUD、CNY');Object.assign(p,{name:name.trim()||p.name,location,startDate:startISO,endDate:endISO,companions,defaultCurrency:cur,note});return save()};
- ['fundFilter','insuranceFilter','fxFilter','teFilter'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>requestAnimationFrame(()=>{fixFund();fixInsurance();noDuplicate()})));
- const oldRender=window.render; if(oldRender)window.render=function(){oldRender();fixFund();fixInsurance();noDuplicate()};
- requestAnimationFrame(()=>{fixFund();fixInsurance();noDuplicate()});
+ ['insuranceFilter','fxFilter','teFilter'].forEach(id=>document.getElementById(id)?.addEventListener('change',()=>requestAnimationFrame(()=>{fixInsurance();noDuplicate()})));
+ const oldRender=window.render; if(oldRender)window.render=function(){oldRender();fixInsurance();noDuplicate()};
+ requestAnimationFrame(()=>{fixInsurance();noDuplicate()});
 })();
 </script>
 
@@ -1858,56 +1889,13 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
   `;
   document.head.appendChild(travelAmountFix);
 
-  const escText = v => String(v ?? '');
-  const getTradeId = (card, fn) => {
-    const btn = card.querySelector(`[onclick*="${fn}"]`);
-    const m = (btn?.getAttribute('onclick') || '').match(new RegExp(fn + "\\('([^']+)'\\)"));
-    return m?.[1] || '';
-  };
-  const ensureActions = (card, id, editFn, deleteFn, cls) => {
-    let line = card.querySelector('.record-line3');
-    if (!line) {
-      line = document.createElement('div');
-      line.className = 'record-line3';
-      card.querySelector('.detail-flow-content')?.appendChild(line);
-    }
-    let actions = line.querySelector('.fund-record-actions');
-    if (!actions) {
-      actions = document.createElement('span');
-      actions.className = cls || 'fund-record-actions';
-      line.appendChild(actions);
-    }
-    if (!actions.querySelector(`[onclick*="${editFn}"]`)) {
-      actions.innerHTML =
-        `<button class="secondary smallbtn" onclick="${editFn}('${id}')">修改</button>` +
-        `<button class="danger smallbtn" onclick="${deleteFn}('${id}')">刪除</button>`;
-    }
-  };
-
-  function fixFundActions(){
-    const hosts = [
-      ['fundTradeCards', state.fundTrades || []],
-      ['fundHistoryTradeCards', state.fundTrades || []]
-    ];
-    hosts.forEach(([hostId, trades]) => {
-      document.getElementById(hostId)?.querySelectorAll('.detail-flow-card').forEach(card => {
-        const id = getTradeId(card, 'editFundTrade');
-        if (!id) return;
-        const t = trades.find(x => x.id === id);
-        if (!t) return;
-        ensureActions(card, id, 'editFundTrade', 'deleteFundTrade', 'fund-record-actions');
-      });
-    });
-  }
-
   function renderInsuranceCards(){
     const filterId = document.getElementById('insuranceFilter')?.value || '';
     const ps = state.insuranceProjects || [];
     const trades = (state.insuranceTrades || [])
       .filter(t => {
         const p = ps.find(x => x.id === t.projectId);
-        return p && (!filterId || t.projectId === filterId) &&
-          (p.status !== 'closed' || (filterId && t.projectId === filterId));
+        return p && (!filterId || t.projectId === filterId);
       })
       .sort((a,b) => sortTrade(b,a));
     const host = document.getElementById('insuranceTradeCards');
@@ -1963,34 +1951,7 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
   // 以明細所屬交易資料重新產生卡片，避免切換帳本後沿用錯誤索引或漏掉金額／按鈕。
   const oldInsurance = window.renderInsurance;
   window.renderInsurance = function(){ oldInsurance?.(); renderInsuranceCards(); };
-  const oldFund = window.renderFundTrades;
-  window.renderFundTrades = function(){ oldFund?.(); fixFundActions(); };
 
-  // 基金篩選器有時只重繪明細而未重新裝飾按鈕，監聽變更後再補一次。
-  ['fundFilter','insuranceFilter','teFilter'].forEach(id => {
-    document.getElementById(id)?.addEventListener('change', () => requestAnimationFrame(() => {
-      if (id === 'fundFilter') fixFundActions();
-      if (id === 'insuranceFilter') renderInsuranceCards();
-      if (id === 'teFilter') window.renderTravel?.();
-    }));
-  });
-
-  // 將各模組顯示文字統一成「連動＋帳本名稱」。
-  document.querySelectorAll('#fundTradeCards .record-line3, #fundHistoryTradeCards .record-line3').forEach(el => {
-    el.innerHTML = el.innerHTML.replaceAll('連動','連動');
-  });
-
-  const oldRender = window.render;
-  if (oldRender) window.render = function(){
-    oldRender();
-    fixFundActions();
-    renderInsuranceCards();
-  };
-
-  requestAnimationFrame(() => {
-    fixFundActions();
-    renderInsuranceCards();
-  });
 })();
 </script>
 
@@ -2359,16 +2320,14 @@ function fundTwdBasis(projectId,settlement){
    units+=principal;
    const excludedPrincipal=row.fundedFromExcluded?principal:Math.min(principal,Math.max(0,num(row.excludedFundPrincipal)));
    excluded+=excludedPrincipal;
-   if(!row.fundedFromExcluded){
-    if(basis>0)cost+=paid*basis;
-    else unknown+=principal-excludedPrincipal;
-   }
+   if(basis>0)cost+=paid*basis;
+   else unknown+=principal-excludedPrincipal;
   }else if(row.type==='sell'&&units>0){
    const part=Math.min(units,num(row.redemptionCost??row.amount))/units;
    units*=1-part;cost*=1-part;unknown*=1-part;excluded*=1-part;
   }
  }
- return {rate:units>1e-8&&unknown<1e-8?cost/units:null,excludedFraction:units>1e-8?Math.min(1,excluded/units):0};
+ return {rate:units>1e-8&&unknown<1e-8?(units-excluded>1e-8?cost/units:0):null,excludedFraction:units>1e-8?Math.min(1,excluded/units):0};
 }
 function insuranceTwdBasis(settlement){
  let principal=0,cost=0,unknown=false;
@@ -3052,6 +3011,68 @@ function fxRecordNote(trade,label){
  return note;
 }
 
+</script>
+<script>
+(function setupRecordHistory(){
+ document.getElementById('fundHistoryDetails').addEventListener('toggle',()=>window.scheduleDetailListFit());
+ const modules=[
+  {type:'fx',filter:'fxFilter',cards:'fxTradeCards',rows:'fxTradeRows',trades:'fxTrades',render:'renderFxTrades',edit:'editFxTrade',label:'已結案外幣帳本'},
+  {type:'insurance',filter:'insuranceFilter',cards:'insuranceTradeCards',rows:'insuranceRows',trades:'insuranceTrades',render:'renderInsurance',edit:'editInsuranceTrade',label:'已解約保單'},
+  {type:'travel',filter:'teFilter',cards:'travelTradeCards',rows:'travelExpenseRows',trades:'travelExpenses',render:'renderTravel',edit:'editTravelExpense',label:'已結束旅程'}
+ ];
+ for(const module of modules){
+  const filter=document.getElementById(module.filter);
+  const cards=document.getElementById(module.cards);
+  const rows=document.getElementById(module.rows);
+  const table=rows.closest('.tablewrap');
+  const history=document.createElement('details');
+  history.className='fund-history-details';
+  history.hidden=true;
+  const summary=document.createElement('summary');
+  summary.textContent='歷史明細（'+module.label+'）';
+  const historyTable=table.cloneNode(true);
+  const historyRows=historyTable.querySelector('tbody');
+  historyRows.id=module.type+'HistoryRows';
+  historyRows.replaceChildren();
+  const historyCards=document.createElement('div');
+  historyCards.id=module.type+'HistoryCards';
+  historyCards.className='record-history-cards';
+  history.append(summary,historyTable,historyCards);
+  cards.after(history);
+  history.addEventListener('toggle',()=>window.scheduleDetailListFit());
+  const render=window[module.render];
+  window[module.render]=function(...args){
+   const result=render.apply(this,args);
+   const closed=new Set(state[module.type+'Projects'].filter(p=>p.status==='closed').map(p=>p.id));
+   const closedTrades=new Set(state[module.trades].filter(t=>closed.has(t.projectId)).map(t=>module.edit+"('"+t.id+"')"));
+   const belongsToHistory=node=>closedTrades.has(node.querySelector('[onclick^="'+module.edit+'("]')?.getAttribute('onclick'));
+   historyCards.replaceChildren(...Array.from(cards.children).filter(belongsToHistory));
+   historyRows.replaceChildren(...Array.from(rows.children).filter(belongsToHistory));
+   const selectedClosed=closed.has(filter.value);
+   cards.hidden=selectedClosed;
+   rows.hidden=selectedClosed;
+   if(!selectedClosed&&!cards.children.length){
+    const empty=document.createElement('div');
+    empty.className='empty';
+    empty.textContent='目前沒有進行中的交易紀錄';
+    cards.append(empty);
+   }
+   if(selectedClosed&&!historyCards.children.length){
+    const empty=document.createElement('div');
+    empty.className='empty';
+    empty.textContent='目前沒有歷史交易紀錄';
+    historyCards.append(empty);
+   }
+   history.hidden=!historyCards.children.length;
+   history.open=!history.hidden&&(selectedClosed||history.open);
+   return result;
+  };
+  filter.onchange=()=>{
+   if(!filter.value)history.open=false;
+   window[module.render]();
+  };
+ }
+})();
 </script>
 <script>
 (function setupInAppBack(){
