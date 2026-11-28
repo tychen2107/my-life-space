@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.42</title>
+<title>亭有錢途 MY LIFE SPACE v1.23.43</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -387,7 +387,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.42 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.43 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -415,7 +415,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 </section>
 <section id="fxentry" class="panel">
 <div class="section"><h2>新增外幣交易／轉帳</h2><div class="formgrid">
-<div><label>所屬帳本</label><select id="xtProject"></select></div><div><label>交易類型</label><select id="xtType"><option value="buy">買入</option><option value="sell">賣出</option><option value="spend">轉出</option><option value="transfer_in">轉入</option><option value="interest">利息</option><option value="transfer">帳本間轉帳</option></select></div><div><label for="xtDate">日期</label><input id="xtDate" type="text" class="roc-date" inputmode="numeric" placeholder="民國年／月／日，例如 115/11/08"></div><div><label>外幣金額</label><input id="xtAmount" type="number" min="0" step="any"></div><div id="xtCalcWrap"><label for="xtCalcMode">換算方式</label><select id="xtCalcMode"><option value="rate">輸入匯率，算台幣金額</option><option value="twd">輸入台幣金額，算匯率</option></select></div><div id="xtTwdWrap" hidden><label for="xtTwd">台幣金額（未含費用）</label><input id="xtTwd" type="number" inputmode="decimal" min="0" step="any"></div><div id="xtDebitWrap" hidden><label for="xtDebitMode">轉出扣款來源</label><select id="xtDebitMode"></select><div hidden><label for="xtDebitExcluded">從不納入成本扣的金額</label><input id="xtDebitExcluded" type="number" min="0" step="any" inputmode="decimal"></div></div><div id="xtExcludeWrap" hidden><label><input id="xtExcludeCost" type="checkbox" style="width:auto"> 不納入投入成本</label></div><div id="xtRateWrap"><label id="xtRateLabel" for="xtRate">實際成交匯率（TWD／外幣）</label><input id="xtRate" type="number" min="0" step="any"></div><div><label>手續費／匯費（TWD）</label><input id="xtFee" class="fee-entry" type="number" min="0" step="any" value="0"></div><div id="xtTargetWrap" class="hidden"><label>轉入目的帳本</label><select id="xtTargetProject"><option value="">請選擇目的帳本</option></select></div><div id="xtRecipientWrap" class="hidden"><label>收款對象／來源（選填）</label><input id="xtRecipient" placeholder="例如：保險公司、家人或匯款來源"></div><div style="grid-column:span 2"><label>備註</label><input id="xtNote"></div></div><p class="mini-note" id="xtCalcResult" aria-live="polite"></p><div class="actions"><button class="primary" id="addFxTrade">儲存外幣交易</button></div><div class="note">外部轉出依當時移動加權平均成本扣帳；帳本間轉帳會同步建立轉出及轉入紀錄並承接原始成本。對外支付不認列賣出損益；外部轉入可填匯率，也可選擇不納入投入成本。若保費已由保險模組連動扣款，請勿再重複新增同一筆轉出。</div></div>
+<div><label>所屬帳本</label><select id="xtProject"></select></div><div><label>交易類型</label><select id="xtType"><option value="buy">買入</option><option value="sell">賣出</option><option value="transfer_in">轉入</option><option value="spend">轉出</option><option value="interest">利息</option><option value="transfer">帳本間轉帳</option></select></div><div><label for="xtDate">日期</label><input id="xtDate" type="text" class="roc-date" inputmode="numeric" placeholder="民國年／月／日，例如 115/11/08"></div><div><label>外幣金額</label><input id="xtAmount" type="number" min="0" step="any"></div><div id="xtCalcWrap"><label for="xtCalcMode">換算方式</label><select id="xtCalcMode"><option value="rate">輸入匯率，算台幣金額</option><option value="twd">輸入台幣金額，算匯率</option></select></div><div id="xtTwdWrap" hidden><label for="xtTwd">台幣金額（未含費用）</label><input id="xtTwd" type="number" inputmode="decimal" min="0" step="any"></div><div id="xtDebitWrap" hidden><label for="xtDebitMode">轉出扣款來源</label><select id="xtDebitMode"></select><div hidden><label for="xtDebitExcluded">從不納入成本扣的金額</label><input id="xtDebitExcluded" type="number" min="0" step="any" inputmode="decimal"></div></div><div id="xtExcludeWrap" hidden><label><input id="xtExcludeCost" type="checkbox" style="width:auto"> 不納入投入成本</label></div><div id="xtRateWrap"><label id="xtRateLabel" for="xtRate">實際成交匯率（TWD／外幣）</label><input id="xtRate" type="number" min="0" step="any"></div><div><label>手續費／匯費（TWD）</label><input id="xtFee" class="fee-entry" type="number" min="0" step="any" value="0"></div><div id="xtTargetWrap" class="hidden"><label>轉入目的帳本</label><select id="xtTargetProject"><option value="">請選擇目的帳本</option></select></div><div id="xtRecipientWrap" class="hidden"><label>收款對象／來源（選填）</label><input id="xtRecipient" placeholder="例如：保險公司、家人或匯款來源"></div><div style="grid-column:span 2"><label>備註</label><input id="xtNote"></div></div><p class="mini-note" id="xtCalcResult" aria-live="polite"></p><div class="actions"><button class="primary" id="addFxTrade">儲存外幣交易</button></div><div class="note">外部轉出依當時移動加權平均成本扣帳；帳本間轉帳會同步建立轉出及轉入紀錄並承接原始成本。對外支付不認列賣出損益；外部轉入可填匯率，也可選擇不納入投入成本。若保費已由保險模組連動扣款，請勿再重複新增同一筆轉出。</div></div>
 </section>
 <section id="fxrecords" class="panel"><div class="section"><h2>外幣交易明細（可修改／刪除）</h2><div class="formgrid" style="margin-bottom:12px"><div><label>帳本篩選</label><select id="fxFilter"><option value="">全部帳本</option></select></div><div class="actions fx-records-toolbar"><button class="primary" onclick="returnToSelectedBook('fx','fxFilter')">返回帳本</button><div class="fx-records-balance" id="fxRecordsBalance" hidden role="status" aria-live="polite"></div></div></div><div class="tablewrap"><table><thead><tr><th>日期</th><th>帳本</th><th>類型</th><th>實際收支（外幣）</th><th>交易匯率</th><th>單筆費用（TWD）</th><th>折合台幣</th><th>操作</th></tr></thead><tbody id="fxTradeRows"></tbody></table></div><div id="fxTradeCards" class="fx-trade-cards"></div></div></section>
 <section id="annual" class="panel"><div class="section"><div class="annual-heading"><img src="./fx-banknote-coins.webp" width="45" height="45" alt=""><h2>依幣別統計歷年收益／獲利</h2></div><div class="formgrid" style="margin-bottom:12px"><div><label>統計年度</label><select id="annualYear"><option value="">全部年度</option></select></div></div><div class="tablewrap annual-table"><table><thead><tr><th>年度</th><th>幣別</th><th>賣出外幣金額</th><th>已實現損益（TWD）</th><th>賣出筆數</th></tr></thead><tbody id="annualRows"></tbody></table></div><div id="annualCards" class="annual-cards"></div><div class="note">年度損益以「賣出日」歸屬年度，成本依同一外幣帳本的交易日期順序及移動加權平均法計算。此處統計外幣交易已實現損益；基金損益及配息另列於基金區。</div></div></section>
@@ -582,6 +582,11 @@ function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
   if(excludedDebit>0||t.fxDebitSource==='included'){
    const includedDebit=amount-excludedDebit, includedQty=Math.max(0,qty-excluded);
    if(excludedDebit>excluded+1e-8||includedDebit>includedQty+1e-8)invalidExcludedDebit=true;
+   if(t.type==='sell'&&includedDebit>1e-8&&includedQty>1e-8){
+    const pnl=(value-fee)*includedDebit/amount-cost*Math.min(1,includedDebit/includedQty);
+    details[t.id]=pnl;
+    realized+=pnl;
+   }
    if(includedQty>1e-8){
     const used=Math.min(1,includedDebit/includedQty);
     cost*=1-used;
@@ -742,6 +747,10 @@ function fundReturnMetrics(currency,calc){
  const amount=value=>`${value<0?'−':value>0?'+':''}${moneyCur(currency,Math.abs(value))}`;
  const percent=value=>value==null?'—':`${value<0?'−':value>0?'+':''}${Math.abs(value).toFixed(2)}%`;
  const tone=value=>value<0?'negative':value>0?'positive':'';
+ if(!calc.dividends)return `<div class="fund-return-metrics">
+  <div><small>已實現損益</small><b class="${tone(calc.realized)}">${amount(calc.realized)}</b></div>
+  <div class="fund-return-rates"><small>已實現報酬率</small><b class="${tone(calc.realizedRate)}">${percent(calc.realizedRate)}</b></div>
+ </div>`;
  return `<div class="fund-return-metrics">
   <div><small>累計配息</small><b>${moneyCur(currency,calc.dividends)}</b></div>
   <div><small>不含息已實現損益</small><b class="${tone(calc.realized)}">${amount(calc.realized)}</b></div>
@@ -760,7 +769,7 @@ function renderFxTrades(){
  const balance=document.getElementById('fxRecordsBalance');
  balance.hidden=!project;
  balance.textContent=project?'目前餘額 '+moneyCur(project.currency,fxCalc(pid).qty):'';
- let arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??(t.excludedDebitAmount?t.includedDebitRate:null)??(t.type==='buy'&&t.sourceFundTradeId&&fxExcludedCredit(t)>0&&num(t.amount)>fxExcludedCredit(t)?num(t.rate)*num(t.amount)/(num(t.amount)-fxExcludedCredit(t)):t.rate)),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*num(t.rate):null)):null;const excludedCost=t.debitExcluded||(t.type==='buy'&&t.amount>0&&fxExcludedCredit(t)>=t.amount-1e-8);const conversion=excludedCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion,excludedCost}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||excludedCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(num(t.fee)===0)meta.pop();if(t.debitExcluded||(isExternalFxRecord(t)&&(!t.transferIn||!r)))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}if(fxIncomeCredit(t)>1e-8)meta.push('收益入帳 '+moneyCur(c,fxIncomeCredit(t)));if(t.fxDebitSource==='included')meta.push('全從納入成本扣');if(t.fxDebitSource==='mixed')meta.push('不納入成本扣款 '+moneyCur(c,t.excludedDebitAmount));const note=fxRecordNote(t,label);
+ let arr=state.fxTrades.filter(t=>!pid||t.projectId===pid).sort((a,b)=>sortTrade(b,a));let rows=arr.map(t=>{let c=fxCurrency(t.projectId),kind=t.type==='interest'?'利息':t.type==='buy'?(t.transferIn?'轉入':'買進'):t.type==='spend'?(t.transferOut?'轉出':'轉出'):'賣出',r=num(t.transferIncludedRate??(t.type==='spend'&&t.excludedDebitAmount?t.includedDebitRate:null)??(t.type==='buy'&&t.sourceFundTradeId&&fxExcludedCredit(t)>0&&num(t.amount)>fxExcludedCredit(t)?num(t.rate)*num(t.amount)/(num(t.amount)-fxExcludedCredit(t)):t.rate)),base=t.type==='interest'?0:t.type==='buy'?num(t.amount)*num(t.rate)+num(t.fee):t.type==='sell'?num(t.amount)*r-num(t.fee):t.type==='spend'?(t.costBasisTwd??(r>0?num(t.amount)*num(t.rate):null)):null;const excludedCost=t.debitExcluded||(t.type==='buy'&&t.amount>0&&fxExcludedCredit(t)>=t.amount-1e-8);const conversion=excludedCost?'不納入投入成本':t.costBasisPending?'台幣成本待確認':t.type!=='interest'&&(r>0||num(t.costBasisTwd)>0)&&base!==null?money(base):'';return {t,c,kind,r,conversion,excludedCost}});document.getElementById('fxTradeRows').innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let sign=['interest','buy'].includes(t.type)?'+':'−';return `<tr><td>${esc(dateDisplay(t.date))}</td><td>${esc(fxName(t.projectId))}</td><td>${esc(fxCounterparty(t)||kind)}</td><td class="${sign==='+'?'positive':'negative'}"><b>${sign} ${moneyCur(c,t.amount)}</b></td><td>${isExternalFxRecord(t)&&(!t.transferIn||!r)?'—':t.costBasisPending?'待確認':r>0?rate(r,c):'—'}</td><td>${t.type==='interest'?'—':money(t.fee)}</td><td>${esc(conversion||'—')}</td><td><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button> <button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></td></tr>`}).join(''):'<tr><td colspan="8" class="empty">尚無交易紀錄</td></tr>';let cards=document.getElementById('fxTradeCards');if(cards)cards.innerHTML=rows.length?rows.map(({t,c,kind,r,conversion,excludedCost})=>{let income=['interest','buy'].includes(t.type),label=kind==='買進'?'買入':kind,meta=[`匯率 ${t.costBasisPending?'待確認':r>0?rate(r,c):'—'}`,`費用 ${money(t.fee)}`],suffix=conversion?`<small class="record-amount-sub">${t.costBasisPending||excludedCost?'':'折合台幣 '}${esc(conversion)}</small>`:'';if(num(t.fee)===0)meta.pop();if(t.debitExcluded||(isExternalFxRecord(t)&&(!t.transferIn||!r)))meta=meta.slice(1);if(t.type==='interest'){meta=[];suffix=''}if(fxIncomeCredit(t)>1e-8)meta.push('收益入帳 '+moneyCur(c,fxIncomeCredit(t)));if(t.fxDebitSource==='included')meta.push('全從納入成本扣');if(t.fxDebitSource==='mixed')meta.push('不納入成本扣款 '+moneyCur(c,t.excludedDebitAmount));const note=fxRecordNote(t,label);
  const actions=`<span class="detail-flow-actions"><button class="secondary smallbtn" onclick="editFxTrade('${t.id}')">修改</button><button class="danger smallbtn" onclick="deleteFxTrade('${t.id}')">刪除</button></span>`;
  const detail=`<div class="record-line1 fx-record-header"><span class="record-date">${esc(dateDisplay(t.date))}</span>${actions}</div>
  <div class="record-line2"><b class="${income?'positive':'negative'}">${income?'+':'−'} ${moneyCur(c,t.amount)}</b>${suffix}</div>
@@ -891,15 +900,22 @@ function fxDebitSplit(position,amount,mode,entered){
 function fxDebitPreview(position,amount,mode,entered,currency){
  const format=value=>Math.max(0,value).toLocaleString('en-US',{maximumFractionDigits:rateDigits(currency)})+' '+currency;
  const split=fxDebitSplit(position,amount,mode,entered);
- const balance='納入成本可用 '+format(position.includedQty)+'｜不納入成本可用 '+format(position.excludedQty);
- if(!amount)return balance;
- if(!split)return balance+'\n請確認扣款金額與所選來源的可用餘額。';
- return balance+'\n本次扣款：納入 '+format(split.included)+'｜不納入 '+format(split.excluded)
-  +'\n扣款後：納入 '+format(position.includedQty-split.included)+'｜不納入 '+format(position.excludedQty-split.excluded);
+ const lines=['納入成本可用 '+format(position.includedQty)];
+ if(position.excludedQty>1e-8)lines.push('不納入成本可用 '+format(position.excludedQty));
+ if(!amount)return lines.join('\n');
+ if(!split)return [...lines,'請確認扣款金額與所選來源的可用餘額。'].join('\n');
+ lines.push('本次扣款：納入 '+format(split.included)+(split.excluded>1e-8?'｜不納入 '+format(split.excluded):''));
+ const excludedLeft=position.excludedQty-split.excluded;
+ lines.push('扣款後：納入 '+format(position.includedQty-split.included)+(excludedLeft>1e-8?'｜不納入 '+format(excludedLeft):''));
+ return lines.join('\n');
 }
 function setFxDebitSource(trade,position,mode,entered){
  const split=fxDebitSplit(position,num(trade.amount),mode,entered);
  if(!split)return false;
+ delete trade.fxDebitSource;
+ delete trade.excludedDebitAmount;
+ delete trade.includedDebitRate;
+ delete trade.debitExcluded;
  if(mode!=='proportional'){
   trade.fxDebitSource=mode;
   trade.excludedDebitAmount=split.excluded;
@@ -910,13 +926,25 @@ function setFxDebitSource(trade,position,mode,entered){
  trade.costBasisTwd=split.included*position.avg;
  return true;
 }
+function setFxTransferSource(out,incoming,position,mode,entered){
+ if(!setFxDebitSource(out,position,mode,entered))return false;
+ const amount=num(out.amount);
+ const omitted=mode==='proportional'?amount*position.excludedQty/position.qty:num(out.excludedDebitAmount);
+ const included=amount-omitted;
+ const rate=out.costBasisTwd/amount;
+ Object.assign(out,{rate,rateSnapshot:rate});
+ Object.assign(incoming,{rate,rateSnapshot:rate,transferIncludedRate:included>1e-8?position.avg:0,
+  excludedTransferAmount:omitted,incomeTransferAmount:position.includedQty>1e-8?included*position.incomeQty/position.includedQty:0});
+ return true;
+}
 function refreshFxEntryCalculation(){
  const mode=document.getElementById('xtCalcMode'), twd=document.getElementById('xtTwd');
  const incoming=xtType.value==='transfer_in',external=xtType.value==='spend';
+ const debit=['spend','sell','transfer'].includes(xtType.value);
  document.getElementById('xtExcludeWrap').hidden=!incoming;
  const debitWrap=document.getElementById('xtDebitWrap'), debitMode=document.getElementById('xtDebitMode'), debitAmount=document.getElementById('xtDebitExcluded');
  const date=dateValue(xtDate);
- const position=external&&date&&xtProject.value?fxCalc(xtProject.value,date,Date.now()):null;
+ const position=debit&&date&&xtProject.value?fxCalc(xtProject.value,date,Date.now()):null;
  debitWrap.hidden=!position||position.includedQty<=1e-8||position.excludedQty<=1e-8;
  if(debitWrap.hidden)debitMode.value='proportional';
  debitAmount.parentElement.hidden=debitMode.value!=='mixed';
@@ -931,7 +959,11 @@ function refreshFxEntryCalculation(){
  if(reverse)xtRate.value=rateFieldValue(calculated,currency);
  document.getElementById('xtCalcResult').textContent=incoming&&document.getElementById('xtExcludeCost').checked?'這筆只增加外幣餘額，不計入平均成本。':external?(debitWrap.hidden?externalFxHelp(xtType.value):fxDebitPreview(position,num(xtAmount.value),debitMode.value,debitAmount.value,currency)):xtType.value==='interest'?'':reverse
   ?(xtRate.value?'反算匯率 '+xtRate.value:'')
-  :fxAmountPreview(xtAmount.value,xtType.value==='transfer'?fxAverageAt(xtProject.value,dateValue(xtDate),Date.now()):xtRate.value);
+  :fxAmountPreview(xtAmount.value,xtType.value==='transfer'?0:xtRate.value);
+ if(!debitWrap.hidden&&!external){
+  const preview=document.getElementById('xtCalcResult');
+  preview.textContent=[preview.textContent,fxDebitPreview(position,num(xtAmount.value),debitMode.value,debitAmount.value,currency)].filter(Boolean).join('\n');
+ }
 }
 function refreshFxTransferFields(){const type=xtType.value,source=state.fxProjects.find(p=>p.id===xtProject.value),targetWrap=document.getElementById('xtTargetWrap'),recipientWrap=document.getElementById('xtRecipientWrap'),target=document.getElementById('xtTargetProject'),rateInput=document.getElementById('xtRate');targetWrap.classList.toggle('hidden',type!=='transfer');recipientWrap.classList.toggle('hidden',!['spend','transfer_in'].includes(type));if(type==='transfer')target.innerHTML='<option value="">請選擇目的帳本</option>'+state.fxProjects.filter(p=>p.status!=='closed'&&p.id!==source?.id&&p.currency===source?.currency).map(p=>`<option value="${p.id}">${esc(p.name)}（${esc(p.currency)}）</option>`).join('');if(type==='transfer'&&source){let avg=fxLinkedRate(source.id,dateValue(xtDate),Date.now());rateInput.value=rateFieldValue(avg,source.currency);rateInput.readOnly=type==='transfer';rateInput.placeholder=type==='transfer'?'依轉出帳本平均成本承接':'預設帶入當時平均成本，可調整'}else{rateInput.readOnly=false;if(type==='spend')rateInput.value=''}document.getElementById('xtRateLabel').textContent=type==='transfer'?'成本匯率（自動承接原平均成本）':['spend'].includes(type)?'轉出匯率（預設平均成本，可調整）':type==='transfer_in'?'轉入匯率（選填，TWD／外幣）':'實際成交匯率（TWD／外幣）';refreshFxEntryCalculation()}
 document.getElementById('xtDebitMode').innerHTML=fxDebitSourceOptions;
@@ -942,7 +974,7 @@ document.getElementById('xtType').addEventListener('change',refreshFxTransferFie
 ['xtAmount','xtRate','xtTwd'].forEach(id=>document.getElementById(id).addEventListener('input',refreshFxEntryCalculation));
 document.getElementById('xtExcludeCost').addEventListener('change',refreshFxEntryCalculation);
 document.getElementById('xtCalcMode').addEventListener('change',refreshFxEntryCalculation);
-document.getElementById('addFxTrade').onclick=()=>{let projectId=xtProject.value,type=xtType.value,date=dateValue(xtDate),amount=num(xtAmount.value),enteredRate=num(xtRate.value),reverse=!isExternalFxKind(type)&&!['interest','transfer'].includes(type)&&document.getElementById('xtCalcMode').value==='twd',fee=type==='interest'?0:num(xtFee.value),note=xtNote.value,recipient=document.getElementById('xtRecipient').value.trim();if(reverse){enteredRate=fxRateFromAmounts(amount,document.getElementById('xtTwd').value);if(!Number.isFinite(enteredRate))return alert('請輸入大於零的外幣金額及台幣金額（未含費用）')}if(!projectId||!date||!Number.isFinite(amount)||amount<=0||!Number.isFinite(enteredRate)||enteredRate<0||!Number.isFinite(fee)||fee<0)return alert('請確認帳本、日期、金額及費用');let source=state.fxProjects.find(p=>p.id===projectId),avg=fxAverageAt(projectId,date,Date.now()),r=type==='transfer_in'?enteredRate:type==='spend'?0:enteredRate||avg;if(['buy','sell'].includes(type)&&r<=0)return alert('請輸入有效匯率');if(['sell','spend','transfer'].includes(type)&&amount>fxCalc(projectId).qty+1e-8)return alert('轉出金額超過目前持有量');if(type==='transfer'){let targetId=document.getElementById('xtTargetProject').value,target=state.fxProjects.find(p=>p.id===targetId);if(!target||target.currency!==source.currency||target.id===source.id)return alert('請選擇相同幣別的另一個外幣帳本');let pair=id(),created=Date.now(),position=fxCalc(projectId,date,created),excludedTransferAmount=position.qty>0?amount*position.excludedQty/position.qty:0,out={id:id(),projectId,type:'spend',date,amount,rate:avg,rateSnapshot:avg,costBasisRate:avg,costBasisTwd:amount*avg,fee,note:(note||'帳本間轉帳')+'｜轉入：'+target.name,created,transferPairId:pair,transferOut:true,transferToId:target.id,recipient:target.name},incoming={id:id(),projectId:target.id,type:'buy',date,amount,rate:avg,rateSnapshot:avg,transferIncludedRate:position.avg,fee:fee,note:(note||'帳本間轉帳')+'｜轉出：'+source.name,created:created+1,transferPairId:pair,transferIn:true,transferFromId:source.id,excludedTransferAmount,incomeTransferAmount:position.qty>0?amount*position.incomeQty/position.qty:0};state.fxTrades.push(out,incoming);if(!validFxLedger(source.id)||!validFxLedger(target.id)){state.fxTrades=state.fxTrades.filter(t=>t.transferPairId!==pair);return alert('轉帳會造成轉出或轉入帳本庫存順序異常，已取消')}}else{if(type==='interest'){r=0;fee=0}let ledgerType=type==='transfer_in'?'buy':type,trade={id:id(),projectId,type:ledgerType,date,amount,rate:r,rateSnapshot:r,fee,note,created:Date.now()};if(type==='spend'){trade.transferOut=true;const position=fxCalc(projectId,date,trade.created);if(!setFxDebitSource(trade,position,document.getElementById('xtDebitMode').value,document.getElementById('xtDebitExcluded').value))return alert('轉出金額超過交易日所選來源的可用餘額，或拆分金額有誤。');trade.recipient=recipient;trade.note=note}if(type==='transfer_in'){trade.transferIn=true;trade.excludeFromCost=Boolean(document.getElementById('xtExcludeCost').checked);trade.recipient=recipient;trade.note=note}state.fxTrades.push(trade);if(!validFxLedger(projectId)){state.fxTrades=state.fxTrades.filter(t=>t.id!==trade.id);return alert('依交易日期排序後外幣餘額不足，已取消')}}['xtAmount','xtRate','xtTwd','xtNote','xtRecipient','xtDebitExcluded'].forEach(x=>document.getElementById(x).value='');xtFee.value=0;document.getElementById('xtDebitMode').value='proportional';document.getElementById('xtExcludeCost').checked=false;refreshFxEntryCalculation();save().then(ok=>{if(ok)alert('外幣交易已儲存'+(type==='transfer'?'，已同步建立轉出及轉入紀錄':''))})};
+document.getElementById('addFxTrade').onclick=()=>{let projectId=xtProject.value,type=xtType.value,date=dateValue(xtDate),amount=num(xtAmount.value),enteredRate=num(xtRate.value),reverse=!isExternalFxKind(type)&&!['interest','transfer'].includes(type)&&document.getElementById('xtCalcMode').value==='twd',fee=type==='interest'?0:num(xtFee.value),note=xtNote.value,recipient=document.getElementById('xtRecipient').value.trim();if(reverse){enteredRate=fxRateFromAmounts(amount,document.getElementById('xtTwd').value);if(!Number.isFinite(enteredRate))return alert('請輸入大於零的外幣金額及台幣金額（未含費用）')}if(!projectId||!date||!Number.isFinite(amount)||amount<=0||!Number.isFinite(enteredRate)||enteredRate<0||!Number.isFinite(fee)||fee<0)return alert('請確認帳本、日期、金額及費用');let source=state.fxProjects.find(p=>p.id===projectId),avg=fxAverageAt(projectId,date,Date.now()),r=type==='transfer_in'?enteredRate:type==='spend'?0:enteredRate||avg;if(['buy','sell'].includes(type)&&r<=0)return alert('請輸入有效匯率');const debitMode=document.getElementById('xtDebitMode').value,debitAmount=document.getElementById('xtDebitExcluded').value;if(type==='transfer'){let targetId=document.getElementById('xtTargetProject').value,target=state.fxProjects.find(p=>p.id===targetId);if(!target||target.currency!==source.currency||target.id===source.id)return alert('請選擇相同幣別的另一個外幣帳本');let pair=id(),created=Date.now(),position=fxCalc(projectId,date,created),out={id:id(),projectId,type:'spend',date,amount,rate:avg,rateSnapshot:avg,costBasisRate:avg,costBasisTwd:amount*avg,fee,note:(note||'帳本間轉帳')+'｜轉入：'+target.name,created,transferPairId:pair,transferOut:true,transferToId:target.id,recipient:target.name},incoming={id:id(),projectId:target.id,type:'buy',date,amount,rate:avg,rateSnapshot:avg,transferIncludedRate:position.avg,fee:fee,note:(note||'帳本間轉帳')+'｜轉出：'+source.name,created:created+1,transferPairId:pair,transferIn:true,transferFromId:source.id};if(!setFxTransferSource(out,incoming,position,debitMode,debitAmount))return alert('轉帳金額超過交易日所選來源的可用餘額，或拆分金額有誤。');state.fxTrades.push(out,incoming);if(!validFxLedger(source.id)||!validFxLedger(target.id)){state.fxTrades=state.fxTrades.filter(t=>t.transferPairId!==pair);return alert('轉帳會造成轉出或轉入帳本庫存順序異常，已取消')}}else{if(type==='interest'){r=0;fee=0}let ledgerType=type==='transfer_in'?'buy':type,trade={id:id(),projectId,type:ledgerType,date,amount,rate:r,rateSnapshot:r,fee,note,created:Date.now()};if(['spend','sell'].includes(type)&&!setFxDebitSource(trade,fxCalc(projectId,date,trade.created),debitMode,debitAmount))return alert('金額超過交易日所選來源的可用餘額，或拆分金額有誤。');if(type==='spend'){trade.transferOut=true;trade.recipient=recipient;}if(type==='transfer_in'){trade.transferIn=true;trade.excludeFromCost=Boolean(document.getElementById('xtExcludeCost').checked);trade.recipient=recipient;trade.note=note}state.fxTrades.push(trade);if(!validFxLedger(projectId)){state.fxTrades=state.fxTrades.filter(t=>t.id!==trade.id);return alert('依交易日期排序後外幣餘額不足，已取消')}}['xtAmount','xtRate','xtTwd','xtNote','xtRecipient','xtDebitExcluded'].forEach(x=>document.getElementById(x).value='');xtFee.value=0;document.getElementById('xtDebitMode').value='proportional';document.getElementById('xtExcludeCost').checked=false;refreshFxEntryCalculation();save().then(ok=>{if(ok)alert('外幣交易已儲存'+(type==='transfer'?'，已同步建立轉出及轉入紀錄':''))})};
 window.openFxProject=pid=>{let f=document.getElementById('fxFilter');if(f)f.value=pid;renderFxTrades();go('fxrecords')};
 window.applyFxProjectEdit=function(pid,read){let p=state.fxProjects.find(x=>x.id===pid),name=read('帳本名稱',p.name);if(name===null)return;let note=read('帳本備註',p.note||'');if(note===null)return;p.name=name.trim()||p.name;p.note=note;return save()};
 window.closeFxProject=pid=>{let p=state.fxProjects.find(x=>x.id===pid);if(p.status!=='closed'&&fxCalc(pid).qty>1e-8)return alert('仍有外幣餘額，請先全部賣出再結案');p.status=p.status==='closed'?'open':'closed';save()};
@@ -978,7 +1010,8 @@ function refreshFundFxRatePreview(){
  if(!date){preview.textContent='請先輸入交易日期，再查看可扣款餘額。';return}
  const currency=fxCurrency(ftFxLink.value), position=fxCalc(ftFxLink.value,date,Date.now());
  const format=amount=>currency+' '+Number(Math.max(0,amount).toFixed(currency==='TWD'?0:currency==='JPY'||currency==='THB'?4:3)).toLocaleString('en-US',{maximumFractionDigits:4});
- const lines=['納入成本可用 '+format(position.includedQty),'不納入成本可用 '+format(position.excludedQty)];
+ const lines=['納入成本可用 '+format(position.includedQty)];
+ if(position.excludedQty>1e-8)lines.push('不納入成本可用 '+format(position.excludedQty));
  if(position.incomeQty>1e-8)lines.push('其中收益餘額 '+format(position.incomeQty));
  if(position.avg>0)lines.push('納入部分匯率 '+rate(position.avg,currency));
  const principal=num(ftUnits.value), fee=num(ftFee.value);
@@ -987,7 +1020,7 @@ function refreshFundFxRatePreview(){
   if(parts.includedAmount>position.includedQty+1e-8||parts.excludedAmount>position.excludedQty+1e-8){
    lines.push('扣款金額超過所選來源的可用餘額。');
   }else{
-   lines.push('扣款後不納入成本剩餘 '+format(position.excludedQty-parts.excludedAmount));
+   if(position.excludedQty-parts.excludedAmount>1e-8)lines.push('扣款後不納入成本剩餘 '+format(position.excludedQty-parts.excludedAmount));
   }
  }
  preview.textContent=lines.join('\n');
@@ -2063,10 +2096,10 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  interestFields();
  window.editFxTrade=function(tid){
   const t=state.fxTrades.find(x=>x.id===tid);if(!t)return;
-  if(t.transferPairId)return editPairedTradeNote(t);
+  if(t.transferPairId)return editPairedTrade(t);
   if(['fundTrades','insuranceTrades','travelExpenses','travelCashSettlements'].some(k=>(state[k]||[]).some(x=>x.linkedFxTradeId===tid))||t.sourceTravelExpenseId||t.sourceFundTradeId||t.insuranceProjectId||t.travelCashSettlementId)return alert('此筆交易與其他帳本連動，請從原始交易處理，避免帳務不一致。');
   const d=document.createElement('dialog');d.style.cssText='width:min(92vw,480px);max-height:90vh;overflow:auto;border:1px solid #ddd;border-radius:18px;padding:18px;color:inherit;background:var(--card,#fff)';
-  d.innerHTML='<form method="dialog"><h3>修改外幣交易</h3><label>交易類型</label><select name="kind"><option value="buy">買入</option><option value="sell">賣出</option><option value="spend">轉出</option><option value="transfer_in">轉入</option><option value="interest">利息</option></select><label for="editFxRocDate">日期（民國）</label><input id="editFxRocDate" name="date" type="text" class="roc-date" inputmode="numeric" placeholder="民國年／月／日，例如 115/11/08" required><label>外幣金額</label><input name="amount" type="number" step="any" min="0" required><div data-cost><div data-edit-exclude hidden><label><input name="excludeCost" type="checkbox" style="width:auto"> 不納入投入成本</label></div><div data-edit-conversion><label for="editFxCalcMode">換算方式</label><select id="editFxCalcMode" name="calcMode"><option value="rate">輸入匯率，算台幣金額</option><option value="twd">輸入台幣金額，算匯率</option></select><div data-edit-twd hidden><label for="editFxTwd">台幣金額（未含費用）</label><input id="editFxTwd" name="twd" type="number" inputmode="decimal" min="0" step="any"></div><label>成交／原始成本匯率</label><input name="rate" type="number" step="any" min="0"></div><div data-edit-debit hidden><label for="editFxDebitMode">轉出扣款來源</label><select id="editFxDebitMode" name="debitMode"></select><div hidden><label for="editFxDebitExcluded">從不納入成本扣的金額</label><input id="editFxDebitExcluded" name="debitExcludedAmount" type="number" min="0" step="any" inputmode="decimal"></div></div><p class="mini-note" data-edit-fx-preview aria-live="polite"></p><label>費用（TWD）</label><input name="fee" class="fee-entry" type="number" step="any" min="0"></div><div data-recipient><label>轉帳來源／對象（選填）</label><input name="recipient"></div><label>備註</label><textarea name="note"></textarea><div class="actions"><button type="button" data-cancel>取消</button><button class="primary" type="submit">儲存</button></div></form>';
+  d.innerHTML='<form method="dialog"><h3>修改外幣交易</h3><label>交易類型</label><select name="kind"><option value="buy">買入</option><option value="sell">賣出</option><option value="transfer_in">轉入</option><option value="spend">轉出</option><option value="interest">利息</option></select><label for="editFxRocDate">日期（民國）</label><input id="editFxRocDate" name="date" type="text" class="roc-date" inputmode="numeric" placeholder="民國年／月／日，例如 115/11/08" required><label>外幣金額</label><input name="amount" type="number" step="any" min="0" required><div data-cost><div data-edit-exclude hidden><label><input name="excludeCost" type="checkbox" style="width:auto"> 不納入投入成本</label></div><div data-edit-conversion><label for="editFxCalcMode">換算方式</label><select id="editFxCalcMode" name="calcMode"><option value="rate">輸入匯率，算台幣金額</option><option value="twd">輸入台幣金額，算匯率</option></select><div data-edit-twd hidden><label for="editFxTwd">台幣金額（未含費用）</label><input id="editFxTwd" name="twd" type="number" inputmode="decimal" min="0" step="any"></div><label>成交／原始成本匯率</label><input name="rate" type="number" step="any" min="0"></div><div data-edit-debit hidden><label for="editFxDebitMode">轉出扣款來源</label><select id="editFxDebitMode" name="debitMode"></select><div hidden><label for="editFxDebitExcluded">從不納入成本扣的金額</label><input id="editFxDebitExcluded" name="debitExcludedAmount" type="number" min="0" step="any" inputmode="decimal"></div></div><p class="mini-note" data-edit-fx-preview aria-live="polite"></p><label>費用（TWD）</label><input name="fee" class="fee-entry" type="number" step="any" min="0"></div><div data-recipient><label>轉帳來源／對象（選填）</label><input name="recipient"></div><label>備註</label><textarea name="note"></textarea><div class="actions"><button type="button" data-cancel>取消</button><button class="primary" type="submit">儲存</button></div></form>';
   document.body.append(d);const f=d.querySelector('form'),e=f.elements;
   e.debitMode.innerHTML=fxDebitSourceOptions;
   e.debitMode.value=t.fxDebitSource||'proportional';
@@ -2075,9 +2108,10 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
   function fields(){
    const interest=e.kind.value==='interest',incoming=e.kind.value==='transfer_in',external=e.kind.value==='spend',reverse=!interest&&!external&&!incoming&&e.calcMode.value==='twd';
    const date=toISODate(e.date.value);
-   const position=external&&date?fxCalc(t.projectId,date,num(t.created),t.id):null;
+   const debit=external||e.kind.value==='sell';
+   const position=debit&&date?fxCalc(t.projectId,date,num(t.created),t.id):null;
    const debitWrap=d.querySelector('[data-edit-debit]');
-   debitWrap.hidden=!external||(!t.fxDebitSource&&e.debitMode.value==='proportional'&&(!position||position.includedQty<=1e-8||position.excludedQty<=1e-8));
+   debitWrap.hidden=!debit||(!t.fxDebitSource&&e.debitMode.value==='proportional'&&(!position||position.includedQty<=1e-8||position.excludedQty<=1e-8));
    e.debitExcludedAmount.parentElement.hidden=e.debitMode.value!=='mixed';
    d.querySelector('[data-edit-exclude]').hidden=!incoming;
    d.querySelector('#editFxCalcMode').hidden=incoming;
@@ -2094,6 +2128,10 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
     e.rate.value=rateFieldValue(computed,fxCurrency(t.projectId));
    }
    d.querySelector('[data-edit-fx-preview]').textContent=interest?'':external?(position&&!debitWrap.hidden?fxDebitPreview(position,num(e.amount.value),e.debitMode.value,e.debitExcludedAmount.value,fxCurrency(t.projectId)):externalFxHelp(e.kind.value)):fxAmountPreview(e.amount.value,reverse?fxRateFromAmounts(e.amount.value,e.twd.value):readRateField(e.rate.value,t.rate,fxCurrency(t.projectId)));
+   if(debit&&!external&&position&&!debitWrap.hidden){
+    const preview=d.querySelector('[data-edit-fx-preview]');
+    preview.textContent=[preview.textContent,fxDebitPreview(position,num(e.amount.value),e.debitMode.value,e.debitExcludedAmount.value,fxCurrency(t.projectId))].filter(Boolean).join('\n');
+   }
   }
   e.kind.onchange=fields;
   e.calcMode.onchange=fields;
@@ -2106,8 +2144,8 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
    const old={...t};const next={...t,type:kind==='transfer_in'?'buy':kind,date,amount,rate,rateSnapshot:rate,fee,note:e.note.value};
    ['excludeFromCost','transferIn','transferOut','recipient','costBasisRate','costBasisTwd','costBasisPending','transferFromId','transferToId','fxDebitSource','excludedDebitAmount','includedDebitRate','debitExcluded'].forEach(k=>delete next[k]);
    if(kind==='transfer_in'){next.transferIn=true;next.excludeFromCost=Boolean(e.excludeCost.checked);}if(['transfer_in','spend'].includes(kind)&&e.recipient.value.trim())next.recipient=e.recipient.value.trim();
-   if(kind==='spend'){
-    next.transferOut=true;
+   if(kind==='spend'||kind==='sell'){
+    if(kind==='spend')next.transferOut=true;
     const position=fxCalc(t.projectId,date,num(t.created),t.id);
     if(!setFxDebitSource(next,position,e.debitMode.value,e.debitExcludedAmount.value))return alert('轉出金額超過交易日所選來源的可用餘額，或拆分金額有誤。');
     if(!t.fxDebitSource&&e.debitMode.value==='proportional'&&date===t.date&&amount===num(t.amount)&&t.type==='spend'&&t.costBasisRate!=null){
@@ -2177,16 +2215,28 @@ function isLinkedFx(trade){
  return Boolean(trade.sourceTravelExpenseId||trade.sourceFundTradeId||trade.insuranceProjectId||trade.travelCashSettlementId||
   ['fundTrades','insuranceTrades','travelExpenses','travelCashSettlements'].some(key=>state[key].some(row=>row.linkedFxTradeId===trade.id)));
 }
-function editPairedTradeNote(trade){
+function editPairedTrade(trade){
  const pair=state.fxTrades.filter(row=>row.transferPairId===trade.transferPairId);
  if(pair.length!==2)return alert('找不到完整轉帳配對，請先確認帳本資料。');
  const from=pair.find(row=>row.transferOut),to=pair.find(row=>row.transferIn);
  if(!from||!to)return alert('找不到完整轉帳配對，請先確認帳本資料。');
- showRecordEditor('修改帳本間轉帳',[editLabel('交易類型','帳本間轉帳'),editLabel('日期（民國）',dateDisplay(from.date)),editLabel('轉出帳本',fxName(from.projectId)),editLabel('轉入帳本',fxName(to.projectId)),editLabel('外幣金額',moneyCur(fxCurrency(from.projectId),from.amount)),editNote(fxFreeNote(trade))],read=>{
-  const note=read('備註');
-  for(const row of state.fxTrades.filter(item=>item.transferPairId===trade.transferPairId))row.note=note.trim();
+ const currency=fxCurrency(from.projectId);
+ const position=fxCalc(from.projectId,from.date,num(from.created),from.id);
+ const canChoose=Boolean(from.fxDebitSource)||(position.includedQty>1e-8&&position.excludedQty>1e-8);
+ const sourceFields=canChoose?[
+  editField('扣款來源','轉帳扣款來源',from.fxDebitSource||'proportional','text',[['proportional','按比例'],['included','全從納入成本扣'],['excluded','全從不納入成本扣'],['mixed','自行拆分']]),
+  editNumber('拆分金額','不納入成本扣款（自行拆分時填）',from.fxDebitSource==='mixed'?from.excludedDebitAmount:'')
+ ]:[];
+ showRecordEditor('修改帳本間轉帳',[editLabel('交易類型','帳本間轉帳'),editLabel('日期（民國）',dateDisplay(from.date)),editLabel('轉出帳本',fxName(from.projectId)),editLabel('轉入帳本',fxName(to.projectId)),editLabel('外幣金額',moneyCur(currency,from.amount)),...sourceFields,editNote(fxFreeNote(trade))],read=>{
+  const note=read('備註').trim(),mode=canChoose?read('扣款來源'):'proportional';
+  const entered=canChoose?read('拆分金額'):'';
+  const out={...from,note}, incoming={...to,note};
+  if(mode!==(from.fxDebitSource||'proportional')||(mode==='mixed'&&num(entered)!==num(from.excludedDebitAmount))){
+   if(!setFxTransferSource(out,incoming,position,mode,entered))return alert('轉帳金額超過交易日所選來源的可用餘額，或拆分金額有誤。');
+  }
+  state.fxTrades=state.fxTrades.map(row=>row.id===out.id?out:row.id===incoming.id?incoming:row);
   return save();
- },{collection:'fxTrades',record:trade});
+ },{collection:'fxTrades',record:trade,update:canChoose?(find,hide)=>hide('拆分金額',find('扣款來源').value!=='mixed'):undefined});
 }
 const previousFxDelete=window.deleteFxTrade;
 window.deleteFxTrade=tid=>{
@@ -2486,7 +2536,7 @@ function persistLedger(){
    if(!importingLedger&&fxCalc(project.id).invalidExcludedDebit)throw Error('申購本金或手續費超過各自扣款來源的可用餘額，請確認扣款來源。');
    if(!validFxLedger(project.id)) throw Error('這項變更會使外幣帳本在歷史日期餘額不足');
   }
-  const tradeShape=trade=>[trade.projectId,trade.type==='buy'?'buy':trade.type==='interest'?'interest':'debit',trade.date,trade.amount,trade.type==='buy'?trade.rate:0,trade.type==='buy'?trade.fee:0,trade.transferPairId,trade.fxDebitSource,Boolean(trade.debitExcluded),num(trade.excludedDebitAmount),Boolean(trade.excludeFromCost),num(trade.excludedTransferAmount)];
+  const tradeShape=trade=>[trade.projectId,trade.type==='buy'?'buy':trade.type==='interest'?'interest':'debit',trade.date,trade.amount,trade.type==='buy'?trade.rate:0,trade.type==='buy'?trade.fee:0,trade.transferPairId,trade.fxDebitSource,num(trade.incomeTransferAmount),Boolean(trade.debitExcluded),num(trade.excludedDebitAmount),Boolean(trade.excludeFromCost),num(trade.excludedTransferAmount)];
   const oldRows=new Map(record.snapshot.data.fxTrades.map(row=>[row.id,row]));
   const newRows=new Map(snapshot.data.fxTrades.map(row=>[row.id,row]));
   const changed=[];
