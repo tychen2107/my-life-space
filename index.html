@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.24.4</title>
+<title>亭有錢途 MY LIFE SPACE v1.24.5</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -387,7 +387,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.24.4 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.24.5 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -411,7 +411,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 <div class="actions"><button class="secondary" id="refreshBotRates">更新臺企銀匯率</button><span class="mini-note" id="botRateStatus" role="status" aria-live="polite">正在自動取得臺企銀匯率…</span></div>
 <div class="mini-note fx-valuation-note">本金參考匯率依剩餘本金估算。估值採臺企銀「即期／本行買入」，不混用現鈔或小額匯率。若服務暫時失敗，系統會沿用上次成功報價。每日報價更新不會改動既有交易紀錄的成交匯率。</div>
 <details class="rate-advanced"><summary>進階設定</summary><div class="formgrid" style="margin-top:12px"><div style="grid-column:1/-1"><label for="botProxyUrl">臺企銀匯率代理服務網址</label><input id="botProxyUrl" type="url" inputmode="url" placeholder="https://calm-lab-12a4.tychen2107.workers.dev/"></div></div><div class="actions"><button class="secondary" id="saveBotProxy">儲存修改後的代理網址</button><button class="secondary" id="resetBotProxy">恢復預設代理網址</button><button class="secondary" id="testBotProxy">測試連線</button></div><div class="mini-note">一般使用不需要修改或儲存網址。只有更換代理服務時才需要在此調整；網址會保存在目前瀏覽器。</div></details>
-<div class="fx-valuation-period"><label for="fxValuationYear">已實現損益期間</label><select id="fxValuationYear"><option value="">全部年度</option></select></div><div id="fxValuationCards" class="stats-list"></div><div id="fxCurrencyValuation"></div></details><div class="section"><h2>外幣帳本列表</h2><div class="tablewrap"><table><thead><tr><th>帳本</th><th>幣別</th><th>持有數量</th><th>本金參考匯率（TWD／外幣）</th><th>累積已實現損益</th><th>狀態</th><th>操作</th></tr></thead><tbody id="fxProjectRows"></tbody></table></div><div id="fxProjectCards" class="project-cards"></div></div>
+<div class="fx-valuation-period"><label for="fxValuationYear">已實現損益期間</label><select id="fxValuationYear"><option value="">全部年度</option></select></div><div id="fxValuationCards" class="stats-list"></div><div id="fxCurrencyValuation"></div></details><div class="section"><h2>外幣帳本列表</h2><div class="tablewrap"><table><thead><tr><th>帳本</th><th>幣別</th><th>持有數量</th><th>平均匯率（TWD／外幣）</th><th>累積已實現損益</th><th>狀態</th><th>操作</th></tr></thead><tbody id="fxProjectRows"></tbody></table></div><div id="fxProjectCards" class="project-cards"></div></div>
 </section>
 <section id="fxentry" class="panel">
 <div class="section"><h2>新增外幣交易／轉帳</h2><div class="formgrid">
@@ -423,6 +423,10 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 <section id="fundprojects" class="panel">
 <div class="section"><h2>建立基金帳本</h2><div class="formgrid">
 <div><label>基金名稱</label><input id="fpName" placeholder="基金完整名稱"></div><div><label>基金代號</label><input id="fpCode" placeholder="例如：基金代碼"></div><div><label>計價幣別</label><select id="fpCurrency"><option value="TWD">TWD</option><option value="USD">USD</option><option value="JPY">JPY</option><option value="EUR">EUR</option><option value="OTHER">其他（自行輸入）</option></select><input id="fpCurrencyCustom" class="hidden" placeholder="輸入幣別代碼，例如：THB" maxlength="8" style="margin-top:6px"></div><div><label>備註</label><input id="fpNote"></div></div><div class="actions"><button class="primary" id="addFundProject">新增基金帳本</button></div></div>
+<details class="section fund-period-summary"><summary>基金報酬統計</summary>
+<div class="fx-valuation-period"><label for="fundSummaryYear">統計期間</label><select id="fundSummaryYear"><option value="">全部年度</option></select></div>
+<p id="fundSummaryBasis" class="mini-note"></p><div id="fundSummaryRows" class="fund-summary-rows"></div>
+</details>
 <div class="section"><h2>基金帳本總覽</h2><div class="formgrid project-tools"><div><label>搜尋基金名稱／代號</label><input id="fundProjectSearch" placeholder="輸入名稱或代號"></div><div><label>帳本狀態</label><select id="fundStatusFilter"><option value="all">全部帳本</option><option value="open">進行中</option><option value="closed">已結案</option></select></div></div><div id="fundProjectGroups"></div></div>
 </section>
 <section id="fundentry" class="panel">
@@ -612,7 +616,7 @@ function fxCalc(pid,date='9999-12-31',created=Infinity,excludeId=''){
  const includedQty=Math.max(0,qty-excluded);
  return {qty,invalidExcludedDebit,excludedQty:excluded,incomeQty:income,includedQty,cost,avg:includedQty>1e-8?cost/includedQty:0,originalBuyAverage:bought?buyCost/bought:0,realized,details};
 }
-function fundCalc(pid){let principal=0,totalCost=0,redeemedPrincipal=0,redeemedCost=0,redeemedNet=0,dividends=0,realized=0,invested=0,details={};state.fundTrades.filter(t=>t.projectId===pid).sort(sortTrade).forEach(t=>{let amount=num(t.amount??t.cashAmount),fee=num(t.fee);if(t.type==='buy_lump'||t.type==='buy_regular'){principal+=amount;invested+=amount+fee;totalCost+=amount+fee;details[t.id]=null}else if(t.type==='sell'){let base=num(t.redemptionCost??t.amount),net=num(t.actualNet??t.cashAmount??t.amount),remainPrincipal=principal-redeemedPrincipal,remainCost=totalCost-redeemedCost;if(base>remainPrincipal+0.000001){details[t.id]=null;return}let alloc=base>=remainPrincipal-0.000001?remainCost:remainPrincipal>0?remainCost*(base/remainPrincipal):0;redeemedPrincipal+=base;redeemedCost+=alloc;redeemedNet+=net;let pnl=net-alloc;realized+=pnl;details[t.id]=pnl}else{let net=num(t.actualNet??t.dividendAmount??t.amount);dividends+=net;details[t.id]=net}});let remainingPrincipal=Math.max(0,principal-redeemedPrincipal),remainingCost=remainingPrincipal<0.000001&&principal>0?0:Math.max(0,totalCost-redeemedCost),totalRealized=realized+dividends,realizedRate=redeemedCost>0?realized/redeemedCost*100:0,totalRate=invested>0?totalRealized/invested*100:null;return{principal,invested,redeemedPrincipal,redeemedCost,redeemedNet,remainingPrincipal,remainingCost,realized,dividends,totalRealized,realizedRate,totalRate,closed:remainingPrincipal<0.000001&&principal>0,details}}
+function fundCalc(pid,before=''){let principal=0,totalCost=0,redeemedPrincipal=0,redeemedCost=0,redeemedNet=0,dividends=0,realized=0,invested=0,details={};state.fundTrades.filter(t=>t.projectId===pid&&(!before||t.date<before)).sort(sortTrade).forEach(t=>{let amount=num(t.amount??t.cashAmount),fee=num(t.fee);if(t.type==='buy_lump'||t.type==='buy_regular'){principal+=amount;invested+=amount+fee;totalCost+=amount+fee;details[t.id]=null}else if(t.type==='sell'){let base=num(t.redemptionCost??t.amount),net=num(t.actualNet??t.cashAmount??t.amount),remainPrincipal=principal-redeemedPrincipal,remainCost=totalCost-redeemedCost;if(base>remainPrincipal+0.000001){details[t.id]=null;return}let alloc=base>=remainPrincipal-0.000001?remainCost:remainPrincipal>0?remainCost*(base/remainPrincipal):0;redeemedPrincipal+=base;redeemedCost+=alloc;redeemedNet+=net;let pnl=net-alloc;realized+=pnl;details[t.id]=pnl}else{let net=num(t.actualNet??t.dividendAmount??t.amount);dividends+=net;details[t.id]=net}});let remainingPrincipal=Math.max(0,principal-redeemedPrincipal),remainingCost=remainingPrincipal<0.000001&&principal>0?0:Math.max(0,totalCost-redeemedCost),totalRealized=realized+dividends,realizedRate=redeemedCost>0?realized/redeemedCost*100:0,totalRate=invested>0?totalRealized/invested*100:null;return{principal,invested,redeemedPrincipal,redeemedCost,redeemedNet,remainingPrincipal,remainingCost,realized,dividends,totalRealized,realizedRate,totalRate,closed:remainingPrincipal<0.000001&&principal>0,details}}
 function sortTrade(a,b){return a.date.localeCompare(b.date)||a.created-b.created}
 function validFxLedger(pid){let q=0,ok=true;state.fxTrades.filter(t=>t.projectId===pid).sort(sortTrade).forEach(t=>{if(['buy','interest'].includes(t.type))q+=num(t.amount);else{if(num(t.amount)>q+1e-8)ok=false;q-=num(t.amount)}});return ok}
 function validFundLedger(pid){let q=0,ok=true;state.fundTrades.filter(t=>t.projectId===pid).sort(sortTrade).forEach(t=>{if(t.type==='buy_lump'||t.type==='buy_regular')q+=num(t.amount??t.cashAmount);else if(t.type==='sell'){let a=num(t.redemptionCost??t.amount);if(a>q+1e-8)ok=false;q-=a}});return ok}
@@ -862,8 +866,59 @@ function render(){
  fillSelect(document.getElementById('ftProject'),state.fundProjects,p=>p.name+'（'+p.code+'）',false);document.getElementById('fundNoProjectHint').classList.toggle('hidden',state.fundProjects.length>0);document.getElementById('addFundTrade').disabled=state.fundProjects.length===0;fillRecordFilter(document.getElementById('fundFilter'),state.fundProjects,p=>p.name+'（'+p.code+'）','全部基金帳本');
  let fp=state.fundProjects.find(p=>p.id===document.getElementById('ftProject').value);document.getElementById('ftCurrency').value=fp?fp.currency:'';
  refreshFundFxOptions();
- const fxActive=fx.filter(x=>x.p.status!=='closed'),fxClosed=fx.filter(x=>x.p.status==='closed');const fxRow=({p,s})=>`<tr data-project-id="${esc(p.id)}"><td><b>${esc(p.name)}</b><br><span class="muted">${esc(p.note||'')}</span></td><td>${esc(p.currency)}</td><td>${moneyCur(p.currency,s.qty)}</td><td>${s.principalRate===null?'—':rate(s.principalRate,p.currency)}</td><td class="${s.realized>=0?'positive':'negative'}"><b>${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</b></td><td>${p.status==='closed'?'已結案':'進行中'}</td><td><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button> <button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button> <button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button> <button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button> <button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></td></tr>`;document.getElementById('fxProjectRows').innerHTML=fx.length?(fxActive.length?`<tr class="ledger-group-row"><td colspan="7"><b>進行中的帳本（${fxActive.length}）</b></td></tr>${fxActive.map(fxRow).join('')}`:'')+(fxClosed.length?`<tr class="ledger-group-row"><td colspan="7"><b>已結案帳本（${fxClosed.length}）</b></td></tr>${fxClosed.map(fxRow).join('')}`:''):'<tr><td colspan="7" class="empty">尚無外幣帳本，請先建立帳本。</td></tr>';let fxCards=document.getElementById('fxProjectCards');if(fxCards)fxCards.innerHTML=fx.length?(fxActive.length?`${bookOrderHeading('fxProjects',false,'進行中的帳本',fxActive.length,'ledger-group-heading')}`+fxActive.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}${p.status==='closed'?'已結案':'進行中'}</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div>${s.excludedQty>1e-8?`<div><small>不納入成本餘額</small><b>${moneyCur(p.currency,s.excludedQty)}</b></div>`:''}<div><small>本金參考匯率</small><b>${s.principalRate===null?'—':rate(s.principalRate,p.currency)}</b></div></div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):'')+(fxClosed.length?`${bookOrderHeading('fxProjects',true,'已結案帳本',fxClosed.length,'ledger-group-heading')}`+fxClosed.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}已結案</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div><div><small>本金參考匯率</small><b>${s.principalRate===null?'—':rate(s.principalRate,p.currency)}</b></div></div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">重開</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):''):'<div class="empty">尚無外幣帳本，請先建立帳本。</div>';
- renderFundProjectGroups();renderFxValuation();renderFxTrades();renderFundTrades();renderAnnual();renderTravel();renderRecent();
+ const fxActive=fx.filter(x=>x.p.status!=='closed'),fxClosed=fx.filter(x=>x.p.status==='closed');const fxRow=({p,s})=>`<tr data-project-id="${esc(p.id)}"><td><b>${esc(p.name)}</b><br><span class="muted">${esc(p.note||'')}</span></td><td>${esc(p.currency)}</td><td>${moneyCur(p.currency,s.qty)}</td><td>${fxBookRateMetrics(p,s)}</td><td class="${s.realized>=0?'positive':'negative'}"><b>${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</b></td><td>${p.status==='closed'?'已結案':'進行中'}</td><td><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button> <button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button> <button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button> <button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button> <button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></td></tr>`;document.getElementById('fxProjectRows').innerHTML=fx.length?(fxActive.length?`<tr class="ledger-group-row"><td colspan="7"><b>進行中的帳本（${fxActive.length}）</b></td></tr>${fxActive.map(fxRow).join('')}`:'')+(fxClosed.length?`<tr class="ledger-group-row"><td colspan="7"><b>已結案帳本（${fxClosed.length}）</b></td></tr>${fxClosed.map(fxRow).join('')}`:''):'<tr><td colspan="7" class="empty">尚無外幣帳本，請先建立帳本。</td></tr>';let fxCards=document.getElementById('fxProjectCards');if(fxCards)fxCards.innerHTML=fx.length?(fxActive.length?`${bookOrderHeading('fxProjects',false,'進行中的帳本',fxActive.length,'ledger-group-heading')}`+fxActive.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}${p.status==='closed'?'已結案':'進行中'}</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div>${s.excludedQty>1e-8?`<div><small>不納入成本餘額</small><b>${moneyCur(p.currency,s.excludedQty)}</b></div>`:''}${fxBookRateMetrics(p,s)}</div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="primary smallbtn" onclick="openBookEntry('fx','${p.id}')">新增記帳</button><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">${p.status==='closed'?'重開':'結案'}</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):'')+(fxClosed.length?`${bookOrderHeading('fxProjects',true,'已結案帳本',fxClosed.length,'ledger-group-heading')}`+fxClosed.map(({p,s})=>{let q=botRates[p.currency]?.buy||0,v=s.qty*q,pnl=s.includedQty*q-s.cost;return `<article id="book-fx-${p.id}" class="project-summary-card"><h4 class="fx-project-card-title"><span>${esc(p.name)} <span class="muted">${esc(p.currency)}</span></span><small class="${s.realized>=0?'positive':'negative'}">已實現損益 ${s.realized>=0?'+':'−'}${money(Math.abs(s.realized))}</small></h4><div class="project-summary-meta">${esc(p.note||'')}${p.note?'｜':''}已結案</div><div class="project-summary-metrics"><div><small>持有餘額</small><b>${moneyCur(p.currency,s.qty)}</b></div>${fxBookRateMetrics(p,s)}</div>${bookOrderButtons('fxProjects',p)}<div class="project-summary-actions"><button class="secondary smallbtn" onclick="openFxProject('${p.id}')">查看明細</button><button class="secondary smallbtn" onclick="editFxProject('${p.id}')">修改</button><button class="secondary smallbtn" onclick="closeFxProject('${p.id}')">重開</button><button class="danger smallbtn" onclick="deleteFxProject('${p.id}')">刪除帳本</button></div></article>`}).join(''):''):'<div class="empty">尚無外幣帳本，請先建立帳本。</div>';
+ renderFundReturnSummary();renderFundProjectGroups();renderFxValuation();renderFxTrades();renderFundTrades();renderAnnual();renderTravel();renderRecent();
+}
+function fundReturnSummary(projects,year=''){
+ const totals=new Map();
+ const start=year?year+'-01-01':'';
+ const end=year?(Number(year)+1)+'-01-01':'';
+ for(const project of projects){
+  const closing=fundCalc(project.id,end);
+  const opening=year?fundCalc(project.id,start):null;
+  const currency=project.currency||'TWD';
+  const basis=closing.invested-(opening?.invested??0)+(opening?.remainingCost??0);
+  const dividends=closing.dividends-(opening?.dividends??0);
+  const redemptionPnl=closing.realized-(opening?.realized??0);
+  if(basis===0&&dividends===0&&redemptionPnl===0)continue;
+  if(!totals.has(currency))totals.set(currency,{basis:0,dividends:0,redemptionPnl:0});
+  const total=totals.get(currency);
+  total.basis+=basis;
+  total.dividends+=dividends;
+  total.redemptionPnl+=redemptionPnl;
+ }
+ return totals;
+}
+function renderFundReturnSummary(){
+ const select=document.getElementById('fundSummaryYear');
+ const previous=select.value;
+ const years=[...new Set(state.fundTrades.map(t=>t.date.slice(0,4)))].sort().reverse();
+ select.replaceChildren(new Option('全部年度',''),...years.map(year=>new Option('民國 '+(Number(year)-1911)+' 年',year)));
+ select.value=years.includes(previous)?previous:'';
+ select.onchange=renderFundReturnSummary;
+ const year=select.value;
+ document.getElementById('fundSummaryBasis').textContent=year
+  ?'統計所有基金帳本。含息報酬率以當年含息損益除以年初剩餘成本加當年申購成本。'
+  :'統計所有基金帳本。含息報酬率以累積含息損益除以累積申購成本。';
+ const row=(label,value,css='')=>`<div class="fx-value-row"><span>${label}</span><b class="${css}">${value}</b></div>`;
+ const tone=amount=>amount<0?'negative':amount>0?'positive':'';
+ const signed=(currency,amount)=>(amount<0?'−':amount>0?'+':'')+moneyCur(currency,Math.abs(amount));
+ document.getElementById('fundSummaryRows').innerHTML=Array.from(fundReturnSummary(state.fundProjects,year),([currency,total])=>{
+  const pnl=total.redemptionPnl+total.dividends;
+  const percentage=total.basis>0?(pnl/total.basis*100).toFixed(2)+'%':'—';
+  return `<article class="stats-item">
+   <b>${esc(currency)}</b>
+   ${row('贖回已實現損益',signed(currency,total.redemptionPnl),tone(total.redemptionPnl))}
+   ${row('配息',moneyCur(currency,total.dividends))}
+   ${row('含息損益',signed(currency,pnl),tone(pnl))}
+   ${row('含息報酬率',percentage,tone(pnl))}
+  </article>`;
+ }).join('')||'<div class="empty">目前沒有可統計的基金交易。</div>';
+}
+function fxBookRateMetrics(project,position){
+ const principal=position.principalRate===null?'—':rate(position.principalRate,project.currency);
+ const effective=position.includedQty>1e-8?rate(position.avg,project.currency):'—';
+ return `<div class="fx-book-rate-pair"><div><small>本金參考匯率</small><b>${principal}</b></div><div><small>含利息收益平均匯率</small><b>${effective}</b></div></div>`;
 }
 function fundReturnMetrics(currency,calc){
  const amount=value=>`${value<0?'−':value>0?'+':''}${moneyCur(currency,Math.abs(value))}`;
@@ -1699,6 +1754,14 @@ if(!localStorage.getItem('fx_fund_backup_notice_v2')){setTimeout(()=>{alert('建
  .fx-value-title{overflow-wrap:anywhere}
  .fx-valuation-period{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;margin:8px 0 5px}
  .fx-valuation-period label{margin:0}
+ .fx-book-rate-pair{grid-column:1/-1;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+ .project-summary-metrics>.fx-book-rate-pair{padding:0;background:none}
+ .fx-book-rate-pair>div{min-width:0;border-radius:10px;padding:8px;background:rgba(242,235,224,.58)}
+ .fx-book-rate-pair small{display:block;min-height:2.5em;line-height:1.25}
+ .fx-book-rate-pair b{display:block;white-space:nowrap;font-variant-numeric:tabular-nums}
+ .fund-period-summary>summary{font-weight:700;cursor:pointer}
+ .fund-summary-rows{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:8px}
+ .fund-summary-rows .stats-item{min-width:0;display:grid;gap:5px}
  .fx-valuation-period select{width:auto;max-width:100%}
  .fx-overall-cost summary{display:flow-root;overflow-wrap:anywhere}
  .fx-value-row{display:flex;align-items:baseline;justify-content:space-between;min-width:0;gap:6px 10px;line-height:1.45}
