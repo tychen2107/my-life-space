@@ -1,7 +1,8 @@
 'use strict';
 
 const shellPrefix = 'my-life-space-shell-';
-const shell = shellPrefix + 'v1.23.43';
+// Match the page version. After patch 30, increment the minor version and restart without a patch suffix.
+const shell = shellPrefix + 'v1.24';
 const sdkCache = 'my-life-space-firebase-v11.10.0';
 const entry = new URL('index.html', self.registration.scope).href;
 const localFiles = [

@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>亭有錢途 MY LIFE SPACE v1.23.43</title>
+<title>亭有錢途 MY LIFE SPACE v1.24</title>
 <meta name="description" content="個人財務與旅程管理｜亭有錢途">
 <meta property="og:type" content="website">
 <meta property="og:title" content="亭有錢途｜個人財務與旅程管理">
@@ -387,7 +387,7 @@ button.icon-only-action.add-action{font-size:1.375rem!important;font-weight:400;
 #fxrecords .fx-records-toolbar{align-items:center;gap:.4rem .65rem}
 .fx-records-balance{font-size:.875rem;font-weight:700;color:var(--muted);min-width:0;overflow-wrap:anywhere}
 </style></head><body>
-<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.23.43 · CREAT BY TYC</small></div></header>
+<header><div class="header-meta"><span class="header-desc">個人財務與旅程管理</span><small>v1.24 · CREAT BY TYC</small></div></header>
 <datalist id="currencyChoices"><option value="TWD">新台幣</option><option value="USD">美元</option><option value="JPY">日圓</option><option value="EUR">歐元</option><option value="CNY">人民幣</option><option value="HKD">港幣</option><option value="GBP">英鎊</option><option value="AUD">澳幣</option><option value="CAD">加拿大幣</option><option value="CHF">瑞士法郎</option><option value="SGD">新加坡幣</option><option value="KRW">韓元</option><option value="NZD">紐西蘭幣</option></datalist>
 <main inert>
 <section id="overview" class="panel active">
@@ -900,7 +900,7 @@ function fxDebitSplit(position,amount,mode,entered){
 function fxDebitPreview(position,amount,mode,entered,currency){
  const format=value=>Math.max(0,value).toLocaleString('en-US',{maximumFractionDigits:rateDigits(currency)})+' '+currency;
  const split=fxDebitSplit(position,amount,mode,entered);
- const lines=['納入成本可用 '+format(position.includedQty)];
+ const lines=['納入成本可用'+(position.incomeQty>1e-8?'（含收益）':'')+' '+format(position.includedQty)];
  if(position.excludedQty>1e-8)lines.push('不納入成本可用 '+format(position.excludedQty));
  if(!amount)return lines.join('\n');
  if(!split)return [...lines,'請確認扣款金額與所選來源的可用餘額。'].join('\n');
@@ -1012,8 +1012,7 @@ function refreshFundFxRatePreview(){
  const format=amount=>currency+' '+Number(Math.max(0,amount).toFixed(currency==='TWD'?0:currency==='JPY'||currency==='THB'?4:3)).toLocaleString('en-US',{maximumFractionDigits:4});
  const lines=['納入成本可用 '+format(position.includedQty)];
  if(position.excludedQty>1e-8)lines.push('不納入成本可用 '+format(position.excludedQty));
- if(position.incomeQty>1e-8)lines.push('其中收益餘額 '+format(position.incomeQty));
- if(position.avg>0)lines.push('納入部分匯率 '+rate(position.avg,currency));
+ if(position.avg>0)lines.push('平均成本匯率 '+rate(position.avg,currency));
  const principal=num(ftUnits.value), fee=num(ftFee.value);
  const parts=principal>0&&fundDebitParts(mode,principal,fee,document.getElementById('ftExcludedPrincipal').value);
  if(parts){
